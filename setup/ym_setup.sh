@@ -14,4 +14,4 @@ export YM_SCRIPTS_DIR=${YM_ROOT_DIR}/scripts
 
 source ${YM_SCRIPTS_DIR}/ym_compile.sh
 source ${YM_SCRIPTS_DIR}/ym_valgrind.sh
-
+source ${YM_SCRIPTS_DIR}/ym_doxygen.sh
