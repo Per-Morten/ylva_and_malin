@@ -1,5 +1,6 @@
 subdirs(
     core
+    graphics
     memory
 )
 
