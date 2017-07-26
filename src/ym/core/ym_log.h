@@ -1,62 +1,98 @@
 #pragma once
-#include <chrono>
-#include <alloca.h>
-#include <cstdarg>
-#include <ym_types.h>
+#include <ym_macros.h>
+#include <ym_attributes.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <string.h>
 
-namespace ym::log
-{
-    static inline decltype(std::chrono::high_resolution_clock::now()) start_of_program;
-    void
-    init()
-    {
-        start_of_program = std::chrono::high_resolution_clock::now();
-    }
+YM_EXTERN_CPP_BEGIN
 
-    template<ym::size_t size_of_filename>
-    void
-    log(std::FILE* file,
-        const char* type,
-        const char* filepath,
-        const char* func,
-        const int line,
-        const char* fmt,
-        ...)
-    {
-        using ms = std::chrono::milliseconds::period;
-        namespace clock = std::chrono;
+#define YM_COLOR_RESET "\033[0m"
+#define YM_COLOR_FG_BLACK "\033[0;30m"
+#define YM_COLOR_FG_RED "\033[0;31m"
+#define YM_COLOR_FG_GREEN "\033[0;32m"
+#define YM_COLOR_FG_YELLOW "\033[0;33m"
+#define YM_COLOR_FG_BLUE "\033[0;34m"
+#define YM_COLOR_FG_MAGENTA "\033[0;35m"
+#define YM_COLOR_FG_CYAN "\033[0;36m"
+#define YM_COLOR_FG_GREY "\033[0;37m"
+#define YM_COLOR_FG_WHITE "\033[0m"
 
-        const auto now = clock::high_resolution_clock::now();
-        const auto diff = clock::duration<float, ms>(now - start_of_program).count();
+#define YM_COLOR_BG_BLACK "\033[0;40m"
+#define YM_COLOR_BG_RED "\033[0;41m"
+#define YM_COLOR_BG_GREEN "\033[0;42m"
+#define YM_COLOR_BG_YELLOW "\033[0;43m"
+#define YM_COLOR_BG_BLUE "\033[0;44m"
+#define YM_COLOR_BG_MAGENTA "\033[0;45m"
+#define YM_COLOR_BG_CYAN "\033[0;46m"
+#define YM_COLOR_BG_GREY "\033[0;47m"
+#define YM_COLOR_BG_WHITE "\033[0m"
 
-        va_list args1;
-        va_start(args1, fmt);
-        va_list args2;
-        va_copy(args2, args1);
-        ym::size_t size = 1 + std::vsnprintf(nullptr, 0, fmt, args1);
-        char* buffer = static_cast<char*>(alloca(size));
-        va_end(args1);
-        std::vsnprintf(buffer, size, fmt, args2);
-        va_end(args2);
+///////////////////////////////////////////////////////////
+/// \brief
+///     Actual function which is called by log
+///     macros.
+///
+/// \note
+///     Do not use this function!
+///     You are supposed to use the logger macros.
+///
+/// \todo
+///     Add timing functionality.
+///
+/// \todo
+///     Make lock-free thread safe.
+///////////////////////////////////////////////////////////
+void
+ym_log(FILE* file,
+       const char* type,
+       const char* color,
+       const char* filepath,
+       const char* func,
+       const int line,
+       const char* fmt,
+       ...);
 
-        const char* filename = std::strrchr(filepath, '/');
-        filename++;
+///////////////////////////////////////////////////////////
+/// \ingroup ym_core
+///
+/// \brief
+///     Prints the specified error to stderr and
+///     terminates the program.
+///
+/// \detailed
+///     This error is supposed to be used for
+///     unrecoverable errors.
+///////////////////////////////////////////////////////////
+#define YM_ERROR(fmt, ...) \
+ym_log(stderr, "ERROR", YM_COLOR_FG_RED, __FILE__, __func__, __LINE__, fmt, ##__VA_ARGS__); \
+exit(EXIT_FAILURE);
 
-        std::fprintf(file, "[%.5f][%-5s]: %-10s: %-25s:%4d: %s\n",
-                     diff, type,
-                     filename, func,
-                     line, buffer);
-    }
-}
-
-#define YM_INIT_LOGGING \
-ym::log::impl::start_logging();
-
+///////////////////////////////////////////////////////////
+/// \ingroup ym_core
+///
+/// \brief
+///     Prints the specified warning to stderr.
+///////////////////////////////////////////////////////////
 #define YM_WARN(fmt, ...) \
-ym::log::impl::log_info<sizeof(__FILE__)>(stderr, "WARN", __FILE__, __func__, __LINE__, fmt, ##__VA_ARGS__);
+ym_log(stderr, "WARN", YM_COLOR_FG_YELLOW, __FILE__, __func__, __LINE__, fmt, ##__VA_ARGS__);
 
-#define YM_INFO(fmt, ...) \
-ym::log::impl::log_info<sizeof(__FILE__)>(stdout, "INFO", __FILE__, __func__, __LINE__, fmt, ##__VA_ARGS__);
-
+///////////////////////////////////////////////////////////
+/// \ingroup ym_core
+///
+/// \brief
+///     Prints debug information to stdout.
+///////////////////////////////////////////////////////////
 #define YM_DEBUG(fmt, ...) \
-ym::log::impl::log_info<sizeof(__FILE__)>(stdout, "DEBUG", __FILE__, __func__, __LINE__, fmt, ##__VA_ARGS__);
+ym_log(stdout, "DEBUG", YM_COLOR_FG_CYAN, __FILE__, __func__, __LINE__, fmt, ##__VA_ARGS__);
+
+///////////////////////////////////////////////////////////
+/// \ingroup ym_core
+///
+/// \brief
+///     Prints regular info to stdout.
+///////////////////////////////////////////////////////////
+#define YM_INFO(fmt, ...) \
+ym_log(stdout, "INFO", YM_COLOR_FG_WHITE, __FILE__, __func__, __LINE__, fmt, ##__VA_ARGS__);
+
+YM_EXTERN_CPP_END

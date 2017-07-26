@@ -1,5 +1,4 @@
 subdirs(
-    std
     core
 )
 
