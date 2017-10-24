@@ -43,7 +43,7 @@ YM_EXTERN_CPP_BEGIN
 if (YM_LIKELY(expr)) { }                                            \
 else                                                                \
 {                                                                   \
-    YM_ERROR("Assertion failure: " #expr " " fmt, ##__VA_ARGS__);   \
+    YM_ERROR("Assertion failure: " #expr ": " fmt, ##__VA_ARGS__);  \
 }
 
 #elif defined(YM_ASSERT_REPORT)
@@ -51,7 +51,7 @@ else                                                                \
 if (YM_LIKELY(expr)) { }                                            \
 else                                                                \
 {                                                                   \
-    YM_WARN("Assertion failure: " #expr " " fmt, ##__VA_ARGS__);    \
+    YM_WARN("Assertion failure: " #expr ": " fmt, ##__VA_ARGS__);   \
 }
 
 #elif defined(YM_ASSERT_ERRC)

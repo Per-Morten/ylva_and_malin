@@ -7,9 +7,9 @@ TEST_CASE("Memory can be allocated and deallocated", "[memory]")
     ym_errc errc = ym_mem_init();
     REQUIRE(errc == ym_errc_success);
 
-    ym_mem_meta mem;
+    ym_mem_region mem;
 
-    SECTION("A user wants to allocate from a given region")
+    SECTION("User wants access to region")
     {
 //        mem = ym_mem_alloc(ym_mem_reg_dbg_str, 4);
 //

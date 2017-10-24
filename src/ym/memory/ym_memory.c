@@ -2,6 +2,7 @@
 #include <ym_log.h>
 #include <stdlib.h>
 #include <inttypes.h>
+#include <assert.h>
 
 #define YM_MEMORY_DEFAULT_SIZE 4096
 
@@ -23,58 +24,76 @@
 /// when shutting down.
 /// Having the regions in hand also allows us to inspect
 /// how much memory that has been allocated etc.
+///
+/// When deallocating from regions, set memory value
+/// to a detectable value. For example 0xFFFFFFFF
 
 static void* ym_g_memory;
 
 ym_errc
 ym_mem_init()
 {
+    static_assert(sizeof(ym_mem_region) * YM_MEM_REG_COUNT < YM_MEM_REG_GFX_OFFSET,
+                  "Region heads will overflow into GFX region");
+
     ym_g_memory = malloc(YM_MEMORY_SIZE);
-    return ym_g_memory != NULL
-         ? ym_errc_success
-         : ym_errc_bad_alloc;
+
+    if (ym_g_memory == NULL)
+    {
+        YM_WARN("Could not allocate enough memory: %d",
+                YM_MEMORY_SIZE);
+        return ym_errc_bad_alloc;
+    }
+
+    ym_mem_region* regions = ym_g_memory;
+
+    regions[ym_mem_reg_region_heads].id = YM_MEM_REG_REGION_HEADS_ID;
+    regions[ym_mem_reg_region_heads].mem = NULL;
+    regions[ym_mem_reg_region_heads].used = ATOMIC_VAR_INIT(0);
+    (*(uint16_t*)&regions[ym_mem_reg_region_heads].size) = 0;
+
+    regions[ym_mem_reg_gfx].id = YM_MEM_REG_GFX_ID;
+    regions[ym_mem_reg_gfx].mem = (uint8_t*)ym_g_memory + YM_MEM_REG_GFX_OFFSET;
+    regions[ym_mem_reg_gfx].used = ATOMIC_VAR_INIT(0);
+    (*(uint16_t*)&regions[ym_mem_reg_gfx].size) = YM_MEM_REG_GFX_BLOCK_SIZE;
+
+    regions[ym_mem_reg_telemetry].id = YM_MEM_REG_TELEMETRY_ID;
+    regions[ym_mem_reg_telemetry].mem = (uint8_t*)ym_g_memory + YM_MEM_REG_TELEMETRY_OFFSET;
+    regions[ym_mem_reg_telemetry].used = ATOMIC_VAR_INIT(0);
+    (*(uint16_t*)&regions[ym_mem_reg_gfx].size) = YM_MEM_REG_TELEMETRY_BLOCK_SIZE;
+
+    return ym_errc_success;
 }
 
-// Go through all headers, ensure that used == 0,
-// otherwise we have a leak.
 ym_errc
 ym_mem_shutdown()
 {
+    const ym_mem_region* region = ym_g_memory;
+    for (size_t i = ym_mem_reg_region_heads + 1; i < ym_mem_reg_count; ++i)
+    {
+        YM_ASSERT(region[i].used == 0,
+                  ym_errc_mem_leak,
+                  "Leak detected in: %s, leak size: %" PRIu16 "",
+                  ym_mem_reg_id_str(region[i].id),
+                  region[i].used);
+    }
+
     free(ym_g_memory);
     return ym_errc_success;
 }
 
 ym_mem_region*
-ym_mem_create_region(ym_mem_reg_id region,
-                     uint16_t size)
+ym_mem_get_region(ym_mem_reg_id region)
 {
-    YM_ASSERT(region < ym_mem_reg_count,
+    YM_ASSERT(region < ym_mem_reg_count && region != ym_mem_reg_region_heads,
               ym_errc_invalid_input,
-              "Allocating from invalid region, %" PRIu8
-              " size: %" PRIu16 "",
-              region,
-              size);
+              "Trying to get illegal region, %s",
+              ym_mem_reg_id_str(region));
 
-    ym_mem_region* meta = malloc(sizeof(ym_mem_region));
+    YM_ASSERT(((ym_mem_region*)ym_g_memory)[region].id == region,
+              ym_errc_uninitialized,
+              "Region is not initialized: %s",
+              ym_mem_reg_id_str(region))
 
-    meta->mem = malloc(size);
-    meta->region = region;
-    meta->size = size;
-    meta->used = 0;
-
-    return meta;
-}
-
-void
-ym_mem_destroy_region(ym_mem_region* region)
-{
-    YM_ASSERT(region->region < ym_mem_reg_count,
-              ym_errc_invalid_input,
-              "Deallocating from invalid region, %" PRIu8
-              " size: %" PRIu16 "",
-              region->region,
-              region->size);
-
-    free(region->mem);
-    free(region);
+    return &((ym_mem_region*)ym_g_memory)[region];
 }

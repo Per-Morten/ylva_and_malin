@@ -175,6 +175,8 @@ ym_gfx_destroy_window(ym_gfx_window* w)
 
     XDestroyWindow(window->display, window->win);
     XCloseDisplay(window->display);
+
+    ym_gfx_mem_reg->used -= sizeof(ym_gfx_unix_window);
 }
 
 bool

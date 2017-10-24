@@ -15,12 +15,13 @@ set(CMAKE_C_FLAGS
     -std=c11                \
     -Wall                   \
     -Wextra                 \
-    -DYM_ASSERT_TERMINATE   \
+    -Wpadded                \
     "
 )
 
 set(CMAKE_C_FLAGS_DEBUG
     "${CMAKE_C_FLAGS}       \
+    -DYM_ASSERT_TERMINATE   \
     -g3                     \
     -ggdb                   \
     -O0                     \
@@ -29,6 +30,7 @@ set(CMAKE_C_FLAGS_DEBUG
 
 set(CMAKE_C_FLAGS_RELEASE
     "${CMAKE_C_FLAGS_RELEASE}   \
+    -DYM_ASSERT_REPORT          \
     -O3                         \
     "
 )
@@ -45,6 +47,15 @@ if (${YM_ENABLE_TESTS})
         -DYM_ASSERT_ERRC        \
         "
     )
+
+    set(CMAKE_CXX_FLAGS
+        "${CMAKE_CXX_FLAGS}     \
+        -Wall                   \
+        -Wextra                 \
+        -O3                     \
+        -std=c++17              \
+        "
+        )
 endif()
 
 if (NOT ${CMAKE_BUILD_TYPE} STREQUAL "Test")
@@ -54,5 +65,6 @@ if (NOT ${CMAKE_BUILD_TYPE} STREQUAL "Test")
         ym_core
         ym_graphics
         ym_memory
+        ym_telemetry
     )
 endif()

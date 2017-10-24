@@ -1,0 +1,9 @@
+X11:
+http://www.linuxjournal.com/article/4879
+https://en.wikibooks.org/wiki/Guide_to_X11/Introduction
+http://math.msu.su/~vvb/2course/Borisenko/CppProjects/GWindow/xintro.html
+https://tronche.com/gui/x/xlib/
+https://www.khronos.org/opengl/wiki/Programming_OpenGL_in_Linux:_GLX_and_Xlib
+
+Various:
+https://fgiesen.wordpress.com/category/coding/

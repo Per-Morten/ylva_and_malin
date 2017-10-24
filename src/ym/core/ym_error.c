@@ -27,6 +27,10 @@ ym_errc_str(ym_errc errc)
             return "ym_errc_invalid_input";
         case ym_errc_bad_alloc:
             return "ym_errc_bad_alloc";
+        case ym_errc_mem_leak:
+            return "ym_errc_mem_leak";
+        case ym_errc_uninitialized:
+            return "ym_errc_uninitialized";
     }
 
     return "Unknown Error!";

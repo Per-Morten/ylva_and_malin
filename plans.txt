@@ -1,0 +1,71 @@
+Graphics:
+Written with X11 on linux
+Support for windows might be added in the future.
+
+Debugging:
+Add thread that continuously go through and call lots of logging
+functions.
+Like how much memory that is being used at this moment etc etc.
+It sleeps for a certain period of time.
+
+Signal Handler:
+Write a signal handler that will force flush etc
+on segfault.
+
+Keyboard:
+Create a proper keyboard module.
+Currently it is just hacked in through the X11 and scancodes
+The handler should have a double buffer array, containing previous
+and current state.
+Mouse position etc is also needed.
+Should supply the following functions:
+is_key_up
+is_key_down
+is_key_held
+
+Hashing:
+Create a simple hashing algorithm for hashing strings.
+Additionally create a script with the same hashing algorithm
+that will go through all *.c files, and hardcode the hashes.
+The form can be:
+YM_SID(string, value)
+Where value will be the hash value.
+for calculating the hash.
+This will allow us to use YM_SID is switches etc.
+The script should also ensure that there are no collisions.
+Since there probably wont be that many hashed values
+this can be done by simply keeping a list of previous
+strings and their hashed values, and checking against that.
+Potentially we need macro expansion for this?
+- read:
+https://stackoverflow.com/questions/17140886/how-to-search-and-replace-text-in-a-file-using-python
+
+Memory Size:
+Create script adds simple reflection mechanism to get the size of each
+variable within a struct.
+Allowing us to look for most efficient packing.
+
+Not probable:
+Script that parses for TODO's and creates issues for those todo's on github.
+
+Memory:
+Create script that defines memory regions for me.
+
+Testing:
+Create some simple test macros that allows
+me to create my own tests.
+Catch will not work when compiling stuff that is strictly C.
+This also means we can remove the macro for extern C.
+
+Threads:
+Posix does not supply standard threads,
+therefore I need to use pthreads.
+Think of creating an abstraction layer.
+
+Profiling:
+Think of doing a drill down profiler which the
+telemetry thread will collect from once and a while.
+It could be done by having a memory area where each thread
+writes which function it is in now via the __func__ (manually inserted).
+This should not be to hard to create, as each thread will basically
+be given a stack where it can push and pop strings.

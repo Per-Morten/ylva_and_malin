@@ -1,4 +1,7 @@
 #include <ym_log.h>
+#include <stdatomic.h>
+
+static atomic_flag print_protector = ATOMIC_FLAG_INIT;
 
 void
 ym_log(FILE* file,
@@ -28,11 +31,20 @@ ym_log(FILE* file,
     #endif
     ++filename;
 
-    fprintf(file, "%s[%-5s]: %-10s: %-25s:%4d: %s%s\n",
+    while (atomic_flag_test_and_set_explicit(&print_protector,
+                                             memory_order_acquire))
+    {
+
+    }
+
+    fprintf(file, "%s[%-5s]: %-15s: %-25s:%4d: %s%s\n",
             color, type,
             filename, func,
             line, buffer,
             YM_COLOR_RESET);
 
     fflush(file);
+
+    atomic_flag_clear_explicit(&print_protector,
+                               memory_order_release);
 }

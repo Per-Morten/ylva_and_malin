@@ -30,13 +30,20 @@ YM_EXTERN_CPP_BEGIN
 /// \brief
 ///     Indicates that requested memory could not be
 ///     allocated.
+///
+/// \var ym_errc::ym_errc_mem_leak
+/// \brief
+///     Indicates that memory has been leaked from a
+///     region.
 ///////////////////////////////////////////////////////////
 typedef
 enum
 {
-    ym_errc_success,
-    ym_errc_invalid_input,
-    ym_errc_bad_alloc,
+    ym_errc_success         = (0 << 0),
+    ym_errc_invalid_input   = (1 << 0),
+    ym_errc_bad_alloc       = (1 << 1),
+    ym_errc_mem_leak        = (1 << 2),
+    ym_errc_uninitialized   = (1 << 3),
 } ym_errc;
 
 ///////////////////////////////////////////////////////////

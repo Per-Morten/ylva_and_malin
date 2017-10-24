@@ -41,7 +41,10 @@ YM_EXTERN_CPP_BEGIN
 ///     Add timing functionality.
 ///
 /// \todo
-///     Make lock-free thread safe.
+///     Make proper buffered logger which does not
+///     require a lock.
+///     But rather logs to a specified location,
+///     and is later printed out by the debug thread.
 ///////////////////////////////////////////////////////////
 void
 ym_log(FILE* file,
@@ -63,6 +66,9 @@ ym_log(FILE* file,
 /// \detailed
 ///     This error is supposed to be used for
 ///     unrecoverable errors.
+///
+/// \note
+///     Can be called concurrently.
 ///////////////////////////////////////////////////////////
 #define YM_ERROR(fmt, ...) \
 ym_log(stderr, "ERROR", YM_COLOR_FG_RED, __FILE__, __func__, __LINE__, fmt, ##__VA_ARGS__); \
@@ -73,6 +79,9 @@ exit(EXIT_FAILURE);
 ///
 /// \brief
 ///     Prints the specified warning to stderr.
+///
+/// \note
+///     Can be called concurrently.
 ///////////////////////////////////////////////////////////
 #define YM_WARN(fmt, ...) \
 ym_log(stderr, "WARN", YM_COLOR_FG_YELLOW, __FILE__, __func__, __LINE__, fmt, ##__VA_ARGS__);
@@ -82,6 +91,9 @@ ym_log(stderr, "WARN", YM_COLOR_FG_YELLOW, __FILE__, __func__, __LINE__, fmt, ##
 ///
 /// \brief
 ///     Prints debug information to stdout.
+///
+/// \note
+///     Can be called concurrently.
 ///////////////////////////////////////////////////////////
 #define YM_DEBUG(fmt, ...) \
 ym_log(stdout, "DEBUG", YM_COLOR_FG_CYAN, __FILE__, __func__, __LINE__, fmt, ##__VA_ARGS__);
@@ -91,6 +103,9 @@ ym_log(stdout, "DEBUG", YM_COLOR_FG_CYAN, __FILE__, __func__, __LINE__, fmt, ##_
 ///
 /// \brief
 ///     Prints regular info to stdout.
+///
+/// \note
+///     Can be called concurrently.
 ///////////////////////////////////////////////////////////
 #define YM_INFO(fmt, ...) \
 ym_log(stdout, "INFO", YM_COLOR_FG_WHITE, __FILE__, __func__, __LINE__, fmt, ##__VA_ARGS__);
