@@ -1,0 +1,13 @@
+digraph "ym_mem_reg_id_str"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="ym_mem_reg_id_str",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="ym_mem_shutdown",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$ym__memory_8h.html#ae5dceef7dd83b76a245d93097d3fe013"];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="TEST_CASE",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$memory__tests_8cpp.html#ab730620c04f18e124bdd0e3dfd3d117f"];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="ym_mem_get_region",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$ym__memory_8h.html#ab31ba2635887eabf9e02c8c8aec85881"];
+}
