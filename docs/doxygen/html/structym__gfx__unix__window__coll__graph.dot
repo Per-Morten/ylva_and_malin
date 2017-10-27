@@ -1,6 +1,0 @@
-digraph "ym_gfx_unix_window"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  Node1 [label="{ym_gfx_unix_window\n|+ display\l+ win\l+ is_open\l+ pad\l|}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-}
