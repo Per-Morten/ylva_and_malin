@@ -37,11 +37,10 @@ ym_log(FILE* file,
 
     }
 
-    fprintf(file, "%s[%-5s]: %-15s: %-25s:%4d: %s%s\n",
-            color, type,
+    fprintf(file, "%s[%-5s]%s: %-15s: %-25s:%4d: %s\n",
+            color, type, YM_COLOR_RESET,
             filename, func,
-            line, buffer,
-            YM_COLOR_RESET);
+            line, buffer);
 
     fflush(file);
 
