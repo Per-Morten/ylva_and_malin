@@ -6,6 +6,7 @@ set(headers
     ym_error.h
     ym_log.h
     ym_warnings.h
+    ym_types.h
 )
 
 set(source
