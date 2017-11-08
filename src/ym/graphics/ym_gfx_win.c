@@ -168,4 +168,17 @@ ym_gfx_window_poll_events(ym_gfx_window* w)
     YM_ASSERT(w,
               ym_errc_invalid_input,
               "Window must not be NULL");
+
+    ym_gfx_win_window* win = w;
+    MSG msg;
+    while (PeekMessage(&msg, win->win, 0, 0, PM_REMOVE))
+    {
+        TranslateMessage(&msg);
+
+        // Handling this one here, so I can tie it directly to a window.
+        if (msg.message == WM_DESTROY)
+            win->is_open = false;
+
+        DispatchMessage(&msg);
+    }
 }
