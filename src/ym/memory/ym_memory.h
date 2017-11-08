@@ -5,8 +5,6 @@
 #include <ym_core.h>
 #include <ym_memory_regions.h>
 
-YM_EXTERN_CPP_BEGIN
-
 typedef
 struct
 {
@@ -25,4 +23,3 @@ ym_mem_shutdown();
 ym_mem_region*
 ym_mem_get_region(ym_mem_reg_id id);
 
-YM_EXTERN_CPP_END

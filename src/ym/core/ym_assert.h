@@ -1,10 +1,7 @@
 #pragma once
-#include <ym_macros.h>
 #include <ym_error.h>
 #include <ym_log.h>
 #include <stdlib.h>
-
-YM_EXTERN_CPP_BEGIN
 
 ///////////////////////////////////////////////////////////
 /// \ingroup ym_core
@@ -66,7 +63,6 @@ else                                                                \
 #define YM_ASSERT(expr, ym_errc, fmt, ...)
 #endif
 
-YM_EXTERN_CPP_END
 // Static assert does not get defined when compiling for windows
 #ifdef WIN32
 #define static_assert _Static_assert

@@ -1,11 +1,9 @@
 #pragma once
-#include <ym_macros.h>
 #include <ym_attributes.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
 
-YM_EXTERN_CPP_BEGIN
 #ifdef WIN32
 #define YM_COLOR_RESET ""
 #define YM_COLOR_FG_BLACK ""
@@ -134,5 +132,3 @@ ym_log(stdout, "DEBUG", YM_COLOR_FG_CYAN, __FILE__, __func__, __LINE__, fmt, ##_
 ///////////////////////////////////////////////////////////
 #define YM_INFO(fmt, ...) \
 ym_log(stdout, "INFO", YM_COLOR_FG_WHITE, __FILE__, __func__, __LINE__, fmt, ##__VA_ARGS__);
-
-YM_EXTERN_CPP_END

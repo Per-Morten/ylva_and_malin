@@ -5,8 +5,6 @@
 #include <ym_core.h>
 #include <ym_memory.h>
 
-YM_EXTERN_CPP_BEGIN
-
 ///////////////////////////////////////////////////////////
 /// \ingroup ym_gfx
 ///
@@ -175,5 +173,3 @@ ym_gfx_window_display(ym_gfx_window* window);
 ///////////////////////////////////////////////////////////
 void
 ym_gfx_window_poll_events(ym_gfx_window* window);
-
-YM_EXTERN_CPP_END

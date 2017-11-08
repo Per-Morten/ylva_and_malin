@@ -1,8 +1,5 @@
 #pragma once
-#include <ym_macros.h>
 #include <ym_attributes.h>
-
-YM_EXTERN_CPP_BEGIN
 
 ///////////////////////////////////////////////////////////
 /// \enum ym_errc
@@ -84,5 +81,3 @@ ym_clear_error();
 YM_NO_DISCARD
 const char*
 ym_errc_str(ym_errc errc);
-
-YM_EXTERN_CPP_END
