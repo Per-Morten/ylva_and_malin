@@ -1,6 +1,4 @@
 #pragma once
-#include <ym_macros.h>
-YM_EXTERN_CPP_BEGIN
 
 ///////////////////////////////////////////////////////////
 /// \ingroup ym_core
@@ -78,4 +76,3 @@ YM_EXTERN_CPP_BEGIN
 ///////////////////////////////////////////////////////////
 #define YM_UNLIKELY(x) __builtin_expect(!!(x), 0)
 
-YM_EXTERN_CPP_END

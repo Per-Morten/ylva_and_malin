@@ -4,10 +4,13 @@
 #include <stdint.h>
 #include <assert.h>
 #include <limits.h>
+#include <ym_assert.h>
 
 ///////////////////////////////////////////////////////////
 // Core assertions for ym_atomics.
 ///////////////////////////////////////////////////////////
+// Atomics should be its own project, does not belong in here.
+#ifndef WIN32
 static_assert(CHAR_BIT == 8, "char is not 8 bit on this platform");
 static_assert(sizeof(atomic_schar)  * CHAR_BIT ==  8, "atomic_schar is not 8 bit");
 static_assert(sizeof(atomic_short)  * CHAR_BIT == 16, "atomic_short is not 16 bit");
@@ -29,7 +32,7 @@ static_assert(ATOMIC_INT_LOCK_FREE      == 2, "ATOMIC_INT is not lock free");
 static_assert(ATOMIC_LONG_LOCK_FREE     == 2, "ATOMIC_LONG is not lock free");
 static_assert(ATOMIC_LLONG_LOCK_FREE    == 2, "ATOMIC_LLONG is not lock free");
 static_assert(ATOMIC_POINTER_LOCK_FREE  == 2, "ATOMIC_POINTER is not lock free");
-
+#endif
 ///////////////////////////////////////////////////////////
 /// \typedef atomic_int8_t
 /// \ingroup ym_core

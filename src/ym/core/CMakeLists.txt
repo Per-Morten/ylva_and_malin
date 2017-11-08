@@ -1,6 +1,21 @@
-add_library(ym_core
+set(headers
+    ym_assert.h
+    ym_atomic.h
+    ym_attributes.h
+    ym_core.h
+    ym_error.h
+    ym_log.h
+    ym_warnings.h
+)
+
+set(source
     ym_error.c
     ym_log.c
+)
+
+add_library(ym_core
+    ${headers}
+    ${source}
 )
 
 target_include_directories(ym_core PUBLIC

@@ -1,5 +1,14 @@
-add_library(ym_memory
+set(headers
+    ym_memory.h
+)
+
+set(source
     ym_memory.c
+)
+
+add_library(ym_memory
+    ${headers}
+    ${source}
 )
 
 target_include_directories(ym_memory
