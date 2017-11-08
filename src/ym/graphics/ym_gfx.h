@@ -1,5 +1,4 @@
 #pragma once
-#include <stdint.h>
 #include <stdbool.h>
 
 #include <ym_core.h>
@@ -103,8 +102,8 @@ ym_gfx_shutdown();
 ///////////////////////////////////////////////////////////
 YM_NO_DISCARD
 ym_gfx_window*
-ym_gfx_create_window(uint16_t width,
-                     uint16_t height,
+ym_gfx_create_window(u16 width,
+                     u16 height,
                      const char* window_name);
 
 ///////////////////////////////////////////////////////////
