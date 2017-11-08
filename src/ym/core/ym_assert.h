@@ -67,3 +67,7 @@ else                                                                \
 #endif
 
 YM_EXTERN_CPP_END
+// Static assert does not get defined when compiling for windows
+#ifdef WIN32
+#define static_assert _Static_assert
+#endif

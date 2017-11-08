@@ -24,18 +24,20 @@ ym_log(FILE* file,
     vsnprintf(buffer, size, fmt, args2);
     va_end(args2);
 
-    #if defined(_MSC_VER)
+    #ifdef WIN32
     const char* filename = strrchr(filepath, '\\');
     #else
     const char* filename = strrchr(filepath, '/');
     #endif
     ++filename;
 
+    #ifndef WIN32
     while (atomic_flag_test_and_set_explicit(&print_protector,
                                              memory_order_acquire))
     {
 
     }
+    #endif
 
     fprintf(file, "%s[%-5s]: %-15s: %-25s:%4d: %s%s\n",
             color, type,
@@ -45,6 +47,8 @@ ym_log(FILE* file,
 
     fflush(file);
 
+    #ifndef WIN32
     atomic_flag_clear_explicit(&print_protector,
                                memory_order_release);
+    #endif
 }

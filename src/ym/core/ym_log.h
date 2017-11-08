@@ -6,7 +6,29 @@
 #include <string.h>
 
 YM_EXTERN_CPP_BEGIN
+#ifdef WIN32
+#define YM_COLOR_RESET ""
+#define YM_COLOR_FG_BLACK ""
+#define YM_COLOR_FG_RED ""
+#define YM_COLOR_FG_GREEN ""
+#define YM_COLOR_FG_YELLOW ""
+#define YM_COLOR_FG_BLUE ""
+#define YM_COLOR_FG_MAGENTA ""
+#define YM_COLOR_FG_CYAN ""
+#define YM_COLOR_FG_GREY ""
+#define YM_COLOR_FG_WHITE ""
 
+#define YM_COLOR_BG_BLACK ""
+#define YM_COLOR_BG_RED ""
+#define YM_COLOR_BG_GREEN ""
+#define YM_COLOR_BG_YELLOW ""
+#define YM_COLOR_BG_BLUE ""
+#define YM_COLOR_BG_MAGENTA ""
+#define YM_COLOR_BG_CYAN ""
+#define YM_COLOR_BG_GREY ""
+#define YM_COLOR_BG_WHITE ""
+
+#else
 #define YM_COLOR_RESET "\033[0m"
 #define YM_COLOR_FG_BLACK "\033[0;30m"
 #define YM_COLOR_FG_RED "\033[0;31m"
@@ -27,6 +49,9 @@ YM_EXTERN_CPP_BEGIN
 #define YM_COLOR_BG_CYAN "\033[0;46m"
 #define YM_COLOR_BG_GREY "\033[0;47m"
 #define YM_COLOR_BG_WHITE "\033[0m"
+#endif
+
+
 
 ///////////////////////////////////////////////////////////
 /// \brief

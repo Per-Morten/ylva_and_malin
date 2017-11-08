@@ -1,8 +1,10 @@
 #include <ym_telemetry.h>
-#include <pthread.h>
 #include <stdbool.h>
 #include <inttypes.h>
 
+// Can be removed once finished moving over to using ym_thread and ym_atomic
+#ifndef WIN32
+#include <pthread.h>
 static ym_mem_region* ym_telemetry_mem_reg;
 
 static atomic_bool ym_telemetry_continue = ATOMIC_VAR_INIT(false);
@@ -15,7 +17,7 @@ ym_telemetry_log_memory()
     for (size_t i = ym_mem_reg_region_heads + 1; i < ym_mem_reg_count; ++i)
     {
         YM_DEBUG("Atomic_flag: %zu", sizeof (atomic_flag));
-        YM_DEBUG("Thread id: %d", pthread_self());
+        //YM_DEBUG("Thread id: %d", pthread_self());
         ym_mem_region* region = ym_mem_get_region(i);
         YM_DEBUG("Region: %s", ym_mem_reg_id_str(region->id));
         YM_DEBUG("Size: %" PRIu16 "", region->size);
@@ -37,10 +39,12 @@ ym_telemetry_run(YM_UNUSED void* args)
 
     return NULL;
 }
+#endif
 
 ym_errc
 ym_telemetry_init(ym_mem_region* region)
 {
+    #ifndef WIN32
     ym_telemetry_mem_reg = region;
 
     // Doing a release just to ensure that this instruction
@@ -52,12 +56,14 @@ ym_telemetry_init(ym_mem_region* region)
     pthread_create(&ym_telemetry_thread, NULL,
                    &ym_telemetry_run, NULL);
 
+    #endif
     return ym_errc_success;
 }
 
 ym_errc
 ym_telemetry_shutdown()
 {
+    #ifndef WIN32
     atomic_store_explicit(&ym_telemetry_continue, false,
                           memory_order_relaxed);
 
@@ -65,5 +71,6 @@ ym_telemetry_shutdown()
     if (errc)
         YM_WARN("Failed to join pthread");
 
+    #endif
     return ym_errc_success;
 }

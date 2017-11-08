@@ -2,7 +2,7 @@
 #include <ym_log.h>
 #include <stdlib.h>
 #include <inttypes.h>
-#include <assert.h>
+#include <ym_assert.h>
 
 #define YM_MEMORY_DEFAULT_SIZE 4096
 
@@ -79,6 +79,7 @@ ym_mem_shutdown()
     }
 
     free(ym_g_memory);
+
     return ym_errc_success;
 }
 

@@ -7,31 +7,53 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 
 # Compiler setup
-set(CMAKE_C_COMPILER gcc-7)
-set(CMAKE_CXX_COMPILER g++-7)
+if (NOT WIN32)
+    set(CMAKE_C_COMPILER gcc-7)
+    set(CMAKE_CXX_COMPILER g++-7)
+endif()
+
+set(YM_STANDARD_FLAGS "")
+set(YM_DEBUG_FLAGS "")
+set(YM_RELEASE_FALGS "")
+
+
+set(YM_STANDARD_FLAGS "${YM_STANDARD_FLAGS}  \
+                       -std=c11              \
+                       -Wall                 \
+                       -Wextra               \
+                       -Wpadded              \
+                       "
+)
+
+set(YM_DEBUG_FLAGS    "${YM_DEBUG_FLAGS}     \
+                       -g3                   \
+                       -ggdb                 \
+                       -O0                   \
+                       -DYM_ASSERT_TERMINATE \
+                      "
+)
+
+set(YM_RELEASE_FLAGS  "${YM_RELEASE_FLAGS}   \
+                       -O3                   \
+                       -DYM_ASSERT_REPORT    \
+                      "
+)
 
 set(CMAKE_C_FLAGS
     "${CMAKE_C_FLAGS}       \
-    -std=c11                \
-    -Wall                   \
-    -Wextra                 \
-    -Wpadded                \
+     ${YM_STANDARD_FLAGS}   \
     "
 )
 
 set(CMAKE_C_FLAGS_DEBUG
     "${CMAKE_C_FLAGS}       \
-    -DYM_ASSERT_TERMINATE   \
-    -g3                     \
-    -ggdb                   \
-    -O0                     \
+     ${YM_DEBUG_FLAGS}      \
     "
 )
 
 set(CMAKE_C_FLAGS_RELEASE
     "${CMAKE_C_FLAGS_RELEASE}   \
-    -DYM_ASSERT_REPORT          \
-    -O3                         \
+     ${YM_RELEASE_FLAGS}        \
     "
 )
 
