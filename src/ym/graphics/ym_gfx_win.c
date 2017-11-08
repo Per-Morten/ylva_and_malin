@@ -115,9 +115,12 @@ ym_gfx_create_window(u16 width,
 void
 ym_gfx_destroy_window(ym_gfx_window* w)
 {
-    //YM_ASSERT(w,
-    //          ym_errc_invalid_input,
-    //          "Window must not be NULL");
+    YM_ASSERT(w,
+              ym_errc_invalid_input,
+              "Window must not be NULL");
+
+    DestroyWindow(((ym_gfx_win_window*)w)->win);
+    ym_gfx_mem_reg->used -= sizeof(ym_gfx_win_window);
 }
 
 bool
