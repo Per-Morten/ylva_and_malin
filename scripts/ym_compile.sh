@@ -1,33 +1,44 @@
 #!/bin/bash
 
-ym_compile_debug()
+ym_internal_compile()
 {
-    pushd ${YM_ROOT_DIR} >/dev/null
-    if [ ! -d "build" ];
+    local windows_toolset=""
+    if [ "$(uname)" ==  "MINGW64_NT-10.0" ];
     then
-        mkdir build
-    fi
-    pushd build >/dev/null
-
-    # Setup debug
-    if [ ! -d "debug" ];
-    then
-        mkdir debug
+        windows_toolset=-T"v140_clang_c2"
     fi
 
-    pushd debug >/dev/null
-    cmake -DCMAKE_BUILD_TYPE=Debug ${YM_SOURCE_DIR}
-    make "-j8"
-    popd >/dev/null
+    cmake ${windows_toolset} -DCMAKE_BUILD_TYPE=${1} ${YM_SOURCE_DIR}
 
-    # Pop out of the rest
-    popd >/dev/null
-    popd >/dev/null
+    if [ "$(uname)" != "MINGW64_NT-10.0" ];
+    then
+        make "-j8"
+    fi
+}
+
+ym_internal_print_compile_options()
+{
+    printf "Compilation options:"
+    printf "\n\t- debug"
+    printf "\n\t- release"
+    printf "\n\t- test"
+    printf "\n\n\n"
 }
 
 ym_compile()
 {
     pushd ${YM_ROOT_DIR} >/dev/null
+    local build_type="release"
+    if [ ${#} -gt 0 ];
+    then
+        # Set to lowercase
+        build_type=${1,,}
+    else
+        ym_internal_print_compile_options
+    fi
+
+    printf "Building with type: %s\n" ${build_type}
+
     if [ ! -d "build" ];
     then
         mkdir build
@@ -35,14 +46,15 @@ ym_compile()
     pushd build >/dev/null
 
     # Setup release
-    if [ ! -d "release" ];
+    if [ ! -d ${build_type} ];
     then
-        mkdir release
+        mkdir ${build_type}
     fi
 
-    pushd release >/dev/null
-    cmake -DCMAKE_BUILD_TYPE=Release ${YM_SOURCE_DIR}
-    make "-j8"
+    pushd ${build_type} >/dev/null
+    # Uppercase first letter
+    ym_internal_compile ${build_type,,^}
+
     popd >/dev/null
 
     # Pop out of the rest
