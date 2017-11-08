@@ -31,6 +31,8 @@ ym_errc_str(ym_errc errc)
             return "ym_errc_mem_leak";
         case ym_errc_uninitialized:
             return "ym_errc_uninitialized";
+        case ym_errc_system_error:
+            return "ym_errc_system_error";
     }
 
     return "Unknown Error!";
