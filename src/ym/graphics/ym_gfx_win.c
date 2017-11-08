@@ -126,11 +126,11 @@ ym_gfx_destroy_window(ym_gfx_window* w)
 bool
 ym_gfx_window_is_open(const ym_gfx_window* w)
 {
-    //YM_ASSERT(w,
-    //          ym_errc_invalid_input,
-    //          "Window must not be NULL");
+    YM_ASSERT(w,
+              ym_errc_invalid_input,
+              "Window must not be NULL");
 
-    return false;
+    return ((ym_gfx_win_window*)w)->is_open;
 }
 
 void
