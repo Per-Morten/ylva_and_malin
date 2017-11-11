@@ -3,12 +3,18 @@
 #include <Winuser.h>
 #include <GL/gl.h>
 
+// Not from windows gl, but from header files in directory.
+#include <glext.h>
+#include <wglext.h>
+
 static ym_mem_region* ym_gfx_mem_reg;
 
 typedef
 struct
 {
     HWND win;
+    HDC gl_dc;
+    HGLRC gl_rc;
     bool is_open;
     u8 pad[7];
 } ym_gfx_win_window;
@@ -77,9 +83,6 @@ ym_gfx_create_window(u16 width,
               ym_errc_invalid_input,
               "Window name must not be NULL");
 
-    ym_gfx_win_window* window = ym_gfx_mem_reg->mem;
-    ym_gfx_mem_reg->used += sizeof(ym_gfx_win_window);
-
     WNDCLASSEX win_class = {0};
     win_class.lpfnWndProc = window_procedure;
     win_class.hInstance = GetModuleHandle(NULL);
@@ -90,6 +93,69 @@ ym_gfx_create_window(u16 width,
 
     if (!RegisterClassEx(&win_class))
         YM_ERROR("Could not register class, error: %u", GetLastError());
+
+    // Setup face window for device context.
+    HWND fake_win = CreateWindow("ym_win_class", "Fake",
+                                 WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
+                                 0, 0,
+                                 1, 1,
+                                 NULL, NULL,
+                                 win_class.hInstance, NULL);
+
+    if (!fake_win)
+        YM_ERROR("Could not create fake window, error: %u", GetLastError());
+
+    HDC fake_dc = GetDC(fake_win);
+
+    PIXELFORMATDESCRIPTOR fake_pfd = {0};
+    fake_pfd.nSize = sizeof(fake_pfd);
+    fake_pfd.nVersion = 1;
+    fake_pfd.dwFlags = PFD_DRAW_TO_WINDOW
+                     | PFD_SUPPORT_OPENGL
+                     | PFD_DOUBLEBUFFER;
+
+    fake_pfd.iPixelType = PFD_TYPE_RGBA;
+    fake_pfd.cColorBits = 32;
+    fake_pfd.cAlphaBits = 8;
+    fake_pfd.cDepthBits = 24;
+
+    int fake_pfd_id = ChoosePixelFormat(fake_dc,
+                                        &fake_pfd);
+    if (!fake_pfd_id)
+        YM_ERROR("Could not create fake pfd id, error: %u", GetLastError());
+
+    if (!SetPixelFormat(fake_dc, fake_pfd_id, &fake_pfd))
+        YM_ERROR("Could not set fake pixel format, error: %u", GetLastError());
+
+    HGLRC fake_rc = wglCreateContext(fake_dc);
+    if (!fake_rc)
+        YM_ERROR("Could not set fake pixel format, error: %u", GetLastError());
+
+    if (!wglMakeCurrent(fake_dc, fake_rc))
+        YM_ERROR("Could not set current context, error: %u", GetLastError());
+
+    // Get access to pixel format and create context.
+    PFNWGLCHOOSEPIXELFORMATARBPROC wglChoosePixelFormatARB = wglGetProcAddress("wglChoosePixelFormatARB");
+
+    if (!wglChoosePixelFormatARB)
+    {
+        YM_ERROR("Could not get proc address of \%s\", error: %u",
+                 "wglChoosePixelFormatARB",
+                 GetLastError());
+    }
+
+    PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB =
+        (PFNWGLCREATECONTEXTATTRIBSARBPROC)*wglGetProcAddress("wglCreateContextAttribsARB");
+
+    if (!wglCreateContextAttribsARB)
+    {
+        YM_ERROR("Could not get proc address of \%s\", error: %u",
+                 "wglCreateContextAttribsARB",
+                 GetLastError());
+    }
+
+    ym_gfx_win_window* window = ym_gfx_mem_reg->mem;
+    ym_gfx_mem_reg->used += sizeof(ym_gfx_win_window);
 
     const DWORD win_style = WS_OVERLAPPEDWINDOW | WS_VISIBLE;
     RECT win_rect = {0, 0, width, height};
@@ -103,15 +169,60 @@ ym_gfx_create_window(u16 width,
                                  win_rect.bottom - win_rect.top,
                                  NULL, NULL, win_class.hInstance, NULL);
 
-    YM_ASSERT(window->win,
-              ym_errc_system_error,
-              "Could not create window, error: %u",
-              GetLastError());
+    if (!window->win)
+        YM_ERROR("Could not create window, error: %u", GetLastError());
 
+    window->gl_dc = GetDC(window->win);
+
+    const int pixel_attribs[] =
+    {
+        WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,
+        WGL_SUPPORT_OPENGL_ARB, GL_TRUE,
+        WGL_DOUBLE_BUFFER_ARB, GL_TRUE,
+        WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB,
+        WGL_ACCELERATION_ARB, WGL_FULL_ACCELERATION_ARB,
+        WGL_COLOR_BITS_ARB, 32,
+        WGL_ALPHA_BITS_ARB, 8,
+        WGL_DEPTH_BITS_ARB, 24,
+        WGL_STENCIL_BITS_ARB, 8,
+        WGL_SAMPLE_BUFFERS_ARB, GL_TRUE,
+        WGL_SAMPLES_ARB, 4,
+        0,
+    };
+
+    int pixel_fmt_id;
+    UINT fmt_count;
+    bool res = wglChoosePixelFormatARB(window->gl_dc, pixel_attribs, NULL,
+                                       1, &pixel_fmt_id, &fmt_count);
+    if (!res || !fmt_count)
+        YM_ERROR("wglChoosePixelFormatARB failed.");
+
+    PIXELFORMATDESCRIPTOR pfd;
+    DescribePixelFormat(window->gl_dc, pixel_fmt_id, sizeof(pfd), &pfd);
+    SetPixelFormat(window->gl_dc, pixel_fmt_id, &pfd);
+
+    int context_attribs[] =
+    {
+        WGL_CONTEXT_MAJOR_VERSION_ARB, 4,
+        WGL_CONTEXT_MINOR_VERSION_ARB, 5,
+        WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
+        0,
+    };
+
+    window->gl_rc = wglCreateContextAttribsARB(window->gl_dc, 0, context_attribs);
+    if (!window->gl_rc)
+        YM_ERROR("wglCreateContextAttribsARB failed.");
+
+    wglMakeCurrent(NULL, NULL);
+    wglDeleteContext(fake_rc);
+    ReleaseDC(fake_win, fake_dc);
+    DestroyWindow(fake_win);
+    if (!wglMakeCurrent(window->gl_dc, window->gl_rc))
+        YM_ERROR("wglMakeCurrent failed.");
+
+    // Init rest of openGL here, or call function to do it, as it will probably ble insanely much.
+    SetWindowText(window->win, (LPCSTR)glGetString(GL_VERSION));
     ShowWindow(window->win, SW_SHOWDEFAULT);
-    HDC context = GetDC(window->win);
-    PatBlt(context, 0, 0, width, height, BLACKNESS);
-    ReleaseDC(window->win, context);
 
     window->is_open = true;
     return window;
@@ -124,7 +235,12 @@ ym_gfx_destroy_window(ym_gfx_window* w)
               ym_errc_invalid_input,
               "Window must not be NULL");
 
-    DestroyWindow(((ym_gfx_win_window*)w)->win);
+    wglMakeCurrent(NULL, NULL);
+    ym_gfx_win_window* window = w;
+    wglDeleteContext(window->gl_rc);
+    ReleaseDC(window->win, window->gl_dc);
+    DestroyWindow(window->win);
+
     ym_gfx_mem_reg->used -= sizeof(ym_gfx_win_window);
 }
 
@@ -153,22 +269,23 @@ ym_gfx_window_display(ym_gfx_window* w)
     // Currently just a mock function.
     // Only the glXSwapBuffers call will be left.
     // will be left when finished (I guess).
-    glClearColor(1.0, 1.0, 1.0, 1.0);
+    glClearColor(0.5f, 0.5f, 0.5f, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-1., 1., -1., 1., 1., 20.);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    glBegin(GL_QUADS);
-    glColor3f(1., 0., 0.); glVertex3f(-.75, -.75, 0.);
-    glColor3f(0., 1., 0.); glVertex3f( .75, -.75, 0.);
-    glColor3f(0., 0., 1.); glVertex3f( .75,  .75, 0.);
-    glColor3f(1., 1., 0.); glVertex3f(-.75,  .75, 0.);
-    glEnd();
+//    glMatrixMode(GL_PROJECTION);
+//    glLoadIdentity();
+//    glOrtho(-1., 1., -1., 1., 1., 20.);
+//
+//    glMatrixMode(GL_MODELVIEW);
+//    glLoadIdentity();
+//
+//    glBegin(GL_QUADS);
+//    glColor3f(1., 0., 0.); glVertex3f(-.75, -.75, 0.);
+//    glColor3f(0., 1., 0.); glVertex3f( .75, -.75, 0.);
+//    glColor3f(0., 0., 1.); glVertex3f( .75,  .75, 0.);
+//    glColor3f(1., 1., 0.); glVertex3f(-.75,  .75, 0.);
+//    glEnd();
+    SwapBuffers(((ym_gfx_win_window*)w)->gl_dc);
 
 }
 
