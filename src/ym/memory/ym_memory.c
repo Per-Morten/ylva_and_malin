@@ -50,17 +50,17 @@ ym_mem_init()
     regions[ym_mem_reg_region_heads].id = YM_MEM_REG_REGION_HEADS_ID;
     regions[ym_mem_reg_region_heads].mem = NULL;
     regions[ym_mem_reg_region_heads].used = ATOMIC_VAR_INIT(0);
-    (*(uint16_t*)&regions[ym_mem_reg_region_heads].size) = 0;
+    (*(u16*)&regions[ym_mem_reg_region_heads].size) = 0;
 
     regions[ym_mem_reg_gfx].id = YM_MEM_REG_GFX_ID;
-    regions[ym_mem_reg_gfx].mem = (uint8_t*)ym_g_memory + YM_MEM_REG_GFX_OFFSET;
+    regions[ym_mem_reg_gfx].mem = (u8*)ym_g_memory + YM_MEM_REG_GFX_OFFSET;
     regions[ym_mem_reg_gfx].used = ATOMIC_VAR_INIT(0);
-    (*(uint16_t*)&regions[ym_mem_reg_gfx].size) = YM_MEM_REG_GFX_BLOCK_SIZE;
+    (*(u16*)&regions[ym_mem_reg_gfx].size) = YM_MEM_REG_GFX_BLOCK_SIZE;
 
     regions[ym_mem_reg_telemetry].id = YM_MEM_REG_TELEMETRY_ID;
-    regions[ym_mem_reg_telemetry].mem = (uint8_t*)ym_g_memory + YM_MEM_REG_TELEMETRY_OFFSET;
+    regions[ym_mem_reg_telemetry].mem = (u8*)ym_g_memory + YM_MEM_REG_TELEMETRY_OFFSET;
     regions[ym_mem_reg_telemetry].used = ATOMIC_VAR_INIT(0);
-    (*(uint16_t*)&regions[ym_mem_reg_gfx].size) = YM_MEM_REG_TELEMETRY_BLOCK_SIZE;
+    (*(u16*)&regions[ym_mem_reg_gfx].size) = YM_MEM_REG_TELEMETRY_BLOCK_SIZE;
 
     return ym_errc_success;
 }
@@ -68,7 +68,7 @@ ym_mem_init()
 ym_errc
 ym_mem_shutdown()
 {
-    const ym_mem_region* region = ym_g_memory;
+    YM_UNUSED const ym_mem_region* region = ym_g_memory;
     for (size_t i = ym_mem_reg_region_heads + 1; i < ym_mem_reg_count; ++i)
     {
         YM_ASSERT(region[i].used == 0,
@@ -94,7 +94,7 @@ ym_mem_get_region(ym_mem_reg_id region)
     YM_ASSERT(((ym_mem_region*)ym_g_memory)[region].id == region,
               ym_errc_uninitialized,
               "Region is not initialized: %s",
-              ym_mem_reg_id_str(region))
+              ym_mem_reg_id_str(region));
 
     return &((ym_mem_region*)ym_g_memory)[region];
 }
