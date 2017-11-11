@@ -135,7 +135,8 @@ ym_gfx_create_window(u16 width,
         YM_ERROR("Could not set current context, error: %u", GetLastError());
 
     // Get access to pixel format and create context.
-    PFNWGLCHOOSEPIXELFORMATARBPROC wglChoosePixelFormatARB = wglGetProcAddress("wglChoosePixelFormatARB");
+    PFNWGLCHOOSEPIXELFORMATARBPROC wglChoosePixelFormatARB
+        = wglGetProcAddress("wglChoosePixelFormatARB");
 
     if (!wglChoosePixelFormatARB)
     {
@@ -144,8 +145,8 @@ ym_gfx_create_window(u16 width,
                  GetLastError());
     }
 
-    PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB =
-        (PFNWGLCREATECONTEXTATTRIBSARBPROC)*wglGetProcAddress("wglCreateContextAttribsARB");
+    PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB
+        = (PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress("wglCreateContextAttribsARB");
 
     if (!wglCreateContextAttribsARB)
     {
