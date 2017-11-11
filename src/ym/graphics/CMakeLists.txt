@@ -7,6 +7,12 @@ set(source
 )
 
 if (WIN32)
+set(headers
+    ${headers}
+    glext.h
+    wglext.h
+)
+
 set(source
     ym_gfx_win.c
 )
