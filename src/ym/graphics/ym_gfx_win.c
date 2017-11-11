@@ -39,6 +39,10 @@ window_procedure(HWND handle,
 
         case WM_DESTROY:
             YM_DEBUG("WM_Destroy");
+
+            // Ugly hack to get this message properly!
+            // Can probably search for this handle in the memory?
+            ((ym_gfx_win_window*)ym_gfx_mem_reg->mem)->is_open = false;
             break;
         default:
             res = DefWindowProc(handle, msg, w_param, l_param);
@@ -109,6 +113,7 @@ ym_gfx_create_window(u16 width,
     PatBlt(context, 0, 0, width, height, BLACKNESS);
     ReleaseDC(window->win, context);
 
+    window->is_open = true;
     return window;
 }
 
@@ -129,6 +134,11 @@ ym_gfx_window_is_open(const ym_gfx_window* w)
     YM_ASSERT(w,
               ym_errc_invalid_input,
               "Window must not be NULL");
+
+    // Think of doing just:
+    // And just destroy the window in the window proc.
+    // Must just found out if that has any repercussions.
+    // return IsWindow(((ym_gfx_win_window*)w)->win);
 
     return ((ym_gfx_win_window*)w)->is_open;
 }
@@ -174,11 +184,6 @@ ym_gfx_window_poll_events(ym_gfx_window* w)
     while (PeekMessage(&msg, win->win, 0, 0, PM_REMOVE))
     {
         TranslateMessage(&msg);
-
-        // Handling this one here, so I can tie it directly to a window.
-        if (msg.message == WM_DESTROY)
-            win->is_open = false;
-
         DispatchMessage(&msg);
     }
 }
