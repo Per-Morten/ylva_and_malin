@@ -9,7 +9,6 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 # Compiler setup
 if (NOT WIN32)
     set(CMAKE_C_COMPILER gcc-7)
-    set(CMAKE_CXX_COMPILER g++-7)
 endif()
 
 set(YM_STANDARD_FLAGS "")
