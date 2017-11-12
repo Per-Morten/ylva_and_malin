@@ -1,11 +1,6 @@
 #include <ym_gfx.h>
+#include <ym_gfx_gl.h>
 #include <Windows.h>
-#include <Winuser.h>
-#include <GL/gl.h>
-
-// Not from windows gl, but from header files in directory.
-#include <glext.h>
-#include <wglext.h>
 
 static ym_mem_region* ym_gfx_mem_reg;
 
@@ -195,6 +190,7 @@ ym_gfx_create_window(u16 width,
     UINT fmt_count;
     bool res = wglChoosePixelFormatARB(window->gl_dc, pixel_attribs, NULL,
                                        1, &pixel_fmt_id, &fmt_count);
+
     if (!res || !fmt_count)
         YM_ERROR("wglChoosePixelFormatARB failed.");
 

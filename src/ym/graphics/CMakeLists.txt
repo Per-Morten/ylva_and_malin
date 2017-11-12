@@ -1,5 +1,6 @@
 set(headers
     ym_gfx.h
+    ym_gfx_gl.h
 )
 
 set(source
@@ -7,19 +8,21 @@ set(source
 )
 
 if (WIN32)
-set(headers
-    ${headers}
-    glext.h
-    wglext.h
-)
+    set(headers
+        ${headers}
+        glext.h
+        wglext.h
+        ym_gfx_gl_win.h
+    )
 
-set(source
-    ym_gfx_win.c
-)
+    set(source
+        ym_gfx_win.c
+        ym_gfx_gl_win.c
+    )
 else()
-set(source
-    ym_gfx_unix.c
-)
+    set(source
+        ym_gfx_unix.c
+    )
 endif()
 
 add_library(ym_graphics
