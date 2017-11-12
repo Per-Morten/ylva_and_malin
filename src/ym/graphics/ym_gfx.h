@@ -143,6 +143,18 @@ ym_gfx_window_is_open(const ym_gfx_window* window);
 /// \ingroup ym_gfx
 ///
 /// \brief
+///     Clears the given window.
+///
+/// \param window
+///     The window to be cleared.
+///////////////////////////////////////////////////////////
+void
+ym_gfx_window_clear(ym_gfx_window* window);
+
+///////////////////////////////////////////////////////////
+/// \ingroup ym_gfx
+///
+/// \brief
 ///     Displays everything that has been rendered
 ///     to the window.
 ///

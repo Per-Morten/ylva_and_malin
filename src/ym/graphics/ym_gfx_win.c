@@ -252,12 +252,17 @@ ym_gfx_window_is_open(const ym_gfx_window* w)
               ym_errc_invalid_input,
               "Window must not be NULL");
 
-    // Think of doing just:
-    // And just destroy the window in the window proc.
-    // Must just found out if that has any repercussions.
-    // return IsWindow(((ym_gfx_win_window*)w)->win);
-
     return ((ym_gfx_win_window*)w)->is_open;
+}
+
+void
+ym_gfx_window_clear(YM_UNUSED ym_gfx_window* w)
+{
+    YM_ASSERT(w,
+              ym_errc_invalid_input,
+              "Window must not be NULL");
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void
@@ -267,27 +272,7 @@ ym_gfx_window_display(ym_gfx_window* w)
               ym_errc_invalid_input,
               "Window must not be NULL");
 
-    // Currently just a mock function.
-    // Only the glXSwapBuffers call will be left.
-    // will be left when finished (I guess).
-    glClearColor(0.5f, 0.5f, 0.5f, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-//    glMatrixMode(GL_PROJECTION);
-//    glLoadIdentity();
-//    glOrtho(-1., 1., -1., 1., 1., 20.);
-//
-//    glMatrixMode(GL_MODELVIEW);
-//    glLoadIdentity();
-//
-//    glBegin(GL_QUADS);
-//    glColor3f(1., 0., 0.); glVertex3f(-.75, -.75, 0.);
-//    glColor3f(0., 1., 0.); glVertex3f( .75, -.75, 0.);
-//    glColor3f(0., 0., 1.); glVertex3f( .75,  .75, 0.);
-//    glColor3f(1., 1., 0.); glVertex3f(-.75,  .75, 0.);
-//    glEnd();
     SwapBuffers(((ym_gfx_win_window*)w)->gl_dc);
-
 }
 
 void
