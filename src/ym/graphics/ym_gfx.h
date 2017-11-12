@@ -1,5 +1,4 @@
 #pragma once
-#include <stdint.h>
 #include <stdbool.h>
 
 #include <ym_core.h>
@@ -103,8 +102,8 @@ ym_gfx_shutdown();
 ///////////////////////////////////////////////////////////
 YM_NO_DISCARD
 ym_gfx_window*
-ym_gfx_create_window(uint16_t width,
-                     uint16_t height,
+ym_gfx_create_window(u16 width,
+                     u16 height,
                      const char* window_name);
 
 ///////////////////////////////////////////////////////////
@@ -139,6 +138,18 @@ ym_gfx_destroy_window(ym_gfx_window* window);
 YM_NO_DISCARD
 bool
 ym_gfx_window_is_open(const ym_gfx_window* window);
+
+///////////////////////////////////////////////////////////
+/// \ingroup ym_gfx
+///
+/// \brief
+///     Clears the given window.
+///
+/// \param window
+///     The window to be cleared.
+///////////////////////////////////////////////////////////
+void
+ym_gfx_window_clear(ym_gfx_window* window);
 
 ///////////////////////////////////////////////////////////
 /// \ingroup ym_gfx

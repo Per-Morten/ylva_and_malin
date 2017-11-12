@@ -93,9 +93,18 @@ ym_log(FILE* file,
 /// \note
 ///     Can be called concurrently.
 ///////////////////////////////////////////////////////////
-#define YM_ERROR(fmt, ...) \
-ym_log(stderr, "ERROR", YM_COLOR_FG_RED, __FILE__, __func__, __LINE__, fmt, ##__VA_ARGS__); \
-exit(EXIT_FAILURE);
+#ifdef WIN32
+#define TERMINAL_PAUSE system("pause");
+#else
+#define TERMINAL_PAUSE
+#endif
+
+#define YM_ERROR(fmt, ...)                                                                      \
+{                                                                                               \
+    ym_log(stderr, "ERROR", YM_COLOR_FG_RED, __FILE__, __func__, __LINE__, fmt, ##__VA_ARGS__); \
+    TERMINAL_PAUSE;                                                                             \
+    exit(EXIT_FAILURE);                                                                         \
+}
 
 ///////////////////////////////////////////////////////////
 /// \ingroup ym_core

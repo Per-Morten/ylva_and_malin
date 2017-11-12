@@ -47,7 +47,7 @@ struct
     Display* display;
     Window win;
     bool is_open;
-    uint8_t pad[7];
+    u8 pad[7];
 } ym_gfx_unix_window;
 
 ym_errc
@@ -69,8 +69,8 @@ ym_gfx_shutdown()
 }
 
 ym_gfx_window*
-ym_gfx_create_window(uint16_t width,
-                     uint16_t height,
+ym_gfx_create_window(u16 width,
+                     u16 height,
                      const char* window_name)
 {
     YM_ASSERT(window_name,

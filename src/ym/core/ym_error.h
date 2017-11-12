@@ -41,6 +41,7 @@ enum
     ym_errc_bad_alloc       = (1 << 1),
     ym_errc_mem_leak        = (1 << 2),
     ym_errc_uninitialized   = (1 << 3),
+    ym_errc_system_error    = (1 << 4),
 } ym_errc;
 
 ///////////////////////////////////////////////////////////
