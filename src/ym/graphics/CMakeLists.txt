@@ -1,10 +1,12 @@
 set(headers
     ym_gfx.h
     ym_gfx_gl.h
+    ym_gfx_gl_procs.h
 )
 
 set(source
-    ym_gfx.c
+    ym_gfx_gl.c
+    ym_gfx_gl_init.c
 )
 
 if (WIN32)
@@ -16,11 +18,12 @@ if (WIN32)
     )
 
     set(source
+        ${source}
         ym_gfx_win.c
-        ym_gfx_gl_win.c
     )
 else()
     set(source
+        ${source}
         ym_gfx_unix.c
     )
 endif()

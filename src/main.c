@@ -40,11 +40,14 @@ main(YM_UNUSED int argc,
     ym_gfx_window* window =
         ym_gfx_create_window(800, 600, "ylva_and_malin");
 
-    if ((errc |= ym_gfx_init_gl()) != ym_errc_success)
+    if ((errc |= ym_gfx_gl_init()) != ym_errc_success)
     {
         ym_gfx_destroy_window(window);
         goto cleanup;
     }
+
+    glEnable(GL_DEPTH_TEST);
+    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 
     GLfloat points[] =
     {
@@ -65,43 +68,30 @@ main(YM_UNUSED int argc,
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 
-    const char* vert_shader =
-        "#version 410\n"
-        "in vec3 vp;"
-        "void main() {"
-        "   gl_Position = vec4(vp, 1.0);"
-        "}";
+    GLuint shaders[2];
+    ym_gfx_gl_create_shader(GL_VERTEX_SHADER,
+                            "resources/shaders/simple_shader.vert",
+                            &shaders[0]);
 
-    const char* frag_shader =
-        "#version 410\n"
-        "out vec4 frag_colour;"
-        "void main() {"
-        "   frag_colour = vec4(0.5, 0.0, 0.5, 1.0);"
-        "}";
+    ym_gfx_gl_create_shader(GL_FRAGMENT_SHADER,
+                            "resources/shaders/simple_shader.frag",
+                            &shaders[1]);
 
-    GLuint vs = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vs, 1, &vert_shader, NULL);
-    glCompileShader(vs);
+    GLuint program;
+    ym_gfx_gl_create_program(shaders, 2, &program);
 
-    GLuint fs = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fs, 1, &frag_shader, NULL);
-    glCompileShader(fs);
+    GLint color = glGetUniformLocation(program, "in_color");
 
-    GLuint shader_program = glCreateProgram();
-    glAttachShader(shader_program, fs);
-    glAttachShader(shader_program, vs);
-    glLinkProgram(shader_program);
+    glUseProgram(program);
+    glBindVertexArray(vao);
 
     while (ym_gfx_window_is_open(window))
     {
         ym_gfx_window_poll_events(window);
         ym_gfx_window_clear(window);
 
-        glUseProgram(shader_program);
-        glBindVertexArray(vao);
+        glUniform4f(color, 1.0f, 0.0f, 0.0f, 1.0f);
         glDrawArrays(GL_TRIANGLES, 0, 3);
-
-
 
         ym_gfx_window_display(window);
     }

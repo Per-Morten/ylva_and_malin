@@ -7,8 +7,7 @@ target_include_directories(ym_test
         "${CMAKE_CURRENT_SOURCE_DIR}"
 )
 
-#target_link_libraries(ym_test
-#    ym_core
-#    ym_memory
-#    pthread
-#)
+target_link_libraries(ym_test
+    ym_core
+    ym_memory
+)
