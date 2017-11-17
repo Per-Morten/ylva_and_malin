@@ -1,3 +1,4 @@
 subdirs(
     catch
+    lodepng
 )
