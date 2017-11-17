@@ -94,6 +94,13 @@
 #define YM_NO_DISCARD
 #endif
 
+#if __has_attribute(aligned)
+#define YM_ALIGNED(x) __attribute__((aligned(x)))
+#else
+#define YM_ALIGNED
+#pragma message "__attribute__ aligned not supported on platform, can destroy atomic operations!"
+#endif
+
 ///////////////////////////////////////////////////////////
 /// \ingroup ym_core
 ///

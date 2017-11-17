@@ -5,6 +5,7 @@
 #include <ym_gfx.h>
 #include <ym_gfx_gl.h>
 #include <ym_telemetry.h>
+#include <ym_thread.h>
 
 ym_errc
 init_subsystems()
@@ -26,6 +27,12 @@ shutdown_subsystems()
     errc |= ym_telemetry_shutdown();
 
     return errc;
+}
+
+void
+test_function(void* args)
+{
+    YM_DEBUG("%d", *(int*)args);
 }
 
 int
@@ -92,7 +99,7 @@ main(YM_UNUSED int argc,
     glAttachShader(shader_program, vs);
     glLinkProgram(shader_program);
 
-    while (ym_gfx_window_is_open(window))
+    while (false && ym_gfx_window_is_open(window))
     {
         ym_gfx_window_poll_events(window);
         ym_gfx_window_clear(window);
@@ -115,7 +122,12 @@ main(YM_UNUSED int argc,
     cleanup:
     errc = ym_mem_shutdown();
 
-    YM_DEBUG("Shutting down");
+    int i = 1;
+    ym_thread thread = ym_thread_create(test_function, &i);
+
+    ym_thread_join(&thread);
+
+    system("Pause");
 
     return 0;
 }

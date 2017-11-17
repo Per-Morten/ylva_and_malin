@@ -1,7 +1,7 @@
 #pragma once
-#include <ym_assert.h>
 #include <inttypes.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 // These types will be the only time I am not using the ym_ prefix.
 // This is done for brevity.

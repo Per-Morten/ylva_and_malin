@@ -19,12 +19,5 @@ target_include_directories(ym_telemetry
 target_link_libraries(ym_telemetry
     ym_core
     ym_memory
+    ym_thread
 )
-
-if (WIN32)
-
-else()
-    target_link_libraries(ym_telemetry
-        pthread
-    )
-endif()

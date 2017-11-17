@@ -4,5 +4,6 @@ subdirs(
     memory
     telemetry
     test
+    thread
 )
 

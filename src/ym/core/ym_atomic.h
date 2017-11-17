@@ -1,102 +1,83 @@
 #pragma once
+#include <ym_core.h>
+#include <ym_types.h>
+#include <ym_attributes.h>
 
-#include <stdatomic.h>
-#include <stdint.h>
-#include <assert.h>
-#include <limits.h>
-#include <ym_assert.h>
+// Add documentation
 
-///////////////////////////////////////////////////////////
-// Core assertions for ym_atomics.
-///////////////////////////////////////////////////////////
-// Atomics should be its own project, does not belong in here.
-#ifndef WIN32
-static_assert(CHAR_BIT == 8, "char is not 8 bit on this platform");
-static_assert(sizeof(atomic_schar)  * CHAR_BIT ==  8, "atomic_schar is not 8 bit");
-static_assert(sizeof(atomic_short)  * CHAR_BIT == 16, "atomic_short is not 16 bit");
-static_assert(sizeof(atomic_int)    * CHAR_BIT == 32, "atomic_int is not 32 bit");
-static_assert(sizeof(atomic_long)   * CHAR_BIT == 64, "atomic_long is not 64 bit");
+#ifdef WIN32
+#include <windows.h>
 
-static_assert(sizeof(atomic_uchar)  * CHAR_BIT ==  8, "atomic_uchar is not 8 bit");
-static_assert(sizeof(atomic_ushort) * CHAR_BIT == 16, "atomic_ushort is not 16 bit");
-static_assert(sizeof(atomic_uint)   * CHAR_BIT == 32, "atomic_int is not 32 bit");
-static_assert(sizeof(atomic_ulong)  * CHAR_BIT == 64, "atomic_long is not 64 bit");
+// https://msdn.microsoft.com/en-us/library/windows/desktop/ms684122(v=vs.85).aspx
+// According to https://en.wikipedia.org/wiki/Two%27s_complement
+// I can also do unsigned with two's complement, meaning I can easily create
+// unsigned atomic values.
+typedef volatile LONG ym_atomic_i32 YM_ALIGNED(8);
 
-static_assert(ATOMIC_BOOL_LOCK_FREE     == 2, "ATOMIC_BOOL is not lock free");
-static_assert(ATOMIC_CHAR_LOCK_FREE     == 2, "ATOMIC_CHAR is not lock free");
-static_assert(ATOMIC_CHAR16_T_LOCK_FREE == 2, "ATOMIC_CHAR16_T is not lock free");
-static_assert(ATOMIC_CHAR32_T_LOCK_FREE == 2, "ATOMIC_CHAR32_T is not lock free");
-static_assert(ATOMIC_WCHAR_T_LOCK_FREE  == 2, "ATOMIC_WCHAR_T is not lock free");
-static_assert(ATOMIC_SHORT_LOCK_FREE    == 2, "ATOMIC_SHORT is not lock free");
-static_assert(ATOMIC_INT_LOCK_FREE      == 2, "ATOMIC_INT is not lock free");
-static_assert(ATOMIC_LONG_LOCK_FREE     == 2, "ATOMIC_LONG is not lock free");
-static_assert(ATOMIC_LLONG_LOCK_FREE    == 2, "ATOMIC_LLONG is not lock free");
-static_assert(ATOMIC_POINTER_LOCK_FREE  == 2, "ATOMIC_POINTER is not lock free");
+YM_INLINE
+i32
+ym_atomic_i32_load(ym_atomic_i32* atm)
+{
+    i32 out = *atm;
+    _ReadWriteBarrier();
+    return out;
+}
+
+YM_INLINE
+void
+ym_atomic_i32_store(ym_atomic_i32* atm,
+                    i32 val)
+{
+    *atm = val;
+    _ReadWriteBarrier();
+}
+
+YM_INLINE
+i32
+ym_atomic_i32_add(ym_atomic_i32* atm,
+                  i32 val)
+{
+    i32 out = InterlockedAddNoFence(atm, val);
+    _ReadWriteBarrier();
+    return out;
+}
+
+YM_INLINE
+i32
+ym_atomic_i32_sub(ym_atomic_i32* atm,
+                  i32 val)
+{
+    i32 out = InterlockedAddNoFence(atm, val);
+    _ReadWriteBarrier();
+    return out;
+}
+
+YM_INLINE
+i32
+ym_atomic_i32_exchange(ym_atomic_i32* atm,
+                       i32 val)
+{
+    i32 out = InterlockedExchangeNoFence(atm, val);
+    _ReadWriteBarrier();
+    return out;
+}
+
+YM_INLINE
+bool
+ym_atomic_i32_compare_exchange(ym_atomic_i32* atm,
+                               i32* expected,
+                               i32  desired)
+{
+    i32 actual = InterlockedCompareExchangeNoFence(atm,
+                                                   desired,
+                                                   *expected);
+    _ReadWriteBarrier();
+    return actual == *expected;
+}
+
+#else // Not WIN32
+
+// Just do std atomics?
+
 #endif
-///////////////////////////////////////////////////////////
-/// \typedef atomic_int8_t
-/// \ingroup ym_core
-/// \brief
-///     Atomic signed 8-bit integer.
-///     Supplied because C11 does not mandate fixed
-///     width atomic support.
-///
-/// \typedef atomic_int16_t
-/// \ingroup ym_core
-/// \brief
-///     Atomic signed 16-bit integer.
-///     Supplied because C11 does not mandate fixed
-///     width atomic support.
-///
-/// \typedef atomic_int32_t
-/// \ingroup ym_core
-/// \brief
-///     Atomic signed 32-bit integer.
-///     Supplied because C11 does not mandate fixed
-///     width atomic support.
-///
-/// \typedef atomic_int64_t
-/// \ingroup ym_core
-/// \brief
-///     Atomic signed 64-bit integer.
-///     Supplied because C11 does not mandate fixed
-///     width atomic support.
-///////////////////////////////////////////////////////////
-typedef atomic_schar  atomic_int8_t;
-typedef atomic_short  atomic_int16_t;
-typedef atomic_int    atomic_int32_t;
-typedef atomic_long   atomic_int64_t;
 
-///////////////////////////////////////////////////////////
-/// \typedef atomic_uint8_t
-/// \ingroup ym_core
-/// \brief
-///     Atomic unsigned 8-bit integer.
-///     Supplied because C11 does not mandate fixed
-///     width atomic support.
-///
-/// \typedef atomic_uint16_t
-/// \ingroup ym_core
-/// \brief
-///     Atomic unsigned 16-bit integer.
-///     Supplied because C11 does not mandate fixed
-///     width atomic support.
-///
-/// \typedef atomic_uint32_t
-/// \ingroup ym_core
-/// \brief
-///     Atomic unsigned 32-bit integer.
-///     Supplied because C11 does not mandate fixed
-///     width atomic support.
-///
-/// \typedef atomic_uint64_t
-/// \ingroup ym_core
-/// \brief
-///     Atomic unsigned 64-bit integer.
-///     Supplied because C11 does not mandate fixed
-///     width atomic support.
-///////////////////////////////////////////////////////////
-typedef atomic_uchar  atomic_uint8_t;
-typedef atomic_ushort atomic_uint16_t;
-typedef atomic_uint   atomic_uint32_t;
-typedef atomic_ulong  atomic_uint64_t;
