@@ -2,15 +2,19 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <time.h>
+
+#ifdef WIN32
+#else
 #include <sys/sysinfo.h>
 #include <sys/time.h>
+#endif
 
 inline
 double
 ym_clock_now()
 {
     #ifdef WIN32
-
+    return 0.0;
     #else
     struct timeval tp;
     gettimeofday(&tp, NULL);

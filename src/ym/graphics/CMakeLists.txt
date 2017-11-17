@@ -16,7 +16,6 @@ if (WIN32)
         ${headers}
         glext.h
         wglext.h
-        ym_gfx_gl_win.h
     )
 
     set(source

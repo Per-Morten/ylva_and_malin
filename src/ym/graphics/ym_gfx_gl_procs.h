@@ -35,3 +35,4 @@ extern PFNGLGETSHADERINFOLOGPROC        glGetShaderInfoLog;
 extern PFNGLGETPROGRAMIVPROC            glGetProgramiv;
 extern PFNGLGETPROGRAMINFOLOGPROC       glGetProgramInfoLog;
 extern PFNGLGETUNIFORMLOCATIONPROC      glGetUniformLocation;
+extern PFNGLACTIVETEXTUREPROC           glActiveTexture;

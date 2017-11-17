@@ -2,6 +2,9 @@
 
 #include <stdio.h>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 static
 const char*
 gl_error_str(GLenum e)
@@ -174,3 +177,5 @@ ym_gfx_gl_create_program(GLuint* shaders,
 
     return ym_errc_success;
 }
+
+#pragma GCC diagnostic pop

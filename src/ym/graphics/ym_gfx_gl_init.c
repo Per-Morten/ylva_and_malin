@@ -23,6 +23,7 @@ PFNGLGETSHADERINFOLOGPROC        glGetShaderInfoLog;
 PFNGLGETPROGRAMIVPROC            glGetProgramiv;
 PFNGLGETPROGRAMINFOLOGPROC       glGetProgramInfoLog;
 PFNGLGETUNIFORMLOCATIONPROC      glGetUniformLocation;
+PFNGLACTIVETEXTUREPROC           glActiveTexture;
 
 #ifdef WIN32
 static
@@ -82,6 +83,7 @@ ym_gfx_gl_init()
     errc |= get_gl_func("glGetProgramiv", (void**)&glGetProgramiv);
     errc |= get_gl_func("glGetProgramInfoLog", (void**)&glGetProgramInfoLog);
     errc |= get_gl_func("glGetUniformLocation", (void**)&glGetUniformLocation);
+    errc |= get_gl_func("glActiveTexture", (void**)&glActiveTexture);
 
 
     return errc;
