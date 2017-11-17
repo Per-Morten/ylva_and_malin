@@ -4,6 +4,7 @@
 #include <ym_memory.h>
 #include <ym_gfx.h>
 #include <ym_gfx_gl.h>
+#include <ym_gfx_sprite.h>
 #include <ym_telemetry.h>
 
 ym_errc
@@ -47,13 +48,30 @@ main(YM_UNUSED int argc,
     }
 
     glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //glEnable(GL_CULL_FACE);
+    //glDisable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+    glFrontFace(GL_CW);
     glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 
+    // Turn this into a square
+    // Also use Index Buffer Object
+    // So you just can say which indexes to use.
     GLfloat points[] =
     {
-        0.0f,  0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-       -0.5f, -0.5f, 0.0f,
+       0.0f, 0.5f, 0.0f,
+       0.0f, 0.0f, 0.0f,
+       0.5f, 0.0f, 0.0f,
+       0.5f, 0.5f, 0.0f,
+    };
+
+    GLuint indices[] =
+    {
+        0, 1, 2,
+        0, 2, 3,
     };
 
     GLuint vbo = 0;
@@ -61,9 +79,15 @@ main(YM_UNUSED int argc,
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(points), points, GL_STATIC_DRAW);
 
+    GLuint ibo = 0;
+    glGenBuffers(1, &ibo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * 6, indices, GL_STATIC_DRAW);
+
     GLuint vao = 0;
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
+
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
@@ -80,18 +104,74 @@ main(YM_UNUSED int argc,
     GLuint program;
     ym_gfx_gl_create_program(shaders, 2, &program);
 
-    GLint color = glGetUniformLocation(program, "in_color");
+    GLint color = glGetUniformLocation(program, "u_color");
 
     glUseProgram(program);
     glBindVertexArray(vao);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
+    GLubyte* image;
+    GLsizei width;
+    GLsizei height;
+    ym_gfx_load_png("resources/sprites/malin_regular.png",
+                    &image, &width, &height);
+
+    int width_in_bytes = width * 4;
+    for (int row = 0; row < height / 2; row++)
+    {
+        GLubyte* top = image + row * width_in_bytes;
+        GLubyte* bottom = image + (height - row - 1) * width_in_bytes;
+        for (int col = 0; col < width_in_bytes; col++)
+        {
+            GLubyte tmp = *top;
+            *top = *bottom;
+            *bottom = tmp;
+            top++;
+            bottom++;
+        }
+    }
+
+    GLuint tex = 0;
+    glGenTextures(1, &tex);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, tex);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0,
+                 GL_RGBA, GL_UNSIGNED_BYTE, image);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+    GLfloat tex_coords[] =
+    {
+       0.0f, 1.0f,
+       0.0f, 0.0f,
+       1.0f, 0.0f,
+       1.0f, 1.0f,
+    };
+
+    GLuint vt_vbo = 0;
+    glGenBuffers(1, &vt_vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vt_vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(tex_coords), tex_coords, GL_STATIC_DRAW);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, NULL);
+    glEnableVertexAttribArray(1);
+
+    double dt = 0.0;
     while (ym_gfx_window_is_open(window))
     {
+        double start = ym_clock_now();
+
         ym_gfx_window_poll_events(window);
         ym_gfx_window_clear(window);
 
-        glUniform4f(color, 1.0f, 0.0f, 0.0f, 1.0f);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        //glPolygonMode(GL_FRONT, GL_LINE);
+        glUniform4f(color, 0.0f, 0.75f, 0.75f, 1.0f);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+
+        double end = ym_clock_now();
+
+        dt = end - start;
 
         ym_gfx_window_display(window);
     }

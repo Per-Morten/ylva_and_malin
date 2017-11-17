@@ -29,7 +29,6 @@ gl_error_str(GLenum e)
     return "Unknown Error!";
 }
 
-YM_NO_DISCARD
 ym_errc
 ym_gfx_gl_create_shader(GLenum type,
                         const char* file_path,
@@ -97,8 +96,9 @@ ym_gfx_gl_create_shader(GLenum type,
         glGetShaderInfoLog(shader, log_len,
                            &len, log_buf);
 
-        YM_WARN("%s: Compilation failed:\n%s",
+        YM_WARN("%s: Compilation failed: %s\n%s",
                 ym_errc_str(ym_errc_gl_error),
+                file_path,
                 log_buf);
 
         free(log_buf);

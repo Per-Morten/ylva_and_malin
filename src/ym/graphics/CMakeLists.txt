@@ -2,11 +2,13 @@ set(headers
     ym_gfx.h
     ym_gfx_gl.h
     ym_gfx_gl_procs.h
+    ym_gfx_sprite.h
 )
 
 set(source
     ym_gfx_gl.c
     ym_gfx_gl_init.c
+    ym_gfx_sprite.c
 )
 
 if (WIN32)
@@ -41,6 +43,7 @@ target_include_directories(ym_graphics
 target_link_libraries(ym_graphics
     ym_core
     ym_memory
+    lodepng
 )
 
 if (WIN32)

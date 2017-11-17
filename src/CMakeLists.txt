@@ -20,7 +20,6 @@ set(YM_STANDARD_FLAGS "${YM_STANDARD_FLAGS}  \
                        -std=c11              \
                        -Wall                 \
                        -Wextra               \
-                       -Wpadded              \
                        "
 )
 

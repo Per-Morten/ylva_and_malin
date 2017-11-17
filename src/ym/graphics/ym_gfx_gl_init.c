@@ -84,6 +84,5 @@ ym_gfx_gl_init()
     errc |= get_gl_func("glGetUniformLocation", (void**)&glGetUniformLocation);
 
 
-
     return errc;
 }

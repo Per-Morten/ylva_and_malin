@@ -7,6 +7,7 @@ set(headers
     ym_log.h
     ym_warnings.h
     ym_types.h
+    ym_time.h
 )
 
 set(source
@@ -22,4 +23,3 @@ add_library(ym_core
 target_include_directories(ym_core PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}"
 )
-
