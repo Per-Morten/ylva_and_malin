@@ -12,8 +12,8 @@ ym_gfx_gl_init();
 
 YM_NO_DISCARD
 ym_errc
-ym_gfx_gl_create_shader(GLenum type,
-                        const char* file_path,
+ym_gfx_gl_create_shader(const char* file_path,
+                        GLenum type,
                         GLuint* out_shader);
 
 YM_NO_DISCARD
@@ -21,3 +21,9 @@ ym_errc
 ym_gfx_gl_create_program(GLuint* shaders,
                          int shader_count,
                          GLuint* out_program);
+
+YM_NO_DISCARD
+ym_errc
+ym_gfx_gl_create_texture(const char* file_path,
+                         GLenum texture_slot,
+                         GLuint* out_texture);

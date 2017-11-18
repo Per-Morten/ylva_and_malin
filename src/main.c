@@ -93,54 +93,33 @@ main(YM_UNUSED int argc,
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 
     GLuint shaders[2];
-    ym_gfx_gl_create_shader(GL_VERTEX_SHADER,
-                            "resources/shaders/simple_shader.vert",
+    ym_gfx_gl_create_shader("resources/shaders/simple_shader.vert",
+                            GL_VERTEX_SHADER,
                             &shaders[0]);
 
-    ym_gfx_gl_create_shader(GL_FRAGMENT_SHADER,
-                            "resources/shaders/simple_shader.frag",
+    ym_gfx_gl_create_shader("resources/shaders/simple_shader.frag",
+                            GL_FRAGMENT_SHADER,
                             &shaders[1]);
 
     GLuint program;
     ym_gfx_gl_create_program(shaders, 2, &program);
 
     GLint color = glGetUniformLocation(program, "u_color");
+    GLint matrix_loc = glGetUniformLocation(program, "u_matrix");
 
     glUseProgram(program);
     glBindVertexArray(vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
-    GLubyte* image;
-    GLsizei width;
-    GLsizei height;
-    ym_gfx_load_png("resources/sprites/malin_regular.png",
-                    &image, &width, &height);
-
-    int width_in_bytes = width * 4;
-    for (int row = 0; row < height / 2; row++)
-    {
-        GLubyte* top = image + row * width_in_bytes;
-        GLubyte* bottom = image + (height - row - 1) * width_in_bytes;
-        for (int col = 0; col < width_in_bytes; col++)
-        {
-            GLubyte tmp = *top;
-            *top = *bottom;
-            *bottom = tmp;
-            top++;
-            bottom++;
-        }
-    }
-
     GLuint tex = 0;
-    glGenTextures(1, &tex);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, tex);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0,
-                 GL_RGBA, GL_UNSIGNED_BYTE, image);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    ym_gfx_gl_create_texture("resources/sprites/malin_regular.png",
+                             GL_TEXTURE0,
+                             &tex);
+
+    GLuint tex2 = 0;
+    ym_gfx_gl_create_texture("resources/sprites/ylva_regular.png",
+                             GL_TEXTURE0,
+                             &tex2);
 
     GLfloat tex_coords[] =
     {
@@ -157,6 +136,15 @@ main(YM_UNUSED int argc,
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, NULL);
     glEnableVertexAttribArray(1);
 
+    float matrix[] =
+    {
+        1.0f, 0.0f, 0.0f, 0.0f, // first col
+        0.0f, 1.0f, 0.0f, 0.0f, // second col
+        0.0f, 0.0f, 1.0f, 0.0f,
+        0.5f, 0.0f, 0.0f, 1.0f,
+    };
+
+    int count = 0;
     double dt = 0.0;
     while (ym_gfx_window_is_open(window))
     {
@@ -167,7 +155,13 @@ main(YM_UNUSED int argc,
 
         //glPolygonMode(GL_FRONT, GL_LINE);
         glUniform4f(color, 0.0f, 0.75f, 0.75f, 1.0f);
+        glUniformMatrix4fv(matrix_loc, 1, GL_FALSE, matrix);
+        //glBindTexture(GL_TEXTURE_2D, (count++ % 2 == 0) ? tex : tex2);
+
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+        //glActiveTexture(GL_TEXTURE1);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+
 
         double end = ym_clock_now();
 

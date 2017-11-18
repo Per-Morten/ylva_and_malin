@@ -1,4 +1,5 @@
 #include <ym_gfx_gl.h>
+#include <ym_gfx_sprite.h>
 
 #include <stdio.h>
 
@@ -33,8 +34,8 @@ gl_error_str(GLenum e)
 }
 
 ym_errc
-ym_gfx_gl_create_shader(GLenum type,
-                        const char* file_path,
+ym_gfx_gl_create_shader(const char* file_path,
+                        GLenum type,
                         GLuint* out_shader)
 {
     YM_ASSERT(file_path && out_shader,
@@ -113,7 +114,6 @@ ym_gfx_gl_create_shader(GLenum type,
     return ym_errc_success;
 }
 
-YM_NO_DISCARD
 ym_errc
 ym_gfx_gl_create_program(GLuint* shaders,
                          int shader_count,
@@ -174,6 +174,76 @@ ym_gfx_gl_create_program(GLuint* shaders,
     }
 
     *out_program = program;
+
+    return ym_errc_success;
+}
+
+ym_errc
+ym_gfx_gl_create_texture(const char* file_path,
+                         GLenum texture_slot,
+                         GLuint* out_texture)
+{
+    // TODO: Use ym_mem rather than malloc and free.
+    GLubyte* image;
+    GLsizei width;
+    GLsizei height;
+    ym_errc errc = ym_gfx_load_png(file_path, &image,
+                                   &width, &height);
+
+    if (errc != ym_errc_success)
+    {
+        YM_WARN("%s: Could not load image: %s",
+                ym_errc_str(errc),
+                file_path);
+        return errc;
+    }
+
+    // Flip image
+    int width_in_bytes = width * 4;
+    for (int row = 0; row < height / 2; row++)
+    {
+        GLubyte* top = image + row * width_in_bytes;
+        GLubyte* bottom = image + (height - row - 1) * width_in_bytes;
+        for (int col = 0; col < width_in_bytes; col++)
+        {
+            GLubyte tmp = *top;
+            *top = *bottom;
+            *bottom = tmp;
+            top++;
+            bottom++;
+        }
+    }
+
+    glActiveTexture(texture_slot);
+    GLenum err = glGetError();
+    if (err != GL_NO_ERROR)
+    {
+        YM_WARN("%s: Could not set active texture: %s",
+                ym_errc_str(ym_errc_gl_error),
+                gl_error_str(err));
+        free(image);
+        return ym_errc_gl_error;
+    }
+
+    glGenTextures(1, out_texture);
+    glBindTexture(GL_TEXTURE_2D, (*out_texture));
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0,
+                 GL_RGBA, GL_UNSIGNED_BYTE, image);
+    free(image);
+
+    err = glGetError();
+    if (err != GL_NO_ERROR)
+    {
+        YM_WARN("%s: glTexImage2D failed: %s",
+                ym_errc_str(ym_errc_gl_error),
+                gl_error_str(err));
+        return ym_errc_gl_error;
+    }
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
     return ym_errc_success;
 }
