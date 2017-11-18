@@ -35,4 +35,8 @@ extern PFNGLGETSHADERINFOLOGPROC        glGetShaderInfoLog;
 extern PFNGLGETPROGRAMIVPROC            glGetProgramiv;
 extern PFNGLGETPROGRAMINFOLOGPROC       glGetProgramInfoLog;
 extern PFNGLGETUNIFORMLOCATIONPROC      glGetUniformLocation;
+
+// Functions already declared on linux
+#ifdef WIN32
 extern PFNGLACTIVETEXTUREPROC           glActiveTexture;
+#endif
