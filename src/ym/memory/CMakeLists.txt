@@ -19,15 +19,3 @@ target_include_directories(ym_memory
 target_link_libraries(ym_memory
     ym_core
 )
-
-if (${YM_ENABLE_TESTS})
-    add_executable(ym_memory_tests
-        tests/memory_tests.cpp
-    )
-
-    target_link_libraries(ym_memory_tests
-        catch
-        ym_memory
-        ym_core
-    )
-endif()
