@@ -144,6 +144,42 @@ main(YM_UNUSED int argc,
         0.5f, 0.0f, 0.0f, 1.0f,
     };
 
+    ym_mat4 mat =
+    {
+        .val =
+        {
+            1.0f, 2.0f, 3.0f, 4.0f,
+            5.0f, 6.0f, 7.0f, 8.0f,
+            9.0f, 10.0f, 11.0f, 12.0f,
+            13.0f, 14.0f, 15.0f, 16.0f,
+        },
+    };
+
+    ym_mat4 res = ym_mul_mat4_mat4(mat, mat);
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            printf("%f ", res.val[i * 4 + j]);
+        }
+        printf("\n");
+    }
+
+    ym_vec4 vec =
+    {
+        .val =
+        {
+            1.0f, 2.0f, 3.0f, 4.0f,
+        },
+    };
+
+    ym_vec4 res2 = ym_mul_mat4_vec4(mat, vec);
+    for (int i = 0; i < 4; i++)
+    {
+        printf("%f ", res2.val[i]);
+    }
+    printf("\n");
+
     int count = 0;
     double dt = 0.0;
     while (ym_gfx_window_is_open(window))

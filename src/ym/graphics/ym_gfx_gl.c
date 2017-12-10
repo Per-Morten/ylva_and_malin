@@ -218,8 +218,9 @@ ym_gfx_gl_create_texture(const char* file_path,
     GLenum err = glGetError();
     if (err != GL_NO_ERROR)
     {
-        YM_WARN("%s: Could not set active texture: %s",
+        YM_WARN("%s: Could not set active texture for %s: %s",
                 ym_errc_str(ym_errc_gl_error),
+                file_path,
                 gl_error_str(err));
         free(image);
         return ym_errc_gl_error;
@@ -234,8 +235,9 @@ ym_gfx_gl_create_texture(const char* file_path,
     err = glGetError();
     if (err != GL_NO_ERROR)
     {
-        YM_WARN("%s: glTexImage2D failed: %s",
+        YM_WARN("%s: glTexImage2D failed for %s: %s",
                 ym_errc_str(ym_errc_gl_error),
+                file_path,
                 gl_error_str(err));
         return ym_errc_gl_error;
     }

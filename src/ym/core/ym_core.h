@@ -7,3 +7,4 @@
 #include <ym_atomic.h>
 #include <ym_types.h>
 #include <ym_time.h>
+#include <ym_math.h>
