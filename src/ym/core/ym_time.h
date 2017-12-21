@@ -9,7 +9,7 @@
 #include <sys/time.h>
 #endif
 
-inline
+YM_INLINE
 double
 ym_clock_now()
 {

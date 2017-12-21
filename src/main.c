@@ -60,12 +60,14 @@ main(YM_UNUSED int argc,
     // Turn this into a square
     // Also use Index Buffer Object
     // So you just can say which indexes to use.
+    // Square is now placed around origin
+    // Create square and load textures
     GLfloat points[] =
     {
-       0.0f, 0.5f, 0.0f,
-       0.0f, 0.0f, 0.0f,
-       0.5f, 0.0f, 0.0f,
-       0.5f, 0.5f, 0.0f,
+       -0.25f,  0.25f,
+       -0.25f, -0.25f,
+        0.25f, -0.25f,
+        0.25f,  0.25f,
     };
 
     GLuint indices[] =
@@ -82,7 +84,7 @@ main(YM_UNUSED int argc,
     GLuint ibo = 0;
     glGenBuffers(1, &ibo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * 6, indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     GLuint vao = 0;
     glGenVertexArrays(1, &vao);
@@ -90,7 +92,7 @@ main(YM_UNUSED int argc,
 
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, NULL);
 
     GLuint shaders[2];
     ym_gfx_gl_create_shader("resources/shaders/simple_shader.vert",
@@ -106,6 +108,7 @@ main(YM_UNUSED int argc,
 
     GLint color = glGetUniformLocation(program, "u_color");
     GLint matrix_loc = glGetUniformLocation(program, "u_matrix");
+    GLint texture_id_loc = glGetUniformLocation(program, "u_texture_id");
 
     glUseProgram(program);
     glBindVertexArray(vao);
@@ -135,75 +138,142 @@ main(YM_UNUSED int argc,
     glBufferData(GL_ARRAY_BUFFER, sizeof(tex_coords), tex_coords, GL_STATIC_DRAW);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, NULL);
     glEnableVertexAttribArray(1);
+    // EO create square and load textures
 
-    float matrix[] =
+    ym_vec4 pos =
     {
-        1.0f, 0.0f, 0.0f, 0.0f, // first col
-        0.0f, 1.0f, 0.0f, 0.0f, // second col
-        0.0f, 0.0f, 1.0f, 0.0f,
-        0.5f, 0.0f, 0.0f, 1.0f,
+        .x = 400.0f,
+        .y = 300.0f,
+        .z = 0.0f,
+        .w = 0.0f,
     };
 
-    ym_mat4 mat =
+    GLint texture_id = 0;
+    double dt = 0.0;
+    float angle = YM_DEG_TO_RAD(0.0f);
+    float anim_timer = 0.0f;
+    glUniform4f(color, 0.0f, 0.75f, 0.75f, 1.0f);
+
+    // Simple view, allowing me to work in [0-2] space, rather than [-1 - 1]
+    ym_mat4 view =
     {
         .val =
         {
-            1.0f, 2.0f, 3.0f, 4.0f,
-            5.0f, 6.0f, 7.0f, 8.0f,
-            9.0f, 10.0f, 11.0f, 12.0f,
-            13.0f, 14.0f, 15.0f, 16.0f,
+             1.0f,  0.0f,  0.0f,  0.0f,
+             0.0f,  1.0f,  0.0f,  0.0f,
+             0.0f,  0.0f,  1.0f,  0.0f,
+            -1.0f,  1.0f,  0.0f,  1.0f,
         },
     };
-
-    ym_mat4 res = ym_mul_mat4_mat4(mat, mat);
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 4; j++)
-        {
-            printf("%f ", res.val[i * 4 + j]);
-        }
-        printf("\n");
-    }
-
-    ym_vec4 vec =
-    {
-        .val =
-        {
-            1.0f, 2.0f, 3.0f, 4.0f,
-        },
-    };
-
-    ym_vec4 res2 = ym_mul_mat4_vec4(mat, vec);
-    for (int i = 0; i < 4; i++)
-    {
-        printf("%f ", res2.val[i]);
-    }
-    printf("\n");
 
     int count = 0;
-    double dt = 0.0;
     while (ym_gfx_window_is_open(window))
     {
         double start = ym_clock_now();
-
         ym_gfx_window_poll_events(window);
         ym_gfx_window_clear(window);
 
+        anim_timer += dt;
+        if (anim_timer >= 0.25f)
+        {
+            anim_timer = 0.0f;
+            texture_id++;
+            texture_id = texture_id % 12;
+            YM_DEBUG("texture_id: %d", (int)texture_id);
+            glUniform1i(texture_id_loc, texture_id);
+        }
+
+
+        // SUPER HAX FOR TESTING TRANSFORMATIONS!
+        typedef
+        struct
+        {
+            Display* display;
+            Window win;
+            bool is_open;
+            u8 pad[7];
+
+            bool w;
+            bool a;
+            bool s;
+            bool d;
+            bool e;
+            bool q;
+        } super_hax;
+
+        super_hax* win_hax = window;
+
+        if (win_hax->w)
+        {
+            pos.y -= 100 * dt;
+            YM_DEBUG("w pressed, go up: %f", pos.y);
+        }
+        if (win_hax->s)
+        {
+            pos.y += 100 * dt;
+            YM_DEBUG("s pressed, go down: %f", pos.y);
+        }
+        if (win_hax->a)
+        {
+            pos.x -= 100 * dt;
+            YM_DEBUG("a pressed, go left: %f", pos.x);
+        }
+        if (win_hax->d)
+        {
+            pos.x += 100 * dt;
+            YM_DEBUG("d pressed, go right: %f", pos.x);
+        }
+        if (win_hax->e)
+        {
+            angle -= 2 * dt;
+            YM_DEBUG("e pressed, rotate left");
+        }
+        if (win_hax->q)
+        {
+            angle += 2 * dt;
+            YM_DEBUG("q pressed, rotate right");
+        }
+        // EO Super hax for testing transformations
+
+        const float c = cosf(angle);
+        const float s = sinf(angle);
+        ym_vec4 pos2 =
+        {
+            .x = pos.x / 800.0f * 2.0f,
+            .y = pos.y / 600.0f * -2.0f,
+            .z = 0.0f,
+            .w = 1.0f,
+        };
+
+        ym_mat4 translate = ym_translate_vec4(pos2);
+        ym_mat4 rotate =
+        {
+            .val =
+            {
+                c,    s,    0.0f, 0.0f,
+                -s,   c,    0.0f, 0.0f,
+                0.0f, 0.0f, 1.0f, 0.0f,
+                0.0f, 0.0f, 0.0f, 1.0f,
+            },
+        };
+
+        ym_mat4 model = ym_mul_mat4_mat4(rotate, translate);
+        ym_mat4 res = ym_mul_mat4_mat4(model, view);
+
         //glPolygonMode(GL_FRONT, GL_LINE);
-        glUniform4f(color, 0.0f, 0.75f, 0.75f, 1.0f);
-        glUniformMatrix4fv(matrix_loc, 1, GL_FALSE, matrix);
+        glUniformMatrix4fv(matrix_loc, 1, GL_FALSE, res.val);
         //glBindTexture(GL_TEXTURE_2D, (count++ % 2 == 0) ? tex : tex2);
 
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
         //glActiveTexture(GL_TEXTURE1);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+        //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
 
+        ym_gfx_window_display(window);
 
         double end = ym_clock_now();
 
         dt = end - start;
 
-        ym_gfx_window_display(window);
     }
 
     ym_gfx_destroy_window(window);

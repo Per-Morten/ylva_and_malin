@@ -46,6 +46,16 @@ struct
     Window win;
     bool is_open;
     u8 pad[7];
+
+    // TODO: Remove this when getting sprite movement to work.
+    // Should have a better way of doing keyboard handling,
+    // this is just for hax.
+    bool w;
+    bool a;
+    bool s;
+    bool d;
+    bool e;
+    bool q;
 } ym_gfx_unix_window;
 
 ym_errc
@@ -268,12 +278,36 @@ ym_gfx_window_poll_events(ym_gfx_window* w)
     char keys[32];
     XQueryKeymap(window->display, keys);
 
+    // Hax keyboard "support"
+    window->w = false;
+    window->a = false;
+    window->s = false;
+    window->d = false;
+    window->e = false;
+    window->q = false;
+    // eo Hax keyboard "support"
+
+
     for (int keycode = 0; keycode < 256; ++keycode)
     {
         if ((keys[keycode / 8] & (1 << (keycode % 8))) != 0)
         {
+            // Hax keyboard "support"
+            if (keycode == 38)
+                window->a = true;
+            if (keycode == 39)
+                window->s = true;
+            if (keycode == 25)
+                window->w = true;
+            if (keycode == 40)
+                window->d = true;
+            if (keycode == 26)
+                window->e = true;
+            if (keycode == 24)
+                window->q = true;
+            // eo hax keyboard "support"
             //YM_DEBUG("Key pressed: %d", keycode);
-            //KeySym keysym = XkbKeycodeToKeysym(win->display, keycode, 0, 0);
+            //KeySym keysym = XkbKeycodeToKeysym(window->display, keycode, 0, 0);
             //YM_DEBUG("Keysym: %d", keysym);
             //YM_DEBUG("Name: %s", XKeysymToString(keysym));
         }
