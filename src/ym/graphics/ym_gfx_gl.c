@@ -56,7 +56,9 @@ ym_gfx_gl_create_shader(const char* file_path,
     long file_len = ftell(file);
     rewind(file);
 
-    GLchar* source = malloc(file_len * sizeof(GLchar));
+    GLchar* source = malloc(file_len * sizeof(GLchar) + 1);
+    // Ensure terminating \0.
+    source[file_len * sizeof(GLchar)] = '\0';
     if (!fread(source, sizeof(GLchar), file_len, file))
     {
         YM_WARN("%s:, Could not read from file: %s",
