@@ -2,14 +2,14 @@
 #include <lodepng.h>
 
 // Should this be here, or should it be moved to another file?
+// so we can use our own memory locations.
 ym_errc
 ym_gfx_load_png(const char* filename,
                 u8** out_image,
                 int* out_width,
                 int* out_height)
 {
-    // TODO: Move over to using the lodepng function that takes in memory
-    // so we can use our own memory locations.
+    /// \todo Move over to using the lodepng function that takes in memory
     unsigned width = 0;
     unsigned height = 0;
     unsigned error = lodepng_decode32_file(out_image,

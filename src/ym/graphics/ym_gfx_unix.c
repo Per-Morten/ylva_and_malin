@@ -47,9 +47,9 @@ struct
     bool is_open;
     u8 pad[7];
 
-    // TODO: Remove this when getting sprite movement to work.
-    // Should have a better way of doing keyboard handling,
-    // this is just for hax.
+    /// \todo Remove this when getting sprite movement to work.
+    /// Should have a better way of doing keyboard handling,
+    /// this is just for hax.
     bool w;
     bool a;
     bool s;

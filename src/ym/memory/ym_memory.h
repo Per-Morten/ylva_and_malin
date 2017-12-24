@@ -12,7 +12,7 @@ struct
     ym_mem_reg_id id;
     const uint16_t size;
 
-    // TODO: This should be atomic once ym_atomic is in place.
+    /// \todo This should be atomic once ym_atomic is in place.
     uint16_t used;
 } ym_mem_region;
 

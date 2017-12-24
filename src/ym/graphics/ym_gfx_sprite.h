@@ -40,12 +40,14 @@ ym_sprite_delete_sheet(ym_sprite_id sheet_id);
 // need to keep the container sorted on layering somehow.
 // Should also be sorted as much as possible on the sheet_id and sprite_id as well,
 // so that we don't need to do so many uniform calls.
+/// \todo Add layering support
 ym_errc
 ym_sprite_draw(ym_sheet_id sheet_id,
                ym_sprite_id sprite_id,
                uint layer,
                ym_vec2 pos);
 
+/// \todo add layering support
 ym_errc
 ym_sprite_draw_extd(ym_sheet_id sheet_id,
                     ym_sprite_id sprite_id,

@@ -42,7 +42,7 @@ ym_gfx_gl_create_shader(const char* file_path,
               ym_errc_invalid_input,
               "file_path and out_shader must not be NULL");
 
-    // TODO: Use ym_mem rather than malloc and free.
+    /// \todo Use ym_mem rather than malloc and free.
     FILE* file = fopen(file_path, "r");
     if (!file)
     {
@@ -121,7 +121,7 @@ ym_gfx_gl_create_program(GLuint* shaders,
                          int shader_count,
                          GLuint* out_program)
 {
-    // TODO: Use ym_mem rather than malloc and free.
+    /// \todo Use ym_mem rather than malloc and free.
     YM_ASSERT(shaders && out_program && shader_count > 0,
               ym_errc_invalid_input,
               "shaders and out_program cannot be NULL"
@@ -185,7 +185,7 @@ ym_gfx_gl_create_texture(const char* file_path,
                          GLenum texture_slot,
                          GLuint* out_texture)
 {
-    // TODO: Use ym_mem rather than malloc and free.
+    /// \todo Use ym_mem rather than malloc and free.
     GLubyte* image;
     GLsizei width;
     GLsizei height;
