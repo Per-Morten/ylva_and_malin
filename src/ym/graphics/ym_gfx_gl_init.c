@@ -25,6 +25,7 @@ PFNGLGETPROGRAMINFOLOGPROC       glGetProgramInfoLog;
 PFNGLGETUNIFORMLOCATIONPROC      glGetUniformLocation;
 PFNGLUNIFORMMATRIX4FVPROC        glUniformMatrix4fv;
 PFNGLUNIFORM1IPROC               glUniform1i;
+PFNGLUNIFORM1UIPROC              glUniform1ui;
 
 // Functions already declared on linux
 #ifdef WIN32
@@ -91,6 +92,7 @@ ym_gfx_gl_init()
     errc |= get_gl_func("glGetUniformLocation", (void**)&glGetUniformLocation);
     errc |= get_gl_func("glUniformMatrix4fv", (void**)&glUniformMatrix4fv);
     errc |= get_gl_func("glUniform1i", (void**)&glUniform1i);
+    errc |= get_gl_func("glUniform1ui", (void**)&glUniform1ui);
 
 
     // Functions already declared on linux

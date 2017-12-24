@@ -46,4 +46,10 @@ ym_sprite_draw(ym_sheet_id sheet_id,
                uint layer,
                ym_vec2 pos);
 
-// TODO: Add drawing with rotation and scaling
+ym_errc
+ym_sprite_draw_extd(ym_sheet_id sheet_id,
+                    ym_sprite_id sprite_id,
+                    uint layer,
+                    ym_vec2 pos,
+                    ym_vec2 scale,
+                    float angle);

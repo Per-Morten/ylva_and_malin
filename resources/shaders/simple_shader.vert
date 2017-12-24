@@ -5,12 +5,10 @@ layout(location = 1) in vec2 in_vt;
 
 out vec2 tex_coords;
 
-// TODO: Make these uniform, to support more atlases
-const int u_atlas_col_count = 3;
-const int u_atlas_row_count = 4;
+uniform uint u_atlas_col_count = 3;
+uniform uint u_atlas_row_count = 4;
 uniform mat4 u_matrix;
-uniform int u_texture_id = 0;
-
+uniform uint u_texture_id = 0;
 
 void main()
 {

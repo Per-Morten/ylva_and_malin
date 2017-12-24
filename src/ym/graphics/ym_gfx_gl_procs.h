@@ -37,6 +37,8 @@ extern PFNGLGETPROGRAMINFOLOGPROC       glGetProgramInfoLog;
 extern PFNGLGETUNIFORMLOCATIONPROC      glGetUniformLocation;
 extern PFNGLUNIFORMMATRIX4FVPROC        glUniformMatrix4fv;
 extern PFNGLUNIFORM1IPROC               glUniform1i;
+extern PFNGLUNIFORM1UIPROC              glUniform1ui;
+
 
 // Functions already declared on linux
 #ifdef WIN32

@@ -252,4 +252,22 @@ ym_gfx_gl_create_texture(const char* file_path,
     return ym_errc_success;
 }
 
+ym_errc
+ym_gfx_gl_get_uniform(GLuint program,
+                      const char* uniform_name,
+                      GLint* out_uniform)
+{
+    *out_uniform = glGetUniformLocation(program, uniform_name);
+    if (*out_uniform == -1)
+    {
+        YM_WARN("%s: Could not get location of uniform %s: %s",
+                ym_errc_str(ym_errc_gl_error),
+                uniform_name,
+                gl_error_str(glGetError()));
+        return ym_errc_gl_error;
+    }
+
+    return ym_errc_success;
+}
+
 #pragma GCC diagnostic pop

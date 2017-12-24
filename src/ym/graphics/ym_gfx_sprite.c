@@ -1,8 +1,7 @@
 #include <ym_gfx_sprite.h>
 #include <lodepng.h>
 
-
-
+// Should this be here, or should it be moved to another file?
 ym_errc
 ym_gfx_load_png(const char* filename,
                 u8** out_image,
@@ -32,12 +31,156 @@ ym_gfx_load_png(const char* filename,
     return ym_errc_success;
 }
 
-struct
+static ym_mem_region* ym_gfx_sprite_mem_reg;
+
+// Keep track of resources that needs to be deleted
+static struct
+{
+    GLuint vbo;
+    GLuint ibo;
+    GLuint ibo_size;
+    GLuint vao;
+    GLuint texture_vbo;
+    GLuint shaders[2];
+    GLuint shader_program;
+    struct
+    {
+        GLint color;
+        GLint mvp; // Not really mvp yet, just model and view.
+        GLint texture_id;
+        GLint atlas_col_count;
+        GLint atlas_row_count;
+    } uniforms;
+
+} g_ym_render_cfg;
+
+static struct
 {
     uint row_count;
     uint col_count;
     ym_sheet_id id;
 } g_ym_sprite_info[2];
+
+
+// Simple view, allowing me to work in [0-2] space, rather than [-1 - 1]
+static const ym_mat4 ym_view_mat =
+{
+    .val =
+    {
+        1.0f,  0.0f,  0.0f,  0.0f,
+        0.0f,  1.0f,  0.0f,  0.0f,
+        0.0f,  0.0f,  1.0f,  0.0f,
+        -1.0f,  1.0f,  0.0f,  1.0f,
+    },
+};
+
+
+ym_errc
+ym_sprite_init(ym_mem_region* region)
+{
+    ym_gfx_sprite_mem_reg = region;
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glCullFace(GL_BACK);
+    glFrontFace(GL_CW);
+
+    // Should happen in window instead, so it can be controlled by a parameter
+    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+
+    // Load Shaders
+    ym_errc errc = ym_errc_success;
+
+    errc |= ym_gfx_gl_create_shader("resources/shaders/simple_shader.vert",
+                                    GL_VERTEX_SHADER,
+                                    &g_ym_render_cfg.shaders[0]);
+
+    errc |= ym_gfx_gl_create_shader("resources/shaders/simple_shader.frag",
+                                    GL_FRAGMENT_SHADER,
+                                    &g_ym_render_cfg.shaders[1]);
+
+    errc |= ym_gfx_gl_create_program(g_ym_render_cfg.shaders, 2,
+                                     &g_ym_render_cfg.shader_program);
+
+    if (errc != ym_errc_success)
+        return errc;
+
+    glUseProgram(g_ym_render_cfg.shader_program);
+
+    // Setup uniforms, ignoring return value on purpose
+    // Don't want to crash or stop if we cannot find a uniform, at least not yet.
+    errc |= ym_gfx_gl_get_uniform(g_ym_render_cfg.shader_program,
+                                  "u_color",
+                                  &g_ym_render_cfg.uniforms.color);
+
+    errc |= ym_gfx_gl_get_uniform(g_ym_render_cfg.shader_program,
+                                  "u_matrix",
+                                  &g_ym_render_cfg.uniforms.mvp);
+
+    errc |= ym_gfx_gl_get_uniform(g_ym_render_cfg.shader_program,
+                                  "u_texture_id",
+                                  &g_ym_render_cfg.uniforms.texture_id);
+
+    errc |= ym_gfx_gl_get_uniform(g_ym_render_cfg.shader_program,
+                                  "u_atlas_col_count",
+                                  &g_ym_render_cfg.uniforms.atlas_col_count);
+
+    errc |= ym_gfx_gl_get_uniform(g_ym_render_cfg.shader_program,
+                                  "u_atlas_row_count",
+                                  &g_ym_render_cfg.uniforms.atlas_row_count);
+
+    // Create square to render sprites on
+    GLfloat points[] =
+    {
+       -0.25f,  0.25f,
+       -0.25f, -0.25f,
+        0.25f, -0.25f,
+        0.25f,  0.25f,
+    };
+
+    glGenBuffers(1, &g_ym_render_cfg.vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, g_ym_render_cfg.vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(points), points, GL_STATIC_DRAW);
+
+    // Setup indices for ibo
+    GLuint indices[] =
+    {
+        0, 1, 2,
+        0, 2, 3,
+    };
+    g_ym_render_cfg.ibo_size = 6;
+
+    glGenBuffers(1, &g_ym_render_cfg.ibo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_ym_render_cfg.ibo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    glGenVertexArrays(1, &g_ym_render_cfg.vao);
+    glBindVertexArray(g_ym_render_cfg.vao);
+
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, g_ym_render_cfg.vbo);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, NULL);
+
+    glBindVertexArray(g_ym_render_cfg.vao);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_ym_render_cfg.ibo);
+
+    // Setup texture coordinates
+    GLfloat tex_coords[] =
+    {
+        0.0f, 1.0f,
+        0.0f, 0.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+    };
+
+    glGenBuffers(1, &g_ym_render_cfg.texture_vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, g_ym_render_cfg.texture_vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(tex_coords), tex_coords, GL_STATIC_DRAW);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, NULL);
+    glEnableVertexAttribArray(1);
+
+    return ym_errc_success;
+}
 
 ym_errc
 ym_sprite_load_sheet(const char* filename,
@@ -52,6 +195,8 @@ ym_sprite_load_sheet(const char* filename,
     if (errc != ym_errc_success)
         return errc;
 
+    // Find better way of doing this. Should allocate these resources
+    // somewhere else.
     g_ym_sprite_info[*out_sheet_id].row_count = row_count;
     g_ym_sprite_info[*out_sheet_id].col_count = col_count;
     g_ym_sprite_info[*out_sheet_id].id = *out_sheet_id;
@@ -59,3 +204,83 @@ ym_sprite_load_sheet(const char* filename,
     return ym_errc_success;
 }
 
+// need a way to get window size in here
+ym_errc
+ym_sprite_draw(ym_sheet_id sheet_id,
+               ym_sprite_id sprite_id,
+               uint layer,
+               ym_vec2 pos)
+{
+    ym_vec4 real_pos =
+    {
+        .x = pos.x / 800.0f * 2.0f,
+        .y = pos.y / 600.0f * -2.0f,
+        .z = 0.0f,
+        .w = 1.0f,
+    };
+
+    ym_mat4 translate = ym_translate_vec4(real_pos);
+    ym_mat4 res = ym_mul_mat4_mat4(translate, ym_view_mat);
+    glUniformMatrix4fv(g_ym_render_cfg.uniforms.mvp, 1, GL_FALSE, res.val);
+
+    glBindTexture(GL_TEXTURE_2D, sheet_id);
+    glUniform1ui(g_ym_render_cfg.uniforms.texture_id, sprite_id);
+
+    glDrawElements(GL_TRIANGLES, g_ym_render_cfg.ibo_size, GL_UNSIGNED_INT, NULL);
+
+    return ym_errc_success;
+}
+
+ym_errc
+ym_sprite_draw_extd(ym_sheet_id sheet_id,
+                    ym_sprite_id sprite_id,
+                    uint layer,
+                    ym_vec2 pos,
+                    ym_vec2 scale,
+                    float angle)
+{
+    ym_vec4 real_pos =
+    {
+        .x = pos.x / 800.0f * 2.0f,
+        .y = pos.y / 600.0f * -2.0f,
+        .z = 0.0f,
+        .w = 1.0f,
+    };
+
+    ym_mat4 translate = ym_translate_vec4(real_pos);
+
+    const float c = cosf(angle);
+    const float s = sinf(angle);
+    ym_mat4 rotate =
+    {
+        .val =
+        {
+            c,    s,    0.0f, 0.0f,
+            -s,   c,    0.0f, 0.0f,
+            0.0f, 0.0f, 1.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 1.0f,
+        },
+    };
+
+    ym_mat4 scale_mat =
+    {
+        .val =
+        {
+            scale.x, 0.0f,    0.0f, 0.0f,
+            0.0f,    scale.y, 0.0f, 0.0f,
+            0.0f,    0.0f,    1.0f, 0.0f,
+            0.0f,    0.0f,    0.0f, 1.0f,
+        },
+    };
+
+    ym_mat4 tmp = ym_mul_mat4_mat4(rotate, scale_mat);
+    ym_mat4 model = ym_mul_mat4_mat4(tmp, translate);
+    ym_mat4 res = ym_mul_mat4_mat4(model, ym_view_mat);
+
+    glUniformMatrix4fv(g_ym_render_cfg.uniforms.mvp, 1, GL_FALSE, res.val);
+
+    glBindTexture(GL_TEXTURE_2D, sheet_id);
+    glUniform1ui(g_ym_render_cfg.uniforms.texture_id, sprite_id);
+
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+}
