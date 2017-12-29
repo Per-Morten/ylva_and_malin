@@ -17,7 +17,12 @@ typedef GLuint ym_sprite_id;
 // Setup vbo, ibo, vao, shaders, texture_coordinates, etc.
 YM_NO_DISCARD
 ym_errc
-ym_sprite_init(ym_mem_region* memory_region);
+ym_sprite_init(ym_mem_region* memory_region,
+               ym_gfx_window* window);
+
+YM_NO_DISCARD
+ym_errc
+ym_sprite_shutdown();
 
 // Need to figure out how we can do allocations here,
 // Do we need to support complex deallocations,
@@ -32,7 +37,7 @@ ym_sprite_load_sheet(const char* filename,
 
 YM_NO_DISCARD
 ym_errc
-ym_sprite_delete_sheet(ym_sprite_id sheet_id);
+ym_sprite_delete_sheet(ym_sheet_id sheet_id);
 
 // Think if this should be done async, i.e. just add to some
 // sort of draw container/queue.
@@ -41,6 +46,9 @@ ym_sprite_delete_sheet(ym_sprite_id sheet_id);
 // Should also be sorted as much as possible on the sheet_id and sprite_id as well,
 // so that we don't need to do so many uniform calls.
 /// \todo Add layering support
+// This can actually be done async, in that case it is best if we also supply a present layer
+// function, so I can decide layering and when they should be drawn, that way I can basically
+// do my own buffering solutions.
 ym_errc
 ym_sprite_draw(ym_sheet_id sheet_id,
                ym_sprite_id sprite_id,

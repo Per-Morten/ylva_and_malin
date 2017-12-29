@@ -39,6 +39,11 @@ extern PFNGLUNIFORMMATRIX4FVPROC        glUniformMatrix4fv;
 extern PFNGLUNIFORM1IPROC               glUniform1i;
 extern PFNGLUNIFORM1UIPROC              glUniform1ui;
 
+extern PFNGLDELETEBUFFERSPROC           glDeleteBuffers;
+extern PFNGLDELETEVERTEXARRAYSPROC      glDeleteVertexArrays;
+extern PFNGLDELETESHADERPROC            glDeleteShader;
+extern PFNGLDELETEPROGRAMPROC           glDeleteProgram;
+
 
 // Functions already declared on linux
 #ifdef WIN32

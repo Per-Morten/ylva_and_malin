@@ -32,6 +32,7 @@ ym_gfx_load_png(const char* filename,
 }
 
 static ym_mem_region* ym_gfx_sprite_mem_reg;
+static ym_gfx_window* g_window;
 
 // Keep track of resources that needs to be deleted
 static struct
@@ -76,9 +77,10 @@ static const ym_mat4 ym_view_mat =
 
 
 ym_errc
-ym_sprite_init(ym_mem_region* region)
+ym_sprite_init(ym_mem_region* region, ym_gfx_window* window)
 {
     ym_gfx_sprite_mem_reg = region;
+    g_window = window;
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -183,6 +185,23 @@ ym_sprite_init(ym_mem_region* region)
 }
 
 ym_errc
+ym_sprite_shutdown()
+{
+    glDeleteBuffers(1, &g_ym_render_cfg.texture_vbo);
+    glDeleteVertexArrays(1, &g_ym_render_cfg.vao);
+    glDeleteBuffers(1, &g_ym_render_cfg.ibo);
+    glDeleteBuffers(1, &g_ym_render_cfg.vbo);
+    glUseProgram(0);
+    glDeleteShader(g_ym_render_cfg.shaders[0]);
+    glDeleteShader(g_ym_render_cfg.shaders[1]);
+    glDeleteProgram(g_ym_render_cfg.shader_program);
+
+    memset(&g_ym_render_cfg, 0, sizeof(g_ym_render_cfg));
+
+    return ym_errc_success;
+}
+
+ym_errc
 ym_sprite_load_sheet(const char* filename,
                      uint col_count,
                      uint row_count,
@@ -204,6 +223,14 @@ ym_sprite_load_sheet(const char* filename,
     return ym_errc_success;
 }
 
+ym_errc
+ym_sprite_delete_sheet(ym_sheet_id sheet_id)
+{
+    glDeleteTextures(1, &g_ym_sprite_info[sheet_id].id);
+
+    return ym_errc_success;
+}
+
 // need a way to get window size in here
 ym_errc
 ym_sprite_draw(ym_sheet_id sheet_id,
@@ -211,10 +238,14 @@ ym_sprite_draw(ym_sheet_id sheet_id,
                uint layer,
                ym_vec2 pos)
 {
+    uint w_width;
+    uint w_height;
+    ym_gfx_window_get_size(g_window, &w_width, &w_height);
+
     ym_vec4 real_pos =
     {
-        .x = pos.x / 800.0f * 2.0f,
-        .y = pos.y / 600.0f * -2.0f,
+        .x = pos.x / w_width * 2.0f,
+        .y = pos.y / w_height * -2.0f,
         .z = 0.0f,
         .w = 1.0f,
     };
@@ -239,10 +270,14 @@ ym_sprite_draw_extd(ym_sheet_id sheet_id,
                     ym_vec2 scale,
                     float angle)
 {
+    uint w_width;
+    uint w_height;
+    ym_gfx_window_get_size(g_window, &w_width, &w_height);
+
     ym_vec4 real_pos =
     {
-        .x = pos.x / 800.0f * 2.0f,
-        .y = pos.y / 600.0f * -2.0f,
+        .x = pos.x / w_width * 2.0f,
+        .y = pos.y / w_height * -2.0f,
         .z = 0.0f,
         .w = 1.0f,
     };
@@ -283,4 +318,6 @@ ym_sprite_draw_extd(ym_sheet_id sheet_id,
     glUniform1ui(g_ym_render_cfg.uniforms.texture_id, sprite_id);
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+
+    return ym_errc_success;
 }

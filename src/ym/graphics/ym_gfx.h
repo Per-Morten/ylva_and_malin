@@ -143,6 +143,28 @@ ym_gfx_window_is_open(const ym_gfx_window* window);
 /// \ingroup ym_gfx
 ///
 /// \brief
+///     Gets the width and height dimension of the given
+///     window.
+///
+/// \param window
+///     The window to check. Cannot be NULL.
+///
+/// \param out_width
+///     Out parameter used to store width.
+///
+/// \param out_height
+///     Out parameter used to store height.
+///////////////////////////////////////////////////////////
+void
+ym_gfx_window_get_size(ym_gfx_window* window,
+                       uint* out_width,
+                       uint* out_height);
+
+
+///////////////////////////////////////////////////////////
+/// \ingroup ym_gfx
+///
+/// \brief
 ///     Clears the given window.
 ///
 /// \param window

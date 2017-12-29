@@ -27,6 +27,12 @@ PFNGLUNIFORMMATRIX4FVPROC        glUniformMatrix4fv;
 PFNGLUNIFORM1IPROC               glUniform1i;
 PFNGLUNIFORM1UIPROC              glUniform1ui;
 
+
+PFNGLDELETEBUFFERSPROC           glDeleteBuffers;
+PFNGLDELETEVERTEXARRAYSPROC      glDeleteVertexArrays;
+PFNGLDELETESHADERPROC            glDeleteShader;
+PFNGLDELETEPROGRAMPROC           glDeleteProgram;
+
 // Functions already declared on linux
 #ifdef WIN32
 PFNGLACTIVETEXTUREPROC           glActiveTexture;
@@ -93,6 +99,11 @@ ym_gfx_gl_init()
     errc |= get_gl_func("glUniformMatrix4fv", (void**)&glUniformMatrix4fv);
     errc |= get_gl_func("glUniform1i", (void**)&glUniform1i);
     errc |= get_gl_func("glUniform1ui", (void**)&glUniform1ui);
+
+    errc |= get_gl_func("glDeleteBuffers", (void**)&glDeleteBuffers);
+    errc |= get_gl_func("glDeleteVertexArrays", (void**)&glDeleteVertexArrays);
+    errc |= get_gl_func("glDeleteShader", (void**)&glDeleteShader);
+    errc |= get_gl_func("glDeleteProgram", (void**)&glDeleteProgram);
 
 
     // Functions already declared on linux

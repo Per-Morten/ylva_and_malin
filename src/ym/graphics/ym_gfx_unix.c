@@ -56,6 +56,12 @@ struct
     bool d;
     bool e;
     bool q;
+    // EO keyboard Hax
+
+    // After removed hax,
+    // this must be evened out with the padding of the struct
+    u16 width;
+    u16 height;
 } ym_gfx_unix_window;
 
 ym_errc
@@ -163,6 +169,8 @@ ym_gfx_create_window(u16 width,
     glXMakeCurrent(window->display, window->win, context);
 
     window->is_open = true;
+    window->width = width;
+    window->height = height;
 
     return window;
 }
@@ -194,6 +202,20 @@ ym_gfx_window_is_open(const ym_gfx_window* w)
               "Window must not be NULL");
 
     return ((const ym_gfx_unix_window*)w)->is_open;
+}
+
+void
+ym_gfx_window_get_size(ym_gfx_window* w,
+                       uint* out_width,
+                       uint* out_height)
+{
+    YM_ASSERT(w,
+              ym_errc_invalid_input,
+              "Window must not be NULL");
+
+    ym_gfx_unix_window* win = w;
+    *out_width = win->width;
+    *out_height = win->height;
 }
 
 void
@@ -243,8 +265,12 @@ ym_gfx_window_poll_events(ym_gfx_window* w)
         {
             case Expose:
             {
+                // Do we really need to do this several times?
+                // Or can we do it when we query for the mouse?
                 XWindowAttributes attributes;
                 XGetWindowAttributes(window->display, window->win, &attributes);
+                window->width = attributes.width;
+                window->height = attributes.height;
                 glViewport(0, 0, attributes.width, attributes.height);
             }
             break;

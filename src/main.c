@@ -9,13 +9,13 @@
 #include <ym_telemetry.h>
 
 ym_errc
-init_subsystems()
+init_subsystems(ym_gfx_window* window)
 {
     ym_errc errc = ym_errc_success;
 
     //errc |= ym_telemetry_init(ym_mem_get_region(ym_mem_reg_telemetry));
     errc |= ym_gfx_gl_init();
-    errc |= ym_sprite_init(NULL);
+    errc |= ym_sprite_init(NULL, window);
 
 
     return errc;
@@ -26,8 +26,8 @@ shutdown_subsystems()
 {
     ym_errc errc = ym_errc_success;
 
+    errc |= ym_sprite_shutdown();
     //errc |= ym_gfx_gl_shutdown();
-    //errc |= ym_sprite_shutdown();
     //errc |= ym_telemetry_shutdown();
 
     return errc;
