@@ -27,6 +27,7 @@
 ///
 /// When deallocating from regions, set memory value
 /// to a detectable value. For example 0xFFFFFFFF
+/// Can use this to check for leaks
 
 static void* ym_g_memory;
 
@@ -37,6 +38,7 @@ ym_mem_init()
                   "Region heads will overflow into GFX region");
 
     ym_g_memory = malloc(YM_MEMORY_SIZE);
+    memset(ym_g_memory, 0xFFFFFFFF, YM_MEMORY_SIZE);
 
     if (ym_g_memory == NULL)
     {
@@ -57,10 +59,18 @@ ym_mem_init()
     regions[ym_mem_reg_gfx].used = ATOMIC_VAR_INIT(0);
     (*(u16*)&regions[ym_mem_reg_gfx].size) = YM_MEM_REG_GFX_BLOCK_SIZE;
 
+    regions[ym_mem_reg_gl].id = YM_MEM_REG_GL_ID;
+    regions[ym_mem_reg_gl].mem = (u8*)ym_g_memory + YM_MEM_REG_GL_OFFSET;
+    regions[ym_mem_reg_gl].used = ATOMIC_VAR_INIT(0);
+    (*(u16*)&regions[ym_mem_reg_gl].size) = YM_MEM_REG_GL_BLOCK_SIZE;
+
     regions[ym_mem_reg_telemetry].id = YM_MEM_REG_TELEMETRY_ID;
     regions[ym_mem_reg_telemetry].mem = (u8*)ym_g_memory + YM_MEM_REG_TELEMETRY_OFFSET;
     regions[ym_mem_reg_telemetry].used = ATOMIC_VAR_INIT(0);
     (*(u16*)&regions[ym_mem_reg_gfx].size) = YM_MEM_REG_TELEMETRY_BLOCK_SIZE;
+
+    for (int i = 0; i != ym_mem_reg_count; i++)
+        YM_DEBUG("%p", regions[i].mem);
 
     return ym_errc_success;
 }
@@ -76,6 +86,26 @@ ym_mem_shutdown()
                   "Leak detected in: %s, leak size: %" PRIu16 "",
                   ym_mem_reg_id_str(region[i].id),
                   region[i].used);
+    }
+
+    u32* mem = ym_g_memory + YM_MEM_REG_GFX_OFFSET;
+    const u32* memory_end = ym_g_memory + YM_MEM_REG_TELEMETRY_OFFSET + YM_MEM_REG_TELEMETRY_BLOCK_SIZE;
+
+    while (mem <= memory_end)
+    {
+        if (*mem != 0xFFFFFFFF)
+        {
+            ym_mem_reg_id reg_id = 0;
+
+            // Find leak region
+            while (mem >= ((ym_mem_region*)ym_g_memory)[reg_id + 1].mem)
+                reg_id++;
+
+            //YM_WARN("Leak detected in region: %s, address: %p",
+            //        ym_mem_reg_id_str(reg_id),
+            //        mem);
+        }
+        mem++;
     }
 
     free(ym_g_memory);

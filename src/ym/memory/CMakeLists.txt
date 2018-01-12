@@ -1,9 +1,11 @@
 set(headers
     ym_memory.h
+    ym_allocator.h
 )
 
 set(source
     ym_memory.c
+    ym_allocator.c
 )
 
 add_library(ym_memory
