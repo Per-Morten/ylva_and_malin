@@ -35,6 +35,8 @@ ym_errc_str(ym_errc errc)
             return "ym_errc_system_error";
         case ym_errc_gl_error:
             return "ym_errc_gl_error";
+        case ym_errc_out_of_memory:
+            return "ym_errc_out_of_memory";
     }
 
     return "Unknown Error!";

@@ -14,9 +14,8 @@ init_subsystems(ym_gfx_window* window)
     ym_errc errc = ym_errc_success;
 
     //errc |= ym_telemetry_init(ym_mem_get_region(ym_mem_reg_telemetry));
-    errc |= ym_gfx_gl_init();
+    errc |= ym_gfx_gl_init(ym_mem_get_region(ym_mem_reg_gl));
     errc |= ym_sprite_init(NULL, window);
-
 
     return errc;
 }
@@ -49,6 +48,7 @@ main(YM_UNUSED int argc,
 
     window = ym_gfx_create_window(800, 600, "ylva_and_malin");
 
+
     errc = init_subsystems(window);
     if (errc != ym_errc_success)
         goto cleanup;
@@ -78,6 +78,7 @@ main(YM_UNUSED int argc,
         .x = 400.0f,
         .y = 300.0f,
     };
+
 
     while (ym_gfx_window_is_open(window))
     {
@@ -116,32 +117,32 @@ main(YM_UNUSED int argc,
         if (win_hax->w)
         {
             malin_pos.y -= 100 * dt;
-            YM_DEBUG("w pressed, go up: %f", malin_pos.y);
+            //YM_DEBUG("w pressed, go up: %f", malin_pos.y);
         }
         if (win_hax->s)
         {
             malin_pos.y += 100 * dt;
-            YM_DEBUG("s pressed, go down: %f", malin_pos.y);
+            //YM_DEBUG("s pressed, go down: %f", malin_pos.y);
         }
         if (win_hax->a)
         {
             malin_pos.x -= 100 * dt;
-            YM_DEBUG("a pressed, go left: %f", malin_pos.x);
+            //YM_DEBUG("a pressed, go left: %f", malin_pos.x);
         }
         if (win_hax->d)
         {
             malin_pos.x += 100 * dt;
-            YM_DEBUG("d pressed, go right: %f", malin_pos.x);
+            //YM_DEBUG("d pressed, go right: %f", malin_pos.x);
         }
         if (win_hax->e)
         {
             angle -= 2 * dt;
-            YM_DEBUG("e pressed, rotate left");
+            //YM_DEBUG("e pressed, rotate left");
         }
         if (win_hax->q)
         {
             angle += 2 * dt;
-            YM_DEBUG("q pressed, rotate right");
+            //YM_DEBUG("q pressed, rotate right");
         }
         // EO Super hax for testing transformations
 
@@ -165,7 +166,7 @@ main(YM_UNUSED int argc,
     errc = ym_errc_success;
     errc |= shutdown_subsystems();
     if ((errc != ym_errc_success))
-        YM_WARN("Shutdown not without error %s", ym_errc_str(errc));
+        YM_WARN("Shutdown with error %s", ym_errc_str(errc));
 
     ym_gfx_destroy_window(window);
 
