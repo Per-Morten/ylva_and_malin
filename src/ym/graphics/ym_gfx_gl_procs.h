@@ -12,6 +12,8 @@
 #include <GL/glext.h>
 #endif
 
+#include <ym_error.h>
+
 extern PFNGLGENBUFFERSPROC              glGenBuffers;
 extern PFNGLBINDBUFFERPROC              glBindBuffer;
 extern PFNGLBUFFERDATAPROC              glBufferData;
@@ -49,3 +51,6 @@ extern PFNGLDELETEPROGRAMPROC           glDeleteProgram;
 #ifdef WIN32
 extern PFNGLACTIVETEXTUREPROC           glActiveTexture;
 #endif
+
+ym_errc
+ym_gfx_gl_load_procs();

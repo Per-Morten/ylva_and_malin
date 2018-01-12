@@ -7,7 +7,7 @@ set(headers
 
 set(source
     ym_gfx_gl.c
-    ym_gfx_gl_init.c
+    ym_gfx_gl_procs.c
     ym_gfx_sprite.c
 )
 
@@ -53,6 +53,6 @@ else()
     target_link_libraries(ym_graphics
         X11
         GL
-        GLU
+        #GLU
     )
 endif()

@@ -67,9 +67,10 @@ get_gl_func(const char* name, void** ptr)
 }
 #endif
 
+// Take in memory region here, that can be used by gl funcs that requires memory.
 YM_NO_DISCARD
 ym_errc
-ym_gfx_gl_init()
+ym_gfx_gl_load_procs()
 {
     ym_errc errc = ym_errc_success;
 
