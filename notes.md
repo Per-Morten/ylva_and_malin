@@ -16,6 +16,9 @@ with no really good error messages, might just be that the shader compiler is a 
 which wouldn't be surprising.
 Will therefore always use int, even when values cant be < 0.
 
-##### Edit
+### Edit
 The problems wasn't really the signed vs unsigned, it was related to a memory issue when loading shaders.
 The shader source didn't necessarily end with a '\0', which I wrongfully blamed on uint vs int.
+
+## Branching strategy
+Putting proper branching strategy and tasks on hold, until I get something more up and going, cause now I am just enjoying the freedom of jumping around doing whatever I want.
