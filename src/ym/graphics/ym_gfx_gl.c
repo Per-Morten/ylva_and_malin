@@ -1,10 +1,9 @@
 #include <ym_gfx_gl.h>
 #include <ym_gfx_sprite.h>
+#include <ym_allocator.h>
 
 #include <stdio.h>
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
 static
 const char*
@@ -33,16 +32,33 @@ gl_error_str(GLenum e)
     return "Unknown Error!";
 }
 
+static ym_mem_region* ym_gfx_gl_mem_reg;
+
+ym_errc
+ym_gfx_gl_init(ym_mem_region* region)
+{
+    ym_errc errc = ym_gfx_gl_load_procs();
+
+    ym_gfx_gl_mem_reg = region;
+
+    return errc;
+}
+
 ym_errc
 ym_gfx_gl_create_shader(const char* file_path,
                         GLenum type,
-                        GLuint* out_shader)
+                        GLuint* out_shader) // Also take in memory?
 {
     YM_ASSERT(file_path && out_shader,
               ym_errc_invalid_input,
               "file_path and out_shader must not be NULL");
 
+    ym_allocator allocator;
+    ym_create_allocator(ym_gfx_gl_mem_reg, ym_alloc_strategy_linear, 1048, &allocator);
+
+
     /// \todo Use ym_mem rather than malloc and free.
+    /// Can probably just use a linear allocator
     FILE* file = fopen(file_path, "r");
     if (!file)
     {
@@ -56,7 +72,9 @@ ym_gfx_gl_create_shader(const char* file_path,
     long file_len = ftell(file);
     rewind(file);
 
-    GLchar* source = malloc(file_len * sizeof(GLchar) + 1);
+    GLchar* source;
+    ym_allocate(&allocator, file_len * sizeof(GLchar) + 1, &source);
+    //GLchar* source = malloc(file_len * sizeof(GLchar) + 1);
     // Ensure terminating \0.
     source[file_len * sizeof(GLchar)] = '\0';
     if (!fread(source, sizeof(GLchar), file_len, file))
@@ -65,9 +83,10 @@ ym_gfx_gl_create_shader(const char* file_path,
                 ym_errc_str(ym_errc_system_error),
                 file_path);
 
-        free(source);
+        //free(source);
         fclose(file);
         return ym_errc_system_error;
+
     }
     fclose(file);
 
@@ -78,13 +97,13 @@ ym_gfx_gl_create_shader(const char* file_path,
                 ym_errc_str(ym_errc_gl_error),
                 gl_error_str(glGetError()));
 
-        free(source);
+        //free(source);
         return ym_errc_gl_error;
     }
 
     glShaderSource(shader, 1, (const GLchar**)&source, NULL);
 
-    free(source);
+    //free(source);
 
     glCompileShader(shader);
 
@@ -111,6 +130,11 @@ ym_gfx_gl_create_shader(const char* file_path,
 
         return ym_errc_gl_error;
     }
+
+    ym_deallocate(&allocator, 1048, source);
+    ym_destroy_allocator(ym_gfx_gl_mem_reg, &allocator);
+
+
 
     *out_shader = shader;
     return ym_errc_success;
@@ -186,6 +210,7 @@ ym_gfx_gl_create_texture(const char* file_path,
                          GLuint* out_texture)
 {
     /// \todo Use ym_mem rather than malloc and free.
+    /// Can also probably just use a stack allocator, and think of which way I free.
     GLubyte* image;
     GLsizei width;
     GLsizei height;
@@ -269,5 +294,3 @@ ym_gfx_gl_get_uniform(GLuint program,
 
     return ym_errc_success;
 }
-
-#pragma GCC diagnostic pop
