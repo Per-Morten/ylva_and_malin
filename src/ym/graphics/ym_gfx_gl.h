@@ -7,7 +7,7 @@
 
 YM_NO_DISCARD
 ym_errc
-ym_gfx_gl_init(ym_mem_region* region);
+ym_gfx_gl_init(ym_mem_reg_id region);
 
 
 YM_NO_DISCARD

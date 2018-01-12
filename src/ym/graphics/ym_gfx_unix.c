@@ -5,7 +5,7 @@
 #include <X11/Xlib.h>
 #include <X11/XKBlib.h>
 
-static ym_mem_region* ym_gfx_mem_reg;
+static ym_mem_reg_id ym_gfx_mem_reg;
 
 ///////////////////////////////////////////////////////////
 /// \struct ym_gfx_unix_window
@@ -65,7 +65,7 @@ struct
 } ym_gfx_unix_window;
 
 ym_errc
-ym_gfx_init(ym_mem_region* memory_region)
+ym_gfx_init(ym_mem_reg_id memory_region)
 {
     YM_ASSERT(memory_region,
               ym_errc_invalid_input,
@@ -92,8 +92,9 @@ ym_gfx_create_window(u16 width,
               "Window name must not be NULL");
 
     // Allocate from beginning of memory region
-    ym_gfx_unix_window* window = ym_gfx_mem_reg->mem;
-    ym_gfx_mem_reg->used += sizeof(ym_gfx_unix_window);
+    //ym_gfx_unix_window* window = ym_gfx_mem_reg->mem;
+    ym_gfx_unix_window* window = YM_MALLOC(ym_gfx_mem_reg, sizeof(ym_gfx_unix_window));
+    //ym_gfx_mem_reg->used += sizeof(ym_gfx_unix_window);
 
     // Using Xkb just so we can use XkbKeycodeToKeysym which isn't deprecated.
     int errc = 0;
@@ -191,7 +192,9 @@ ym_gfx_destroy_window(ym_gfx_window* w)
     XDestroyWindow(window->display, window->win);
     XCloseDisplay(window->display);
 
-    ym_gfx_mem_reg->used -= sizeof(ym_gfx_unix_window);
+    YM_FREE(ym_gfx_mem_reg, sizeof(ym_gfx_unix_window), window);
+    //memset(w, 0xFFFFFF, sizeof(ym_gfx_unix_window));
+    //ym_gfx_mem_reg->used -= sizeof(ym_gfx_unix_window);
 }
 
 bool

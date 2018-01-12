@@ -47,7 +47,7 @@ typedef void ym_gfx_window;
 ///////////////////////////////////////////////////////////
 YM_NO_DISCARD
 ym_errc
-ym_gfx_init(ym_mem_region* memory_region);
+ym_gfx_init(ym_mem_reg_id memory_region);
 
 ///////////////////////////////////////////////////////////
 /// \ingroup ym_gfx

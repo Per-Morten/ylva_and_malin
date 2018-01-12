@@ -32,10 +32,10 @@ gl_error_str(GLenum e)
     return "Unknown Error!";
 }
 
-static ym_mem_region* ym_gfx_gl_mem_reg;
+static ym_mem_reg_id ym_gfx_gl_mem_reg;
 
 ym_errc
-ym_gfx_gl_init(ym_mem_region* region)
+ym_gfx_gl_init(ym_mem_reg_id region)
 {
     ym_errc errc = ym_gfx_gl_load_procs();
 
@@ -53,8 +53,8 @@ ym_gfx_gl_create_shader(const char* file_path,
               ym_errc_invalid_input,
               "file_path and out_shader must not be NULL");
 
-    ym_allocator allocator;
-    ym_create_allocator(ym_gfx_gl_mem_reg, ym_alloc_strategy_linear, 1048, &allocator);
+    //ym_allocator allocator;
+    //ym_create_allocator(ym_gfx_gl_mem_reg, ym_alloc_strategy_linear, 1048, &allocator);
 
 
     /// \todo Use ym_mem rather than malloc and free.
@@ -72,9 +72,9 @@ ym_gfx_gl_create_shader(const char* file_path,
     long file_len = ftell(file);
     rewind(file);
 
-    GLchar* source;
-    ym_allocate(&allocator, file_len * sizeof(GLchar) + 1, &source);
-    //GLchar* source = malloc(file_len * sizeof(GLchar) + 1);
+    //GLchar* source;
+    //ym_allocate(&allocator, file_len * sizeof(GLchar) + 1, &source);
+    GLchar* source = malloc(file_len * sizeof(GLchar) + 1);
     // Ensure terminating \0.
     source[file_len * sizeof(GLchar)] = '\0';
     if (!fread(source, sizeof(GLchar), file_len, file))
@@ -83,7 +83,7 @@ ym_gfx_gl_create_shader(const char* file_path,
                 ym_errc_str(ym_errc_system_error),
                 file_path);
 
-        //free(source);
+        free(source);
         fclose(file);
         return ym_errc_system_error;
 
@@ -97,13 +97,13 @@ ym_gfx_gl_create_shader(const char* file_path,
                 ym_errc_str(ym_errc_gl_error),
                 gl_error_str(glGetError()));
 
-        //free(source);
+        free(source);
         return ym_errc_gl_error;
     }
 
     glShaderSource(shader, 1, (const GLchar**)&source, NULL);
 
-    //free(source);
+    free(source);
 
     glCompileShader(shader);
 
@@ -131,8 +131,8 @@ ym_gfx_gl_create_shader(const char* file_path,
         return ym_errc_gl_error;
     }
 
-    ym_deallocate(&allocator, 1048, source);
-    ym_destroy_allocator(ym_gfx_gl_mem_reg, &allocator);
+    //ym_deallocate(&allocator, 1048, source);
+    //ym_destroy_allocator(ym_gfx_gl_mem_reg, &allocator);
 
 
 

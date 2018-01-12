@@ -14,7 +14,7 @@ init_subsystems(ym_gfx_window* window)
     ym_errc errc = ym_errc_success;
 
     //errc |= ym_telemetry_init(ym_mem_get_region(ym_mem_reg_telemetry));
-    errc |= ym_gfx_gl_init(ym_mem_get_region(ym_mem_reg_gl));
+    errc |= ym_gfx_gl_init(ym_mem_reg_gl);
     errc |= ym_sprite_init(NULL, window);
 
     return errc;
@@ -42,7 +42,7 @@ main(YM_UNUSED int argc,
     if (errc != ym_errc_success)
         goto cleanup;
 
-    errc = ym_gfx_init(ym_mem_get_region(ym_mem_reg_gfx));
+    errc = ym_gfx_init(ym_mem_reg_gfx);
     if (errc != ym_errc_success)
         goto cleanup;
 
@@ -78,6 +78,24 @@ main(YM_UNUSED int argc,
         .x = 400.0f,
         .y = 300.0f,
     };
+
+    // TESTING MALLOCS
+    // SERIOUSLY; CREATE MEMORY TESTS!!
+    for (int k = 0; k < 2; k++)
+    {
+        void* memory[3];
+        for (int i = 0; i < 3; i++)
+            memory[i] = YM_MALLOC(ym_mem_reg_gfx, 40);
+
+        for (int i = 0; i < 3; i++)
+            YM_FREE(ym_mem_reg_gfx, 40, memory[i]);
+        //for (int i = 2; i >= 0; i--)
+        //    YM_FREE(ym_mem_reg_gfx, 40, memory[i]);
+
+
+    }
+
+    // EO TESTING MALLOCS
 
 
     while (ym_gfx_window_is_open(window))

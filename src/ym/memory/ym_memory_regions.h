@@ -1,18 +1,17 @@
 #pragma once
 
 #define YM_MEM_REG_REGION_HEADS_ID              0
-#define YM_MEM_REG_REGION_HEADS_BLOCK_SIZE    256
+#define YM_MEM_REG_REGION_HEADS_BLOCK_SIZE   4096
 #define YM_MEM_REG_REGION_HEADS_OFFSET          0
 
 #define YM_MEM_REG_GFX_ID                       1
-#define YM_MEM_REG_GFX_BLOCK_SIZE             256
+#define YM_MEM_REG_GFX_BLOCK_SIZE            4096 // orig: 256
 #define YM_MEM_REG_GFX_OFFSET                   \
 (YM_MEM_REG_REGION_HEADS_OFFSET +               \
  YM_MEM_REG_REGION_HEADS_BLOCK_SIZE)
 
 #define YM_MEM_REG_GL_ID                        2
-#define YM_MEM_REG_GL_BLOCK_SIZE             2048
-
+#define YM_MEM_REG_GL_BLOCK_SIZE             4096 // orig: 2048
 #define YM_MEM_REG_GL_OFFSET                    \
 (YM_MEM_REG_GFX_OFFSET +                        \
  YM_MEM_REG_GFX_BLOCK_SIZE)
@@ -21,7 +20,7 @@
 // contain debug information,
 // And won't run when the product is finished.
 #define YM_MEM_REG_TELEMETRY_ID                 3
-#define YM_MEM_REG_TELEMETRY_BLOCK_SIZE         0
+#define YM_MEM_REG_TELEMETRY_BLOCK_SIZE      4096 // orig: 256
 #define YM_MEM_REG_TELEMETRY_OFFSET             \
 (YM_MEM_REG_GL_OFFSET +                         \
  YM_MEM_REG_GL_BLOCK_SIZE)
