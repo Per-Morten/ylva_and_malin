@@ -76,10 +76,10 @@ static
 ym_errc
 free_list_allocate(ym_allocator* allocator, int size, void** ptr)
 {
-    YM_DEBUG("Allocating: %d from region: %s, %p",
-             size,
-             ym_mem_reg_id_str(allocator->id),
-             *(uintptr_t*)allocator->mem);
+    //YM_DEBUG("Allocating: %d from region: %s, %p",
+    //         size,
+    //         ym_mem_reg_id_str(allocator->id),
+    //         *(uintptr_t*)allocator->mem);
 
     int pool = (size < 16) ? 0
              : (size < 32) ? 1
@@ -92,12 +92,12 @@ free_list_allocate(ym_allocator* allocator, int size, void** ptr)
         uintptr_t* mem = heads[pool];
         uintptr_t* next = *(uintptr_t*)heads[pool];
         (*ptr) = mem;
-        YM_DEBUG("Pool: %d, mem %p, Heads: %p, next: %p", pool, mem, heads[pool], next);
+        //YM_DEBUG("Pool: %d, mem %p, Heads: %p, next: %p", pool, mem, heads[pool], next);
         heads[pool] = next;
     }
     else
     {
-        YM_DEBUG("Not enough room");
+        //YM_DEBUG("Not enough room");
         (*ptr) = NULL;
         // Return error here!
     }
@@ -116,16 +116,18 @@ free_list_deallocate(ym_allocator* allocator, int size, void* ptr)
     // Its the same no matter which order I deallocate in.
     // Create test that deletes in an order I can use to
     // double check that is is happening correctly.
-    YM_DEBUG("Deallocating: %d to region: %s, %p",
-             size,
-             ym_mem_reg_id_str(allocator->id),
-             ptr);
+
+    // REMEMBER TO MEMSET MEMORY HERE! So it can be used to check for leaks etc.
+    //YM_DEBUG("Deallocating: %d to region: %s, %p",
+    //         size,
+    //         ym_mem_reg_id_str(allocator->id),
+    //         ptr);
     //free(ptr);
 
     if (!ptr)
     {
-        YM_DEBUG("Sending in nullptr");
-        return ym_errc_success;
+        //YM_DEBUG("Sending in NULL");
+        return ym_errc_invalid_input;
     }
 
     int pool = (size < 16) ? 0
@@ -147,10 +149,10 @@ free_list_deallocate(ym_allocator* allocator, int size, void* ptr)
            int count = 0;
            while (start)// && count < 5)
            {
-               YM_DEBUG("%d, %p, %p", count++, start, *start);
+               //YM_DEBUG("%d, %p, %p", count++, start, *start);
                start = *start;
            }
-           YM_DEBUG("Used: %u", allocator->used);
+           //YM_DEBUG("Used: %u", allocator->used);
 
        }
    }
@@ -165,6 +167,7 @@ ym_errc
 ym_create_allocator(ym_alloc_strategy strategy,
                     void* memory,
                     uint size,
+                    ym_allocator_cfg* allocator_cfg,
                     ym_allocator* out_allocator)
 {
     out_allocator->strategy = strategy;

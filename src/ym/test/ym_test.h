@@ -11,7 +11,7 @@
 do                              \
 {                               \
     if (!(test))                \
-        return message;         \
+        return "\033[0;31m" message "\033[0m"; \
 } while (0)
 
 

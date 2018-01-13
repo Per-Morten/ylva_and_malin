@@ -21,3 +21,7 @@ target_include_directories(ym_memory
 target_link_libraries(ym_memory
     ym_core
 )
+
+if (${YM_ENABLE_TESTS})
+    subdirs(test)
+endif()

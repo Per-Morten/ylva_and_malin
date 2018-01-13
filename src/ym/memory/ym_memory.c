@@ -58,12 +58,20 @@ ym_mem_init()
     }
 
 
-    int offsets[][2] =
+    int offsets[] =
     {
-        { YM_MEM_REG_REGION_HEADS_OFFSET, YM_MEM_REG_REGION_HEADS_BLOCK_SIZE},
-        { YM_MEM_REG_GFX_OFFSET, YM_MEM_REG_GFX_BLOCK_SIZE },
-        { YM_MEM_REG_GL_OFFSET, YM_MEM_REG_GL_BLOCK_SIZE },
-        { YM_MEM_REG_TELEMETRY_OFFSET, YM_MEM_REG_TELEMETRY_BLOCK_SIZE },
+        YM_MEM_REG_REGION_HEADS_OFFSET,
+        YM_MEM_REG_GFX_OFFSET,
+        YM_MEM_REG_GL_OFFSET,
+        YM_MEM_REG_TELEMETRY_OFFSET,
+    };
+
+    int sizes[] =
+    {
+        YM_MEM_REG_REGION_HEADS_BLOCK_SIZE,
+        YM_MEM_REG_GFX_BLOCK_SIZE,
+        YM_MEM_REG_GL_BLOCK_SIZE,
+        YM_MEM_REG_TELEMETRY_BLOCK_SIZE,
     };
 
     YM_DEBUG("      Memory begin-end: %p %p",
@@ -74,8 +82,9 @@ ym_mem_init()
     {
         ym_g_regions[i].id = i;
         ym_errc errc = ym_create_allocator(ym_alloc_strategy_region,
-                            ym_g_memory + offsets[i][0],
-                            offsets[i][1],
+                            ym_g_memory + offsets[i],
+                            sizes[i],
+                            NULL,
                             &ym_g_regions[i]);
 
         if (errc != ym_errc_success)

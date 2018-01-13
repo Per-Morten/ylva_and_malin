@@ -29,10 +29,21 @@ struct
     // Maybe union?
 } ym_allocator;
 
+// Use to send extra information about allocations.
+typedef
+struct
+{
+    // Only if region
+    // Make into union if other members are added
+    u16 slot_sizes;
+    u8 slot_count[16];
+} ym_allocator_cfg;
+
 ym_errc
 ym_create_allocator(ym_alloc_strategy strategy,
                     void* memory,
                     uint size,
+                    ym_allocator_cfg* allocator_cfg, // Can be NULL, if N/A, or to use defaults
                     ym_allocator* out_allocator);
 
 ym_errc
