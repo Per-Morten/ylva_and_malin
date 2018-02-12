@@ -84,7 +84,12 @@ ym_mem_init()
         ym_errc errc = ym_create_allocator(ym_alloc_strategy_region,
                             ym_g_memory + offsets[i],
                             sizes[i],
-                            NULL,
+                            &(ym_allocator_cfg) // Temporary hack to get the game working. This should be something else.
+                            {
+                                .slot_size = (int[]){16, 32, 128, 1024},
+                                .slot_count = (int[]){4, 4, 4, 1},
+                                .count = 4,
+                            },
                             &ym_g_regions[i]);
 
         if (errc != ym_errc_success)

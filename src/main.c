@@ -79,25 +79,6 @@ main(YM_UNUSED int argc,
         .y = 300.0f,
     };
 
-    // TESTING MALLOCS
-    // SERIOUSLY; CREATE MEMORY TESTS!!
-    for (int k = 0; k < 2; k++)
-    {
-        void* memory[3];
-        for (int i = 0; i < 3; i++)
-            memory[i] = YM_MALLOC(ym_mem_reg_gfx, 40);
-
-        for (int i = 0; i < 3; i++)
-            YM_FREE(ym_mem_reg_gfx, 40, memory[i]);
-        //for (int i = 2; i >= 0; i--)
-        //    YM_FREE(ym_mem_reg_gfx, 40, memory[i]);
-
-
-    }
-
-    // EO TESTING MALLOCS
-
-
     while (ym_gfx_window_is_open(window))
     {
         double start = ym_clock_now();
@@ -111,6 +92,8 @@ main(YM_UNUSED int argc,
             texture_id++;
             texture_id = texture_id % 12;
         }
+
+
 
 
         // SUPER HAX FOR TESTING TRANSFORMATIONS!

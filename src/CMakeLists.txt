@@ -68,15 +68,6 @@ if (${YM_ENABLE_TESTS})
         -DYM_ASSERT_ERRC        \
         "
     )
-
-    set(CMAKE_CXX_FLAGS
-        "${CMAKE_CXX_FLAGS}     \
-        -Wall                   \
-        -Wextra                 \
-        -O3                     \
-        -std=c++17              \
-        "
-        )
 endif()
 
 if (NOT ${CMAKE_BUILD_TYPE} STREQUAL "Test")

@@ -12,6 +12,19 @@ enum
     // Add strategies for aligned allocations?
 } ym_alloc_strategy;
 
+// Use to send extra information about allocations.
+typedef
+struct
+{
+    // Only if region
+    // Make into union if other members are added
+    int* slot_size; // Must be sorted Ascending
+    int* slot_count; // Number of blocks per slot
+    int count; // Size of both arrays
+} ym_allocator_cfg;
+
+#define YM_ALLOCATOR_SLOT_REGION_COUNT 4
+
 typedef
 struct
 {
@@ -21,23 +34,24 @@ struct
 
 
     void* mem;
-    uint16_t size;
-    uint16_t used;
+    u16 size;
+    u16 used;
     ym_alloc_strategy strategy;
+
+    union
+    {
+        struct
+        {
+            u16 slot_size[YM_ALLOCATOR_SLOT_REGION_COUNT];
+            u8 slot_count[YM_ALLOCATOR_SLOT_REGION_COUNT];
+            uintptr_t heads[YM_ALLOCATOR_SLOT_REGION_COUNT];
+        } free_list;
+    };
 
     // Think of how to add extra variables that might be needed?
     // Maybe union?
 } ym_allocator;
 
-// Use to send extra information about allocations.
-typedef
-struct
-{
-    // Only if region
-    // Make into union if other members are added
-    u16 slot_sizes;
-    u8 slot_count[16];
-} ym_allocator_cfg;
 
 ym_errc
 ym_create_allocator(ym_alloc_strategy strategy,
