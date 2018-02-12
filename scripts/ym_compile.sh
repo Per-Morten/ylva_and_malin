@@ -112,12 +112,15 @@ ym_build_tests()
     pushd test >/dev/null
     cmake -DCMAKE_BUILD_TYPE=Test -DYM_ENABLE_TESTS:BOOLEAN=1 ${YM_SOURCE_DIR}
     make "-j8"
+    local compile_res=${?}
 
     popd >/dev/null
 
     # Pop out of the rest
     popd >/dev/null
     popd >/dev/null
+
+    return ${compile_res}
 }
 
 ym_run_tests()
@@ -132,7 +135,7 @@ ym_run_tests()
     popd >/dev/null
 }
 
-ym_run_continous()
+ym_continous_game()
 {
     # Main idea taken from: https://stackoverflow.com/a/9461685
     chsum1=""
@@ -144,7 +147,6 @@ ym_run_continous()
 
             # Get window currently in focus
             work_focus=$(xprop -root | awk '/_NET_ACTIVE_WINDOW/ {print $5; exit}')
-            echo ${work_focus}
 
             # Launch compilation
             ym_compile
@@ -172,6 +174,31 @@ ym_run_continous()
                 wmctrl -i -r ${new_window_id} -e 0,0,0,-1,-1
 
                 wmctrl -i -a ${work_focus}
+            fi
+
+            chsum1=$chsum2
+        fi
+        sleep 2
+    done
+
+}
+
+ym_continous_tests()
+{
+    # Main idea taken from: https://stackoverflow.com/a/9461685
+    chsum1=""
+    while [[ true ]]
+    do
+        chsum2=$(find ${YM_SOURCE_DIR} ${YM_RESOURCE_DIR} -type f -exec md5sum {} \;)
+        if [[ $chsum1 != $chsum2 ]] ; then
+        clear
+            # Launch compilation
+            ym_build_tests
+
+            if [[ $? -eq 0 ]];
+            then
+                #clear
+                ym_run_tests
             fi
 
             chsum1=$chsum2
