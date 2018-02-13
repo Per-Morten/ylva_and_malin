@@ -55,12 +55,15 @@ static struct
 
 } g_ym_render_cfg;
 
+// This system needs to be way more robust! Should also probably be dynamically allocated instead
+// Also can't directly map ym_sheet_id to index in array, because it is not guaranteed to be ever incrementing, and also don't start at 0.
+// Current hack is to have 3 slots. But this NEEDS to be changed!
 static struct
 {
     uint row_count;
     uint col_count;
     ym_sheet_id id;
-} g_ym_sprite_info[2];
+} g_ym_sprite_info[3];
 
 
 // Simple view, allowing me to work in [0-2] space, rather than [-1 - 1]
