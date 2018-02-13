@@ -1,6 +1,9 @@
 #pragma once
 #include <ym_core.h>
 
+// Create macro for allocating and freeing can be used to track allocations and frees in debug
+// Can be used to be notified of leaks.
+
 typedef
 enum
 {
@@ -38,6 +41,8 @@ struct
     u16 used;
     ym_alloc_strategy strategy;
 
+    // These variables should be "private", i.e. not used in actual program
+    // But are needed publicly for testing, among other things.
     union
     {
         struct

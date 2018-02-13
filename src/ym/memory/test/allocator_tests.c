@@ -12,11 +12,6 @@ get_region_allocator()
     ym_allocator allocator;
     allocator.id = 1;
 
-//    u32 number = 128 | 256;
-//    for (int i = 31; i >= 0; i--)
-//        printf("%c", number & (1 << i) ? '1' : '0');
-//    printf("\n");
-
     ym_create_allocator(ym_alloc_strategy_region,
                         g_total_memory,
                         4096,
@@ -213,7 +208,20 @@ test_region_errc_on_null()
 const char*
 test_errc_on_out_of_memory()
 {
-    // TODO: What should happen here? Cause technically I want to fallback on malloc initially.
+    ym_allocator allocator = get_region_allocator();
+    void* used_mem[4];
+
+    for (int i = 0; i < 4; i++)
+    {
+        ym_errc errc = ym_allocate(&allocator, 40, &used_mem[i]);
+        YM_CHECK("allocate used_mem success", errc == ym_errc_success);
+    }
+
+    void* ptr = NULL;
+    ym_errc errc = ym_allocate(&allocator, 40, &ptr);
+    YM_CHECK("errc should be out of memory", errc == ym_errc_out_of_memory);
+    YM_CHECK("Pointer shouldn't be null", ptr);
+    YM_CHECK("pointer should be outside of allocator range:", ptr < allocator.mem || ptr > allocator.mem + allocator.size);
 
     return NULL;
 }
@@ -222,6 +230,10 @@ const char*
 test_errc_on_invalid_dealloc_request()
 {
     // TODO: This should deal with the case that the memory doesn't actually come from the allocator
+    ym_allocator allocator = get_region_allocator();
+    void* ptr = malloc(40);
+    ym_errc errc = ym_deallocate(&allocator, 40, ptr);
+    YM_CHECK("errc should be invalid input", errc = ym_errc_invalid_input);
 
     return NULL;
 }
@@ -233,6 +245,8 @@ test_errc_on_invalid_alloc_size_request()
     ym_allocator allocator = get_region_allocator();
     ym_errc errc = ym_allocate(&allocator, 4096, &ptr);
     YM_CHECK("errc should not be success", errc != ym_errc_success);
+    YM_CHECK("Pointer shouldn't be null", ptr);
+    YM_CHECK("pointer should be outside of allocator range:", ptr < allocator.mem || ptr > allocator.mem + allocator.size);
 
     return NULL;
 }
@@ -241,6 +255,10 @@ const char*
 test_errc_on_invalid_dealloc_size_request()
 {
     // TODO: This should deal with the case that the memory doesn't actually come from the allocator
+    ym_allocator allocator = get_region_allocator();
+    void* ptr = malloc(40);
+    ym_errc errc = ym_deallocate(&allocator, 40, ptr);
+    YM_CHECK("errc should be invalid input", errc = ym_errc_invalid_input);
 
     return NULL;
 }
@@ -258,7 +276,7 @@ main(YM_UNUSED int argc,
         test_errc_on_out_of_memory,
         test_errc_on_invalid_dealloc_request,
         test_errc_on_invalid_alloc_size_request,
-        //test_errc_on_invalid_dealloc_size_request,
+        test_errc_on_invalid_dealloc_size_request,
     };
 
     const char* test_names[] =
@@ -270,7 +288,7 @@ main(YM_UNUSED int argc,
         "test_errc_on_out_of_memory",
         "test_errc_on_invalid_dealloc_request",
         "test_errc_on_invalid_alloc_size_request",
-        //"test_errc_on_invalid_dealloc_size_request",
+        "test_errc_on_invalid_dealloc_size_request",
     };
 
     int passed_tests = 0;

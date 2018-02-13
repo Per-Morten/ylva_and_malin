@@ -48,7 +48,6 @@ main(YM_UNUSED int argc,
 
     window = ym_gfx_create_window(800, 600, "ylva_and_malin");
 
-
     errc = init_subsystems(window);
     if (errc != ym_errc_success)
         goto cleanup;
@@ -60,6 +59,7 @@ main(YM_UNUSED int argc,
     ym_sheet_id ylva_sheet;
     ym_sprite_load_sheet("resources/sprites/ylva_regular.png", 3, 4,
                          &ylva_sheet);
+
 
     ym_sprite_id texture_id = 0;
     double dt = 0.0;
@@ -92,9 +92,6 @@ main(YM_UNUSED int argc,
             texture_id++;
             texture_id = texture_id % 12;
         }
-
-
-
 
         // SUPER HAX FOR TESTING TRANSFORMATIONS!
         typedef
