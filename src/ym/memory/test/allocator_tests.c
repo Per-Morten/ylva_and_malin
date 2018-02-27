@@ -1,10 +1,14 @@
 #include <ym_test.h>
 #include <ym_core.h>
+
+#define YM_MEMORY_TRACKING
 #include <ym_allocator.h>
 #include <stdbool.h>
 
 typedef const char* (*test_func)();
 u8 g_total_memory[4096];
+
+extern void ym_print_allocator_logs();
 
 ym_allocator
 get_region_allocator()
@@ -66,7 +70,7 @@ test_region_same_order_allocate_deallocate()
 
     for (int i = 0; i < mock_ptrs_count; i++)
     {
-        ym_errc errc = ym_allocate(&allocator, 40, &mock_ptrs[i]);
+        ym_errc errc = YM_ALLOCATE(&allocator, 40, &mock_ptrs[i]);
         YM_CHECK("errc is success", errc == ym_errc_success);
         YM_CHECK("memory isn't NULL", mock_ptrs[i]);
     }
@@ -76,7 +80,7 @@ test_region_same_order_allocate_deallocate()
 
     for (int i = 0; i < mock_ptrs_count; i++)
     {
-        ym_errc errc = ym_deallocate(&allocator, 40, mock_ptrs[i]);
+        ym_errc errc = YM_DEALLOCATE(&allocator, 40, mock_ptrs[i]);
         YM_CHECK("errc is success", errc == ym_errc_success);
         YM_CHECK("head is newly deallocated", heads[2] == (uintptr_t)mock_ptrs[i]);
     }
@@ -107,7 +111,7 @@ test_region_random_order_allocate_deallocate()
 
     for (int i = 0; i < mock_ptrs_count; i++)
     {
-        ym_errc errc = ym_allocate(&allocator, 40, &mock_ptrs[random_table[i]]);
+        ym_errc errc = YM_ALLOCATE(&allocator, 40, &mock_ptrs[random_table[i]]);
         YM_CHECK("errc is success", errc == ym_errc_success);
         YM_CHECK("memory isn't NULL", mock_ptrs[random_table[i]]);
     }
@@ -117,7 +121,7 @@ test_region_random_order_allocate_deallocate()
 
     for (int i = 0; i < mock_ptrs_count; i++)
     {
-        ym_errc errc = ym_deallocate(&allocator, 40, mock_ptrs[random_table[i]]);
+        ym_errc errc = YM_DEALLOCATE(&allocator, 40, mock_ptrs[random_table[i]]);
         YM_CHECK("errc is success", errc == ym_errc_success);
         YM_CHECK("head is newly deallocated", heads[2] == (uintptr_t)mock_ptrs[random_table[i]]);
     }
@@ -144,7 +148,7 @@ test_region_random_memory_reuse()
 
     for (int i = 0; i < mock_ptrs_count; i++)
     {
-        ym_errc errc = ym_allocate(&allocator, 40, &mock_ptrs[i]);
+        ym_errc errc = YM_ALLOCATE(&allocator, 40, &mock_ptrs[i]);
         YM_CHECK("errc is success", errc == ym_errc_success);
         YM_CHECK("memory isn't NULL", mock_ptrs[i]);
     }
@@ -154,29 +158,30 @@ test_region_random_memory_reuse()
 
     for (int i = 0; i < 2; i++)
     {
-        ym_errc errc = ym_deallocate(&allocator, 40, mock_ptrs[i]);
+        ym_errc errc = YM_DEALLOCATE(&allocator, 40, mock_ptrs[i]);
         YM_CHECK("errc is success", errc == ym_errc_success);
         YM_CHECK("head is newly deallocated", heads[2] == (uintptr_t)mock_ptrs[i]);
     }
 
     void* new_ptrs[2];
+
     for (int i = 0; i < 2; i++)
     {
-        ym_errc errc = ym_allocate(&allocator, 40, &new_ptrs[i]);
+        ym_errc errc = YM_ALLOCATE(&allocator, 40, &new_ptrs[i]);
         YM_CHECK("errc is success", errc == ym_errc_success);
-        YM_CHECK("memory is reused", new_ptrs[i] = mock_ptrs[2 - i]);
+        YM_CHECK("memory is reused", new_ptrs[1 - i] == mock_ptrs[i]);
     }
 
     for (int i = 2; i < 4; i++)
     {
-        ym_errc errc = ym_deallocate(&allocator, 40, mock_ptrs[i]);
+        ym_errc errc = YM_DEALLOCATE(&allocator, 40, mock_ptrs[i]);
         YM_CHECK("errc is success", errc == ym_errc_success);
         YM_CHECK("head is newly deallocated", heads[2] == (uintptr_t)mock_ptrs[i]);
     }
 
     for (int i = 0; i < 2; i++)
     {
-        ym_errc errc = ym_deallocate(&allocator, 40, new_ptrs[i]);
+        ym_errc errc = YM_DEALLOCATE(&allocator, 40, new_ptrs[i]);
         YM_CHECK("errc is success", errc == ym_errc_success);
         YM_CHECK("head is newly deallocated", heads[2] == (uintptr_t)new_ptrs[i]);
     }
@@ -199,7 +204,7 @@ const char*
 test_region_errc_on_null()
 {
     ym_allocator allocator = get_region_allocator();
-    ym_errc errc = ym_deallocate(&allocator, 40, NULL);
+    ym_errc errc = YM_DEALLOCATE(&allocator, 40, NULL);
     YM_CHECK("errc should not be success", errc != ym_errc_success);
 
     return NULL;
@@ -213,16 +218,22 @@ test_errc_on_out_of_memory()
 
     for (int i = 0; i < 4; i++)
     {
-        ym_errc errc = ym_allocate(&allocator, 40, &used_mem[i]);
+        ym_errc errc = YM_ALLOCATE(&allocator, 40, &used_mem[i]);
         YM_CHECK("allocate used_mem success", errc == ym_errc_success);
     }
 
     void* ptr = NULL;
-    ym_errc errc = ym_allocate(&allocator, 40, &ptr);
+    ym_errc errc = YM_ALLOCATE(&allocator, 40, &ptr);
     YM_CHECK("errc should be out of memory", errc == ym_errc_out_of_memory);
     YM_CHECK("Pointer shouldn't be null", ptr);
     YM_CHECK("pointer should be outside of allocator range:", ptr < allocator.mem || ptr > allocator.mem + allocator.size);
 
+    for (int i = 0; i < 4; i++)
+    {
+        ym_errc errc = YM_DEALLOCATE(&allocator, 40, used_mem[i]);
+        YM_CHECK("deallocate success", errc == ym_errc_success);
+    }
+    YM_DEALLOCATE(&allocator, 40, ptr);
     return NULL;
 }
 
@@ -232,7 +243,7 @@ test_errc_on_invalid_dealloc_request()
     // TODO: This should deal with the case that the memory doesn't actually come from the allocator
     ym_allocator allocator = get_region_allocator();
     void* ptr = malloc(40);
-    ym_errc errc = ym_deallocate(&allocator, 40, ptr);
+    ym_errc errc = YM_DEALLOCATE(&allocator, 40, ptr);
     YM_CHECK("errc should be invalid input", errc = ym_errc_invalid_input);
 
     return NULL;
@@ -243,10 +254,13 @@ test_errc_on_invalid_alloc_size_request()
 {
     void* ptr;
     ym_allocator allocator = get_region_allocator();
-    ym_errc errc = ym_allocate(&allocator, 4096, &ptr);
+    ym_errc errc = YM_ALLOCATE(&allocator, 4096, &ptr);
     YM_CHECK("errc should not be success", errc != ym_errc_success);
     YM_CHECK("Pointer shouldn't be null", ptr);
     YM_CHECK("pointer should be outside of allocator range:", ptr < allocator.mem || ptr > allocator.mem + allocator.size);
+
+    errc = YM_DEALLOCATE(&allocator, 4096, ptr);
+    YM_CHECK("deallocate success", errc == ym_errc_invalid_input);
 
     return NULL;
 }
@@ -257,7 +271,7 @@ test_errc_on_invalid_dealloc_size_request()
     // TODO: This should deal with the case that the memory doesn't actually come from the allocator
     ym_allocator allocator = get_region_allocator();
     void* ptr = malloc(40);
-    ym_errc errc = ym_deallocate(&allocator, 40, ptr);
+    ym_errc errc = YM_DEALLOCATE(&allocator, 40, ptr);
     YM_CHECK("errc should be invalid input", errc = ym_errc_invalid_input);
 
     return NULL;
@@ -313,6 +327,7 @@ main(YM_UNUSED int argc,
             passed_tests,
             sizeof(tests) / sizeof(tests[0]));
 
+    ym_print_allocator_logs();
 
     return passed_tests != 0;
 }

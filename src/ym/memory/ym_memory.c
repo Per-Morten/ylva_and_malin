@@ -180,6 +180,11 @@ ym_mem_shutdown()
     //     mem++;
     // }
 
+    #ifdef YM_MEMORY_TRACKING
+    extern void ym_print_allocator_logs();
+    ym_print_allocator_logs();
+    #endif
+
     // Comment this back in after testing!
     free(ym_g_memory);
 
@@ -206,7 +211,7 @@ void*
 ym_mem_reg_alloc(ym_mem_reg_id id, int size, YM_UNUSED char* file, YM_UNUSED int line)
 {
     void* ptr;
-    ym_errc errc = ym_allocate(&ym_g_regions[id], size, &ptr);
+    ym_errc errc = YM_ALLOCATE(&ym_g_regions[id], size, &ptr);
     if (errc != ym_errc_success)
         YM_WARN("%s: memory allocation not without failure.", ym_errc_str(errc));
     return ptr;
@@ -215,7 +220,7 @@ ym_mem_reg_alloc(ym_mem_reg_id id, int size, YM_UNUSED char* file, YM_UNUSED int
 void
 ym_mem_reg_dealloc(ym_mem_reg_id id, int size, void* ptr, YM_UNUSED char* file, YM_UNUSED int line)
 {
-    ym_errc errc = ym_deallocate(&ym_g_regions[id], size, ptr);
+    ym_errc errc = YM_DEALLOCATE(&ym_g_regions[id], size, ptr);
     if (errc != ym_errc_success)
         YM_WARN("%s: memory deallocation not without failure.", ym_errc_str(errc));
 }

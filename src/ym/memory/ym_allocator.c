@@ -1,6 +1,8 @@
 #include <ym_allocator.h>
 #include <ym_memory_regions.h>
 
+
+
 // TODO:
 // Document and test this stuff.
 // Not sure if I am proud or embarrassed for creating a linked list
@@ -107,8 +109,9 @@ free_list_deallocate(ym_allocator* allocator, int size, void* ptr)
     // Deal with case where ptr is not actually from allocator, but probably! i.e. needs to be freed
     if (ptr < allocator->mem || ptr > allocator->mem + allocator->size)
     {
-        YM_WARN("%s: Ptr outside of malloc, freeing with free",
-                ym_errc_str(ym_errc_invalid_input));
+        YM_WARN("%s: Ptr outside of memory, freeing with free, [%p, %p) vs %p",
+                ym_errc_str(ym_errc_invalid_input),
+                allocator->mem, allocator->mem + allocator->size, ptr);
 
         free(ptr);
         return ym_errc_invalid_input;
@@ -134,6 +137,95 @@ free_list_deallocate(ym_allocator* allocator, int size, void* ptr)
     return ym_errc_success;
 }
 #pragma GCC diagnostic pop
+
+#ifdef YM_MEMORY_TRACKING
+#define YM_MEMORY_TRACKING_MAX_SIZE 2048
+#define YM_MEMORY_TRACKING_MAX_STR_SIZE 20
+
+static struct
+{
+    int line;
+    int size;
+    char file[YM_MEMORY_TRACKING_MAX_STR_SIZE];
+    const void* ptr;
+} ym_memory_tracking_info[YM_MEMORY_TRACKING_MAX_SIZE];
+
+static
+void
+track_allocation(YM_UNUSED ym_allocator* allocator,
+                 int size,
+                 void** ptr,
+                 char* file,
+                 int line)
+{
+    #ifdef WIN32
+    const char* filename = strrchr(file, '\\');
+    #else
+    const char* filename = strrchr(file, '/');
+    #endif
+    filename++;
+
+    for (int i = 0; i < YM_MEMORY_TRACKING_MAX_SIZE; i++)
+    {
+        if (ym_memory_tracking_info[i].line == 0)
+        {
+            ym_memory_tracking_info[i].line = line;
+            ym_memory_tracking_info[i].size = size;
+            strcpy(ym_memory_tracking_info[i].file, filename);
+            ym_memory_tracking_info[i].ptr = (*ptr);
+            return;
+        }
+    }
+
+    YM_WARN("%s: Could not track allocation, YM_MEMORY_TRACKING_MAX_SIZE exceeded",
+            ym_errc_str(ym_errc_out_of_memory));
+}
+
+static
+void
+track_deallocation(YM_UNUSED ym_allocator* allocator,
+                   YM_UNUSED int size,
+                   YM_UNUSED void* ptr,
+                   char* file,
+                   int line)
+{
+    #ifdef WIN32
+    const char* filename = strrchr(file, '\\');
+    #else
+    const char* filename = strrchr(file, '/');
+    #endif
+    filename++;
+
+    for (int i = 0; i < YM_MEMORY_TRACKING_MAX_SIZE; i++)
+    {
+        if (ym_memory_tracking_info[i].ptr == ptr)
+        {
+            ym_memory_tracking_info[i].line = 0;
+            return;
+        }
+    }
+
+    YM_WARN("%s: Could not find respective allocation to allocation in: %s, line: %d, %p",
+            ym_errc_str(ym_errc_invalid_input),
+            filename, line, ptr);
+}
+
+void
+ym_print_allocator_logs()
+{
+    for (int i = 0; i < YM_MEMORY_TRACKING_MAX_SIZE; i++)
+    {
+        if (ym_memory_tracking_info[i].line != 0)
+        {
+            YM_WARN("%s: leak detected, file: %s, line: %d, size: %d",
+                    ym_errc_str(ym_errc_mem_leak),
+                    ym_memory_tracking_info[i].file,
+                    ym_memory_tracking_info[i].line,
+                    ym_memory_tracking_info[i].size);
+        }
+    }
+}
+#endif
 
 ym_errc
 ym_create_allocator(ym_alloc_strategy strategy,
@@ -206,7 +298,11 @@ ym_errc_linear_deallocate(YM_UNUSED ym_allocator* allocator,
 }
 
 ym_errc
+#ifdef YM_MEMORY_TRACKING
+ym_allocate(ym_allocator* allocator, int size, void** ptr, char* file, int line)
+#else
 ym_allocate(ym_allocator* allocator, int size, void** ptr)
+#endif
 {
     ym_errc errc;
     switch (allocator->strategy)
@@ -236,11 +332,19 @@ ym_allocate(ym_allocator* allocator, int size, void** ptr)
         break;
     }
 
+    #ifdef YM_MEMORY_TRACKING
+    track_allocation(allocator, size, ptr, file, line);
+    #endif
+
     return errc;
 }
 
 ym_errc
+#ifdef YM_MEMORY_TRACKING
+ym_deallocate(ym_allocator* allocator, int size, void* ptr, char* file, int line)
+#else
 ym_deallocate(ym_allocator* allocator, int size, void* ptr)
+#endif
 {
     ym_errc errc;
     switch (allocator->strategy)
@@ -268,6 +372,11 @@ ym_deallocate(ym_allocator* allocator, int size, void* ptr)
             return errc;
         break;
     }
+
+    #ifdef YM_MEMORY_TRACKING
+    if (ptr)
+        track_deallocation(allocator, size, ptr, file, line);
+    #endif
 
     return errc;
 }

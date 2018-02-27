@@ -1,9 +1,6 @@
 #pragma once
 #include <ym_core.h>
 
-// Create macro for allocating and freeing can be used to track allocations and frees in debug
-// Can be used to be notified of leaks.
-
 typedef
 enum
 {
@@ -15,7 +12,7 @@ enum
     // Add strategies for aligned allocations?
 } ym_alloc_strategy;
 
-// Use to send extra information about allocations.
+// Used to send extra information about allocations.
 typedef
 struct
 {
@@ -68,18 +65,36 @@ ym_create_allocator(ym_alloc_strategy strategy,
 ym_errc
 ym_destroy_allocator(ym_allocator* allocator);
 
-// ym_errc
-// ym_create_allocator(ym_mem_region* region,
-//                     ym_alloc_strategy strategy,
-//                     uint size,
-//                     ym_allocator* out_allocator);
+#define YM_MEMORY_TRACKING
 
-// ym_errc
-// ym_destroy_allocator(ym_mem_region* region,
-//                      ym_allocator* allocator);
-
+#ifdef YM_MEMORY_TRACKING
+ym_errc
+ym_allocate(ym_allocator* allocator, int size, void** ptr, char* file, int line);
+#else
 ym_errc
 ym_allocate(ym_allocator* allocator, int size, void** ptr);
+#endif
 
+#ifdef YM_MEMORY_TRACKING
+ym_errc
+ym_deallocate(ym_allocator* allocator, int size, void* ptr, char* file, int line);
+#else
 ym_errc
 ym_deallocate(ym_allocator* allocator, int size, void* ptr);
+#endif
+
+#ifdef YM_MEMORY_TRACKING
+#define YM_ALLOCATE(allocator, size, ptr) \
+    ym_allocate(allocator, size, ptr, __FILE__, __LINE__);
+#else
+#define YM_ALLOCATE(allocator, size, ptr) \
+    ym_allocate(allocator, size, ptr);
+#endif
+
+#ifdef YM_MEMORY_TRACKING
+#define YM_DEALLOCATE(allocator, size, ptr) \
+    ym_deallocate(allocator, size, ptr, __FILE__, __LINE__);
+#else
+#define YM_DEALLOCATE(allocator, size, ptr) \
+    ym_deallocate(allocator, size, ptr);
+#endif

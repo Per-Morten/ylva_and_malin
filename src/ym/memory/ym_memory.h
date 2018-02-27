@@ -16,6 +16,14 @@ struct
     uint16_t used;
 } ym_mem_region;
 
+typedef
+enum
+{
+    ym_mem_usage_static,
+    ym_mem_usage_dynamic,
+    ym_mem_usage_scoped, // Basically, will it be used only within this function?
+} ym_mem_usage;
+
 ym_errc
 ym_mem_init();
 
@@ -31,8 +39,8 @@ ym_mem_reg_alloc(ym_mem_reg_id id, int size, char* file, int line);
 void
 ym_mem_reg_dealloc(ym_mem_reg_id id, int size, void* ptr, char* file, int line);
 
-// For simplicity, go for a linked list approach first
-#define YM_MALLOC(reg_id, size) \
+// Add usage enum, to discern between dynamic vs static usage etc.
+#define YM_MALLOC(reg_id, size, usage) \
 ym_mem_reg_alloc(reg_id, size, __FILE__, __LINE__);
 
 #define YM_FREE(reg_id, size, ptr) \
