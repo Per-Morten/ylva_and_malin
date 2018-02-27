@@ -67,10 +67,6 @@ struct
 ym_errc
 ym_gfx_init(ym_mem_reg_id memory_region)
 {
-    YM_ASSERT(memory_region,
-              ym_errc_invalid_input,
-              "memory_region cannot be NULL");
-
     ym_gfx_mem_reg = memory_region;
     return ym_errc_success;
 }
@@ -82,10 +78,11 @@ ym_gfx_shutdown()
     return ym_errc_success;
 }
 
-ym_gfx_window*
+ym_errc
 ym_gfx_create_window(u16 width,
                      u16 height,
-                     const char* window_name)
+                     const char* window_name,
+                     ym_gfx_window** out_window)
 {
     YM_ASSERT(window_name,
               ym_errc_invalid_input,
@@ -93,8 +90,9 @@ ym_gfx_create_window(u16 width,
 
     // Allocate from beginning of memory region
     //ym_gfx_unix_window* window = ym_gfx_mem_reg->mem;
-    ym_gfx_unix_window* window = YM_MALLOC(ym_gfx_mem_reg, sizeof(ym_gfx_unix_window));
-    //ym_gfx_mem_reg->used += sizeof(ym_gfx_unix_window);
+    ym_gfx_unix_window* window = YM_MALLOC(ym_gfx_mem_reg,
+                                           sizeof(ym_gfx_unix_window),
+                                           ym_mem_usage_static);
 
     // Using Xkb just so we can use XkbKeycodeToKeysym which isn't deprecated.
     int errc = 0;
@@ -106,13 +104,22 @@ ym_gfx_create_window(u16 width,
                                      NULL, NULL,
                                      NULL, &errc);
 
+
     if (errc != XkbOD_Success || window->display == NULL)
     {
-        YM_WARN("Could not open display");
-        return NULL;
+        // Add proper failchecking here, so we can actually display the error.
+        YM_WARN("%s: Could not open display",
+                ym_errc_str(ym_errc_system_error));
+        return ym_errc_system_error;
     }
 
     Window root = DefaultRootWindow(window->display);
+    if (!root)
+    {
+        YM_WARN("%s: Could not get default root window",
+                ym_errc_str(ym_errc_system_error));
+        return ym_errc_system_error;
+    }
 
     // Rethink these attributes.
     GLint attributes[] =
@@ -131,7 +138,9 @@ ym_gfx_create_window(u16 width,
     if (visual_info == NULL)
     {
         XCloseDisplay(window->display);
-        return NULL;
+        YM_WARN("%s: Could not choose visual",
+                ym_errc_str(ym_errc_system_error));
+        return ym_errc_system_error;
     }
 
     Colormap cmap = XCreateColormap(window->display, root,
@@ -153,6 +162,7 @@ ym_gfx_create_window(u16 width,
                                                ,
                                 });
 
+
     XMapWindow(window->display, window->win);
     XStoreName(window->display, window->win, window_name);
 
@@ -161,6 +171,8 @@ ym_gfx_create_window(u16 width,
     Atom delete_event = XInternAtom(window->display, "WM_DELETE_WINDOW", false);
     XSetWMProtocols(window->display, window->win, &delete_event, 1);
 
+    // Look at: http://apoorvaj.io/creating-a-modern-opengl-context.html
+    // to get renderdoc to work.
     GLXContext context = glXCreateContext(window->display,
                                           visual_info,
                                           NULL,
@@ -173,7 +185,9 @@ ym_gfx_create_window(u16 width,
     window->width = width;
     window->height = height;
 
-    return window;
+    *out_window = window;
+
+    return ym_errc_success;
 }
 
 void
@@ -193,8 +207,6 @@ ym_gfx_destroy_window(ym_gfx_window* w)
     XCloseDisplay(window->display);
 
     YM_FREE(ym_gfx_mem_reg, sizeof(ym_gfx_unix_window), window);
-    //memset(w, 0xFFFFFF, sizeof(ym_gfx_unix_window));
-    //ym_gfx_mem_reg->used -= sizeof(ym_gfx_unix_window);
 }
 
 bool
@@ -237,11 +249,7 @@ ym_gfx_window_display(ym_gfx_window* w)
               ym_errc_invalid_input,
               "Window must not be NULL");
 
-    // Currently just a mock function.
-    // Only the glXSwapBuffers call will be left.
-    // will be left when finished (I guess).
     ym_gfx_unix_window* window = w;
-
     glXSwapBuffers(window->display, window->win);
 }
 

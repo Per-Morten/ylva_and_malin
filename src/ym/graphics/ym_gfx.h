@@ -101,10 +101,11 @@ ym_gfx_shutdown();
 ///     Potentially do a out_errc?
 ///////////////////////////////////////////////////////////
 YM_NO_DISCARD
-ym_gfx_window*
+ym_errc
 ym_gfx_create_window(u16 width,
                      u16 height,
-                     const char* window_name);
+                     const char* window_name,
+                     ym_gfx_window** out_window);
 
 ///////////////////////////////////////////////////////////
 /// \ingroup ym_gfx

@@ -13,8 +13,13 @@ init_subsystems(ym_gfx_window* window)
 {
     ym_errc errc = ym_errc_success;
 
+    YM_INFO("Initializing Telemetry module");
     //errc |= ym_telemetry_init(ym_mem_get_region(ym_mem_reg_telemetry));
+
+    YM_INFO("Initializing OpenGL module");
     errc |= ym_gfx_gl_init(ym_mem_reg_gl);
+
+    YM_INFO("Initializing Sprite module");
     errc |= ym_sprite_init(NULL, window);
 
     return errc;
@@ -25,8 +30,13 @@ shutdown_subsystems()
 {
     ym_errc errc = ym_errc_success;
 
+    YM_INFO("Shutting down Sprite module");
     errc |= ym_sprite_shutdown();
+
+    YM_INFO("Shutting down OpenGL module");
     //errc |= ym_gfx_gl_shutdown();
+
+    YM_INFO("Shutting down Telemetry module");
     //errc |= ym_telemetry_shutdown();
 
     return errc;
@@ -38,15 +48,20 @@ main(YM_UNUSED int argc,
 {
     ym_gfx_window* window = NULL;
 
+    YM_INFO("Initializing Memory module");
     ym_errc errc = ym_mem_init();
     if (errc != ym_errc_success)
         goto cleanup;
 
+    YM_INFO("Initializing Gfx module");
     errc = ym_gfx_init(ym_mem_reg_gfx);
     if (errc != ym_errc_success)
         goto cleanup;
 
-    window = ym_gfx_create_window(800, 600, "ylva_and_malin");
+    YM_INFO("Creating window");
+    errc = ym_gfx_create_window(800, 600, "ylva_and_malin", &window);
+    if (errc != ym_errc_success)
+        goto cleanup;
 
     errc = init_subsystems(window);
     if (errc != ym_errc_success)
@@ -149,6 +164,7 @@ main(YM_UNUSED int argc,
             .x = 1.0f,
             .y = 1.0f,
         };
+
         ym_sprite_draw_extd(malin_sheet, texture_id, 0, malin_pos, scale, angle);
         ym_sprite_draw(ylva_sheet, texture_id, 0, ylva_pos);
 
@@ -166,11 +182,13 @@ main(YM_UNUSED int argc,
     if ((errc != ym_errc_success))
         YM_WARN("Shutdown with error %s", ym_errc_str(errc));
 
+    YM_INFO("Destroying window");
     ym_gfx_destroy_window(window);
 
+    YM_INFO("Shutting Down Memory module")
     errc = ym_mem_shutdown();
 
-    YM_DEBUG("Shutting down");
+    YM_DEBUG("Shutting Down");
 
     return 0;
 }
