@@ -162,17 +162,25 @@ ym_continous_game()
                     printf "Warning, found more than 1 instance of ym: %s\n" ${ym_window_id}
                     wmctrl -l
                 else
-                    wmctrl -i -c ${ym_window_id}
+                    wmctrl -i -c ${ym_window_id} >> /dev/null 2>&1
                 fi
 
                 # Run build and set focus back to sublime
                 ./build/release/bin/main &
 
-                # Find new ym window and move it.
-                sleep 0.25
-                new_window_id=$(wmctrl -l | grep -E "ylva_and_malin$" | awk '{ print $1}')
-                wmctrl -i -r ${new_window_id} -e 0,0,0,-1,-1
+                # Get pid, used to check if it exists in ps | grep
+                local ym_pid=$!
+                ym_pid=$(ps | grep "${ym_pid}")
 
+                sleep 0.25
+
+                # Find new ym window and move it.
+                local new_window_id=""
+                while [[ ((-z ${new_window_id+x} || ${new_window_id} == "")) && $(ps | grep "${ym_pid}") != "" ]]
+                do
+                    new_window_id=$(wmctrl -l 2>/dev/null | grep -E "ylva_and_malin$" | awk '{ print $1}')
+                done
+                wmctrl -i -r ${new_window_id} -e 0,0,0,-1,-1
                 wmctrl -i -a ${work_focus}
             fi
 
