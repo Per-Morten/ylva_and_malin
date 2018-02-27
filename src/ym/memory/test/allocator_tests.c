@@ -244,7 +244,7 @@ test_errc_on_invalid_dealloc_request()
     ym_allocator allocator = get_region_allocator();
     void* ptr = malloc(40);
     ym_errc errc = YM_DEALLOCATE(&allocator, 40, ptr);
-    YM_CHECK("errc should be invalid input", errc = ym_errc_invalid_input);
+    YM_CHECK("errc should be invalid input", errc == ym_errc_invalid_input);
 
     return NULL;
 }
@@ -272,7 +272,7 @@ test_errc_on_invalid_dealloc_size_request()
     ym_allocator allocator = get_region_allocator();
     void* ptr = malloc(40);
     ym_errc errc = YM_DEALLOCATE(&allocator, 40, ptr);
-    YM_CHECK("errc should be invalid input", errc = ym_errc_invalid_input);
+    YM_CHECK("errc should be invalid input", errc == ym_errc_invalid_input);
 
     return NULL;
 }
