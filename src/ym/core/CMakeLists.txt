@@ -25,6 +25,10 @@ target_include_directories(ym_core PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}"
 )
 
-target_link_libraries(ym_core
-    m #math
-)
+if (WIN32)
+
+else()
+    target_link_libraries(ym_core
+        m #math
+    )
+endif()

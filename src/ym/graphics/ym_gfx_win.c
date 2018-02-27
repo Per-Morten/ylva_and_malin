@@ -2,7 +2,8 @@
 #include <ym_gfx_gl.h>
 #include <Windows.h>
 
-static ym_mem_region* ym_gfx_mem_reg;
+//static ym_mem_region* ym_gfx_mem_reg;
+static ym_mem_reg_id ym_gfx_mem_reg;
 
 typedef
 struct
@@ -10,9 +11,13 @@ struct
     HWND win;
     HDC gl_dc;
     HGLRC gl_rc;
+    u16 width;
+    u16 height;
     bool is_open;
     u8 pad[7];
 } ym_gfx_win_window;
+
+static ym_gfx_win_window* g_window;
 
 // Unsure about what to do with this function really,
 // because I actually want to do this processing in the poll_events
@@ -43,7 +48,8 @@ window_procedure(HWND handle,
 
             // Ugly hack to get this message properly!
             // Can probably search for this handle in the memory?
-            ((ym_gfx_win_window*)ym_gfx_mem_reg->mem)->is_open = false;
+            //((ym_gfx_win_window*)ym_gfx_mem_reg->mem)->is_open = false;
+            g_window->is_open = false;
             break;
         default:
             res = DefWindowProc(handle, msg, w_param, l_param);
@@ -52,12 +58,8 @@ window_procedure(HWND handle,
 }
 
 ym_errc
-ym_gfx_init(ym_mem_region* memory_region)
+ym_gfx_init(ym_mem_reg_id memory_region)
 {
-    YM_ASSERT(memory_region,
-              ym_errc_invalid_input,
-              "memory_region cannot be NULL");
-
     ym_gfx_mem_reg = memory_region;
     return ym_errc_success;
 }
@@ -69,10 +71,11 @@ ym_gfx_shutdown()
     return ym_errc_success;
 }
 
-ym_gfx_window*
+ym_errc
 ym_gfx_create_window(u16 width,
                      u16 height,
-                     const char* window_name)
+                     const char* window_name,
+                     ym_gfx_window** out_window)
 {
     YM_ASSERT(window_name,
               ym_errc_invalid_input,
@@ -150,8 +153,14 @@ ym_gfx_create_window(u16 width,
                  GetLastError());
     }
 
-    ym_gfx_win_window* window = ym_gfx_mem_reg->mem;
-    ym_gfx_mem_reg->used += sizeof(ym_gfx_win_window);
+    ym_gfx_win_window* window = malloc(sizeof(ym_gfx_win_window));
+    // Temporary hack
+    g_window = window;
+    //ym_gfx_win_window* window = YM_MALLOC(ym_gfx_mem_reg,
+    //                                      sizeof(ym_gfx_win_window),
+    //                                      ym_mem_usage_static);
+    //ym_gfx_win_window* window = ym_gfx_mem_reg->mem;
+    //ym_gfx_mem_reg->used += sizeof(ym_gfx_win_window);
 
     const DWORD win_style = WS_OVERLAPPEDWINDOW | WS_VISIBLE;
     RECT win_rect = {0, 0, width, height};
@@ -222,7 +231,11 @@ ym_gfx_create_window(u16 width,
     ShowWindow(window->win, SW_SHOWDEFAULT);
 
     window->is_open = true;
-    return window;
+
+    *out_window = window;
+    window->width = width;
+    window->height = height;
+    return ym_errc_success;
 }
 
 void
@@ -238,7 +251,9 @@ ym_gfx_destroy_window(ym_gfx_window* w)
     ReleaseDC(window->win, window->gl_dc);
     DestroyWindow(window->win);
 
-    ym_gfx_mem_reg->used -= sizeof(ym_gfx_win_window);
+    free(window);
+    g_window = NULL;
+    //ym_gfx_mem_reg->used -= sizeof(ym_gfx_win_window);
 }
 
 bool
@@ -249,6 +264,19 @@ ym_gfx_window_is_open(const ym_gfx_window* w)
               "Window must not be NULL");
 
     return ((ym_gfx_win_window*)w)->is_open;
+}
+
+void
+ym_gfx_window_get_size(ym_gfx_window* w,
+                       uint* out_width,
+                       uint* out_height)
+{
+    YM_ASSERT(w,
+              ym_errc_invalid_input,
+              "Window must not be NULL");
+    ym_gfx_win_window* win = w;
+    *out_width = win->width;
+    *out_height = win->height;
 }
 
 void
