@@ -66,7 +66,7 @@ static struct
 } g_ym_sprite_info[3];
 
 
-// Simple view, allowing me to work in [0-2] space, rather than [-1 - 1]
+// Simple view, allowing me to work in [0-1] space, rather than [-1 - 1]
 static const ym_mat4 ym_view_mat =
 {
     .val =
@@ -74,7 +74,7 @@ static const ym_mat4 ym_view_mat =
         1.0f,  0.0f,  0.0f,  0.0f,
         0.0f,  1.0f,  0.0f,  0.0f,
         0.0f,  0.0f,  1.0f,  0.0f,
-        -1.0f,  1.0f,  0.0f,  1.0f,
+        -0.5f,  0.5f,  0.0f,  1.0f,
     },
 };
 
@@ -234,7 +234,6 @@ ym_sprite_delete_sheet(ym_sheet_id sheet_id)
     return ym_errc_success;
 }
 
-// need a way to get window size in here
 ym_errc
 ym_sprite_draw(ym_sheet_id sheet_id,
                ym_sprite_id sprite_id,
@@ -247,8 +246,8 @@ ym_sprite_draw(ym_sheet_id sheet_id,
 
     ym_vec4 real_pos =
     {
-        .x = pos.x / w_width * 2.0f,
-        .y = pos.y / w_height * -2.0f,
+        .x = pos.x / w_width * 1.0f,
+        .y = pos.y / w_height * -1.0f,
         .z = 0.0f,
         .w = 1.0f,
     };
@@ -279,8 +278,8 @@ ym_sprite_draw_extd(ym_sheet_id sheet_id,
 
     ym_vec4 real_pos =
     {
-        .x = pos.x / w_width * 2.0f,
-        .y = pos.y / w_height * -2.0f,
+        .x = pos.x / w_width * 1.0f,
+        .y = pos.y / w_height * -1.0f,
         .z = 0.0f,
         .w = 1.0f,
     };
