@@ -4,7 +4,6 @@
 
 #include <stdio.h>
 
-
 static
 const char*
 gl_error_str(GLenum e)
@@ -53,12 +52,6 @@ ym_gfx_gl_create_shader(const char* file_path,
               ym_errc_invalid_input,
               "file_path and out_shader must not be NULL");
 
-    //ym_allocator allocator;
-    //ym_create_allocator(ym_gfx_gl_mem_reg, ym_alloc_strategy_linear, 1048, &allocator);
-
-
-    /// \todo Use ym_mem rather than malloc and free.
-    /// Can probably just use a linear allocator
     FILE* file = fopen(file_path, "r");
     if (!file)
     {
@@ -72,18 +65,18 @@ ym_gfx_gl_create_shader(const char* file_path,
     long file_len = ftell(file);
     rewind(file);
 
-    //GLchar* source;
-    //ym_allocate(&allocator, file_len * sizeof(GLchar) + 1, &source);
-    GLchar* source = malloc(file_len * sizeof(GLchar) + 1);
+    int file_len_mem_size = file_len * sizeof(GLchar) + 1;
+    GLchar* source = YM_MALLOC(ym_gfx_gl_mem_reg, file_len_mem_size, ym_mem_usage_dynamic);
+
     // Ensure terminating \0.
-    source[file_len * sizeof(GLchar)] = '\0';
+    source[file_len_mem_size - 1] = '\0';
     if (!fread(source, sizeof(GLchar), file_len, file))
     {
         YM_WARN("%s:, Could not read from file: %s",
                 ym_errc_str(ym_errc_system_error),
                 file_path);
 
-        free(source);
+        YM_FREE(ym_gfx_gl_mem_reg, file_len_mem_size, source);
         fclose(file);
         return ym_errc_system_error;
 
@@ -97,13 +90,13 @@ ym_gfx_gl_create_shader(const char* file_path,
                 ym_errc_str(ym_errc_gl_error),
                 gl_error_str(glGetError()));
 
-        free(source);
+        YM_FREE(ym_gfx_gl_mem_reg, file_len_mem_size, source);
         return ym_errc_gl_error;
     }
 
     glShaderSource(shader, 1, (const GLchar**)&source, NULL);
 
-    free(source);
+    YM_FREE(ym_gfx_gl_mem_reg, file_len_mem_size, source);
 
     glCompileShader(shader);
 
@@ -115,7 +108,7 @@ ym_gfx_gl_create_shader(const char* file_path,
         GLint log_len = 0;
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &log_len);
 
-        GLchar* log_buf = malloc(log_len * sizeof(GLchar));
+        GLchar* log_buf = YM_MALLOC(ym_gfx_gl_mem_reg, log_len * sizeof(GLchar), ym_mem_usage_scoped);
 
         GLsizei len;
         glGetShaderInfoLog(shader, log_len,
@@ -126,15 +119,10 @@ ym_gfx_gl_create_shader(const char* file_path,
                 file_path,
                 log_buf);
 
-        free(log_buf);
+        YM_FREE(ym_gfx_gl_mem_reg, log_len * sizeof(GLchar), log_buf);
 
         return ym_errc_gl_error;
     }
-
-    //ym_deallocate(&allocator, 1048, source);
-    //ym_destroy_allocator(ym_gfx_gl_mem_reg, &allocator);
-
-
 
     *out_shader = shader;
     return ym_errc_success;
@@ -145,7 +133,6 @@ ym_gfx_gl_create_program(GLuint* shaders,
                          int shader_count,
                          GLuint* out_program)
 {
-    /// \todo Use ym_mem rather than malloc and free.
     YM_ASSERT(shaders && out_program && shader_count > 0,
               ym_errc_invalid_input,
               "shaders and out_program cannot be NULL"
@@ -184,7 +171,7 @@ ym_gfx_gl_create_program(GLuint* shaders,
         GLint log_len = 0;
         glGetProgramiv(program, GL_INFO_LOG_LENGTH, &log_len);
 
-        GLchar* log_buf = malloc(log_len * sizeof(GLchar));
+        GLchar* log_buf = YM_MALLOC(ym_gfx_gl_mem_reg, log_len * sizeof(GLchar), ym_mem_usage_scoped);
 
         GLsizei len;
         glGetProgramInfoLog(program, log_len,
@@ -194,7 +181,7 @@ ym_gfx_gl_create_program(GLuint* shaders,
                 ym_errc_str(ym_errc_gl_error),
                 log_buf);
 
-        free(log_buf);
+        YM_FREE(ym_gfx_gl_mem_reg, log_len * sizeof(GLchar), log_buf);
 
         return ym_errc_gl_error;
     }
