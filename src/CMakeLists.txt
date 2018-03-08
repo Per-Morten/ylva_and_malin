@@ -6,6 +6,7 @@ set(CMAKE_BINARY_DIR "$ENV{YM_BUILD_DIR}/${YM_OUTPUT_FOLDER}")
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 
+
 # Compiler setup
 if (NOT WIN32)
     set(CMAKE_C_COMPILER gcc-7)
@@ -20,7 +21,6 @@ set(YM_STANDARD_FLAGS "${YM_STANDARD_FLAGS}  \
                        -std=c11              \
                        -Wall                 \
                        -Wextra               \
-                       -Wpadded              \
                        "
 )
 
@@ -68,15 +68,6 @@ if (${YM_ENABLE_TESTS})
         -DYM_ASSERT_ERRC        \
         "
     )
-
-    set(CMAKE_CXX_FLAGS
-        "${CMAKE_CXX_FLAGS}     \
-        -Wall                   \
-        -Wextra                 \
-        -O3                     \
-        -std=c++17              \
-        "
-        )
 endif()
 
 if (NOT ${CMAKE_BUILD_TYPE} STREQUAL "Test")
@@ -88,4 +79,6 @@ if (NOT ${CMAKE_BUILD_TYPE} STREQUAL "Test")
         ym_memory
         ym_telemetry
     )
+
+    set_target_properties(main PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "$ENV{YM_ROOT_DIR}")
 endif()

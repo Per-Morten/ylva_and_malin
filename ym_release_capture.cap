@@ -1,0 +1,26 @@
+{
+    "rdocCaptureSettings": 1,
+    "settings": {
+        "AutoStart": false,
+        "CmdLine": "",
+        "Environment": [
+        ],
+        "Executable": "/home/per-morten/Code/ylva_and_malin/build/release/bin/main",
+        "Inject": false,
+        "Options": {
+            "APIValidation": 1,
+            "AllowFullscreen": 1,
+            "AllowVSync": 1,
+            "CaptureAllCmdLists": 0,
+            "CaptureCallstacks": 1,
+            "CaptureCallstacksOnlyDraws": 0,
+            "DebugOutputMute": 1,
+            "DelayForDebugger": 0,
+            "HookIntoChildren": 0,
+            "RefAllResources": 0,
+            "SaveAllInitials": 1,
+            "VerifyMapWrites": 0
+        },
+        "WorkingDir": "/home/per-morten/Code/ylva_and_malin"
+    }
+}

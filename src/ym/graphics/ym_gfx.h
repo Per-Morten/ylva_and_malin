@@ -47,7 +47,7 @@ typedef void ym_gfx_window;
 ///////////////////////////////////////////////////////////
 YM_NO_DISCARD
 ym_errc
-ym_gfx_init(ym_mem_region* memory_region);
+ym_gfx_init(ym_mem_reg_id memory_region);
 
 ///////////////////////////////////////////////////////////
 /// \ingroup ym_gfx
@@ -101,10 +101,11 @@ ym_gfx_shutdown();
 ///     Potentially do a out_errc?
 ///////////////////////////////////////////////////////////
 YM_NO_DISCARD
-ym_gfx_window*
+ym_errc
 ym_gfx_create_window(u16 width,
                      u16 height,
-                     const char* window_name);
+                     const char* window_name,
+                     ym_gfx_window** out_window);
 
 ///////////////////////////////////////////////////////////
 /// \ingroup ym_gfx
@@ -138,6 +139,28 @@ ym_gfx_destroy_window(ym_gfx_window* window);
 YM_NO_DISCARD
 bool
 ym_gfx_window_is_open(const ym_gfx_window* window);
+
+///////////////////////////////////////////////////////////
+/// \ingroup ym_gfx
+///
+/// \brief
+///     Gets the width and height dimension of the given
+///     window.
+///
+/// \param window
+///     The window to check. Cannot be NULL.
+///
+/// \param out_width
+///     Out parameter used to store width.
+///
+/// \param out_height
+///     Out parameter used to store height.
+///////////////////////////////////////////////////////////
+void
+ym_gfx_window_get_size(ym_gfx_window* window,
+                       uint* out_width,
+                       uint* out_height);
+
 
 ///////////////////////////////////////////////////////////
 /// \ingroup ym_gfx

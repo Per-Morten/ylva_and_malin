@@ -3,8 +3,10 @@
 #include <stdlib.h>
 #include <inttypes.h>
 #include <ym_assert.h>
+#include <ym_allocator.h>
 
-#define YM_MEMORY_DEFAULT_SIZE 4096
+//#define YM_MEMORY_DEFAULT_SIZE 8192
+#define YM_MEMORY_DEFAULT_SIZE 16384
 
 #ifndef YM_MEMORY_SIZE
 #pragma message("YM_MEMORY_SIZE not defined, using YM_MEMORY_DEFAULT_SIZE")
@@ -27,8 +29,10 @@
 ///
 /// When deallocating from regions, set memory value
 /// to a detectable value. For example 0xFFFFFFFF
+/// Can use this to check for leaks
 
 static void* ym_g_memory;
+static ym_allocator ym_g_regions[ym_mem_reg_count];
 
 ym_errc
 ym_mem_init()
@@ -38,6 +42,8 @@ ym_mem_init()
 
     ym_g_memory = malloc(YM_MEMORY_SIZE);
 
+    memset(ym_g_memory, 0xFFFFFFFF, YM_MEMORY_SIZE);
+
     if (ym_g_memory == NULL)
     {
         YM_WARN("Could not allocate enough memory: %d",
@@ -45,22 +51,50 @@ ym_mem_init()
         return ym_errc_bad_alloc;
     }
 
-    ym_mem_region* regions = ym_g_memory;
 
-    regions[ym_mem_reg_region_heads].id = YM_MEM_REG_REGION_HEADS_ID;
-    regions[ym_mem_reg_region_heads].mem = NULL;
-    regions[ym_mem_reg_region_heads].used = ATOMIC_VAR_INIT(0);
-    (*(u16*)&regions[ym_mem_reg_region_heads].size) = 0;
+    int offsets[] =
+    {
+        YM_MEM_REG_REGION_HEADS_OFFSET,
+        YM_MEM_REG_GFX_OFFSET,
+        YM_MEM_REG_GL_OFFSET,
+        YM_MEM_REG_TELEMETRY_OFFSET,
+    };
 
-    regions[ym_mem_reg_gfx].id = YM_MEM_REG_GFX_ID;
-    regions[ym_mem_reg_gfx].mem = (u8*)ym_g_memory + YM_MEM_REG_GFX_OFFSET;
-    regions[ym_mem_reg_gfx].used = ATOMIC_VAR_INIT(0);
-    (*(u16*)&regions[ym_mem_reg_gfx].size) = YM_MEM_REG_GFX_BLOCK_SIZE;
+    int sizes[] =
+    {
+        YM_MEM_REG_REGION_HEADS_BLOCK_SIZE,
+        YM_MEM_REG_GFX_BLOCK_SIZE,
+        YM_MEM_REG_GL_BLOCK_SIZE,
+        YM_MEM_REG_TELEMETRY_BLOCK_SIZE,
+    };
 
-    regions[ym_mem_reg_telemetry].id = YM_MEM_REG_TELEMETRY_ID;
-    regions[ym_mem_reg_telemetry].mem = (u8*)ym_g_memory + YM_MEM_REG_TELEMETRY_OFFSET;
-    regions[ym_mem_reg_telemetry].used = ATOMIC_VAR_INIT(0);
-    (*(u16*)&regions[ym_mem_reg_gfx].size) = YM_MEM_REG_TELEMETRY_BLOCK_SIZE;
+    YM_DEBUG("      Memory begin-end: %p %p",
+             ym_g_memory,
+             ym_g_memory + YM_MEM_REG_TELEMETRY_OFFSET + YM_MEM_REG_TELEMETRY_BLOCK_SIZE);
+
+    for (int i = ym_mem_reg_region_heads; i < ym_mem_reg_count; i++)
+    {
+        ym_g_regions[i].id = i;
+        ym_errc errc = ym_create_allocator(ym_alloc_strategy_region,
+                            ym_g_memory + offsets[i],
+                            sizes[i],
+                            &(ym_allocator_cfg) // Temporary hack to get the game working. This should be something else.
+                            {
+                                .slot_size = (int[]){16, 32, 128, 1024},
+                                .slot_count = (int[]){4, 4, 4, 1},
+                                .count = 4,
+                            },
+                            &ym_g_regions[i]);
+
+        if (errc != ym_errc_success)
+            YM_WARN("Did not properly initialize: %s", ym_mem_reg_id_str(i));
+
+        //YM_DEBUG("i: %d, Region begin-end: %p %p",
+        //         i,
+        //         ym_g_memory + offsets[i][0],
+        //         ym_g_memory + offsets[i][0] + offsets[i][1]);
+
+    }
 
     return ym_errc_success;
 }
@@ -68,33 +102,31 @@ ym_mem_init()
 ym_errc
 ym_mem_shutdown()
 {
-    YM_UNUSED const ym_mem_region* region = ym_g_memory;
-    for (size_t i = ym_mem_reg_region_heads + 1; i < ym_mem_reg_count; ++i)
-    {
-        YM_ASSERT(region[i].used == 0,
-                  ym_errc_mem_leak,
-                  "Leak detected in: %s, leak size: %" PRIu16 "",
-                  ym_mem_reg_id_str(region[i].id),
-                  region[i].used);
-    }
+    #ifdef YM_MEMORY_TRACKING
+    extern void ym_print_allocator_logs();
+    ym_print_allocator_logs();
+    #endif
 
+    // Comment this back in after testing!
     free(ym_g_memory);
 
     return ym_errc_success;
 }
 
-ym_mem_region*
-ym_mem_get_region(ym_mem_reg_id region)
+void*
+ym_mem_reg_alloc(ym_mem_reg_id id, int size, YM_UNUSED char* file, YM_UNUSED int line)
 {
-    YM_ASSERT(region < ym_mem_reg_count && region != ym_mem_reg_region_heads,
-              ym_errc_invalid_input,
-              "Trying to get illegal region, %s",
-              ym_mem_reg_id_str(region));
+    void* ptr;
+    ym_errc errc = YM_ALLOCATE(&ym_g_regions[id], size, &ptr);
+    if (errc != ym_errc_success)
+        YM_WARN("%s: memory allocation not without failure.", ym_errc_str(errc));
+    return ptr;
+}
 
-    YM_ASSERT(((ym_mem_region*)ym_g_memory)[region].id == region,
-              ym_errc_uninitialized,
-              "Region is not initialized: %s",
-              ym_mem_reg_id_str(region));
-
-    return &((ym_mem_region*)ym_g_memory)[region];
+void
+ym_mem_reg_dealloc(ym_mem_reg_id id, int size, void* ptr, YM_UNUSED char* file, YM_UNUSED int line)
+{
+    ym_errc errc = YM_DEALLOCATE(&ym_g_regions[id], size, ptr);
+    if (errc != ym_errc_success)
+        YM_WARN("%s: memory deallocation not without failure.", ym_errc_str(errc));
 }

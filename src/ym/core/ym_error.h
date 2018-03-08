@@ -42,7 +42,10 @@ enum
     ym_errc_mem_leak        = (1 << 2),
     ym_errc_uninitialized   = (1 << 3),
     ym_errc_system_error    = (1 << 4),
+    ym_errc_gl_error        = (1 << 5),
+    ym_errc_out_of_memory   = (1 << 6),
 } ym_errc;
+
 
 ///////////////////////////////////////////////////////////
 /// \ingroup ym_core

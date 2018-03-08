@@ -18,3 +18,5 @@ typedef int64_t    i64;
 // Should really find a better way to detect this.
 typedef float      f32;
 typedef double     f64;
+
+typedef unsigned   uint;

@@ -1,13 +1,11 @@
 #include <ym_gfx.h>
+#include <ym_gfx_gl.h>
 
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glx.h>
 #include <X11/X.h>
 #include <X11/Xlib.h>
 #include <X11/XKBlib.h>
 
-static ym_mem_region* ym_gfx_mem_reg;
+static ym_mem_reg_id ym_gfx_mem_reg;
 
 ///////////////////////////////////////////////////////////
 /// \struct ym_gfx_unix_window
@@ -48,15 +46,27 @@ struct
     Window win;
     bool is_open;
     u8 pad[7];
+
+    /// \todo Remove this when getting sprite movement to work.
+    /// Should have a better way of doing keyboard handling,
+    /// this is just for hax.
+    bool w;
+    bool a;
+    bool s;
+    bool d;
+    bool e;
+    bool q;
+    // EO keyboard Hax
+
+    // After removed hax,
+    // this must be evened out with the padding of the struct
+    u16 width;
+    u16 height;
 } ym_gfx_unix_window;
 
 ym_errc
-ym_gfx_init(ym_mem_region* memory_region)
+ym_gfx_init(ym_mem_reg_id memory_region)
 {
-    YM_ASSERT(memory_region,
-              ym_errc_invalid_input,
-              "memory_region cannot be NULL");
-
     ym_gfx_mem_reg = memory_region;
     return ym_errc_success;
 }
@@ -68,18 +78,21 @@ ym_gfx_shutdown()
     return ym_errc_success;
 }
 
-ym_gfx_window*
+ym_errc
 ym_gfx_create_window(u16 width,
                      u16 height,
-                     const char* window_name)
+                     const char* window_name,
+                     ym_gfx_window** out_window)
 {
     YM_ASSERT(window_name,
               ym_errc_invalid_input,
               "Window name must not be NULL");
 
     // Allocate from beginning of memory region
-    ym_gfx_unix_window* window = ym_gfx_mem_reg->mem;
-    ym_gfx_mem_reg->used += sizeof(ym_gfx_unix_window);
+    //ym_gfx_unix_window* window = ym_gfx_mem_reg->mem;
+    ym_gfx_unix_window* window = YM_MALLOC(ym_gfx_mem_reg,
+                                           sizeof(ym_gfx_unix_window),
+                                           ym_mem_usage_static);
 
     // Using Xkb just so we can use XkbKeycodeToKeysym which isn't deprecated.
     int errc = 0;
@@ -93,30 +106,95 @@ ym_gfx_create_window(u16 width,
 
     if (errc != XkbOD_Success || window->display == NULL)
     {
-        YM_WARN("Could not open display");
-        return NULL;
+        // Add proper failchecking here, so we can actually display the error.
+        YM_WARN("%s: Could not open display",
+                ym_errc_str(ym_errc_system_error));
+        return ym_errc_system_error;
     }
 
     Window root = DefaultRootWindow(window->display);
-
-    // Rethink these attributes.
-    GLint attributes[] =
+    if (!root)
     {
-        GLX_RGBA,
-        GLX_DEPTH_SIZE,
-        24,
-        GLX_DOUBLEBUFFER,
+        YM_WARN("%s: Could not get default root window",
+                ym_errc_str(ym_errc_system_error));
+        return ym_errc_system_error;
+    }
+
+    // Setup config attributes
+    int attributes[] =
+    {
+        GLX_RENDER_TYPE, GLX_RGBA_BIT,
+        GLX_DRAWABLE_TYPE, GLX_WINDOW_BIT,
+        GLX_DOUBLEBUFFER, true,
+        GLX_RED_SIZE, 1,
+        GLX_GREEN_SIZE, 1,
+        GLX_BLUE_SIZE, 1,
         None
     };
 
-    XVisualInfo* visual_info = glXChooseVisual(window->display, 0, attributes);
+    int fb_cfg_count = 0;
+    GLXFBConfig* fb_cfgs = glXChooseFBConfig(window->display,
+                                             DefaultScreen(window->display),
+                                             attributes, &fb_cfg_count);
+    if (fb_cfg_count == 0)
+    {
+        XCloseDisplay(window->display);
+        YM_WARN("%s: Could not choose FBConfig",
+                ym_errc_str(ym_errc_system_error));
+        return ym_errc_system_error;
+    }
 
-    // Ensure proper error handling her.
-    // Might leak as we are not doing XCloseDisplay on win->display
+    XVisualInfo* visual_info = glXGetVisualFromFBConfig(window->display, fb_cfgs[0]);
     if (visual_info == NULL)
     {
         XCloseDisplay(window->display);
-        return NULL;
+        YM_WARN("%s: Could not choose visual",
+                ym_errc_str(ym_errc_system_error));
+        return ym_errc_system_error;
+    }
+
+    // Create old context used to get glXCreateContextAttribsARB
+    GLXContext old_ctx = glXCreateContext(window->display, visual_info, 0, GL_TRUE);
+    if (old_ctx == NULL)
+    {
+        XCloseDisplay(window->display);
+        YM_WARN("%s: Could not create old context",
+                ym_errc_str(ym_errc_system_error));
+        return ym_errc_system_error;
+    }
+
+    PFNGLXCREATECONTEXTATTRIBSARBPROC glXCreateContextAttribsARB = NULL;
+    glXCreateContextAttribsARB = (PFNGLXCREATECONTEXTATTRIBSARBPROC)glXGetProcAddress((const GLubyte*)"glXCreateContextAttribsARB");
+
+    // Destroy mock context
+    glXMakeCurrent(window->display, 0, 0);
+    glXDestroyContext(window->display, old_ctx);
+
+    if (!glXCreateContextAttribsARB)
+    {
+        XCloseDisplay(window->display);
+        YM_WARN("%s: Could not create ContexAttribsARB",
+                ym_errc_str(ym_errc_system_error));
+        return ym_errc_system_error;
+    }
+
+    // Setup context attributes
+    int context_attribs[] =
+    {
+        GLX_CONTEXT_MAJOR_VERSION_ARB, 4,
+        GLX_CONTEXT_MINOR_VERSION_ARB, 2,
+        GLX_CONTEXT_FLAGS_ARB, GLX_CONTEXT_DEBUG_BIT_ARB | GLX_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
+        GLX_CONTEXT_PROFILE_MASK_ARB, GLX_CONTEXT_CORE_PROFILE_BIT_ARB,
+        None
+    };
+
+    GLXContext context = glXCreateContextAttribsARB(window->display, fb_cfgs[0], NULL, true, context_attribs);
+    if (!context)
+    {
+        XCloseDisplay(window->display);
+        YM_WARN("%s: Could not create gl context",
+                ym_errc_str(ym_errc_system_error));
+        return ym_errc_system_error;
     }
 
     Colormap cmap = XCreateColormap(window->display, root,
@@ -138,6 +216,7 @@ ym_gfx_create_window(u16 width,
                                                ,
                                 });
 
+
     XMapWindow(window->display, window->win);
     XStoreName(window->display, window->win, window_name);
 
@@ -146,18 +225,16 @@ ym_gfx_create_window(u16 width,
     Atom delete_event = XInternAtom(window->display, "WM_DELETE_WINDOW", false);
     XSetWMProtocols(window->display, window->win, &delete_event, 1);
 
-    GLXContext context = glXCreateContext(window->display,
-                                          visual_info,
-                                          NULL,
-                                          GL_TRUE);
-
-    // Changes the current context
+    // Setting up modern-opengl context source: http://apoorvaj.io/creating-a-modern-opengl-context.html
     glXMakeCurrent(window->display, window->win, context);
-    glEnable(GL_DEPTH_TEST);
 
     window->is_open = true;
+    window->width = width;
+    window->height = height;
 
-    return window;
+    *out_window = window;
+
+    return ym_errc_success;
 }
 
 void
@@ -176,7 +253,7 @@ ym_gfx_destroy_window(ym_gfx_window* w)
     XDestroyWindow(window->display, window->win);
     XCloseDisplay(window->display);
 
-    ym_gfx_mem_reg->used -= sizeof(ym_gfx_unix_window);
+    YM_FREE(ym_gfx_mem_reg, sizeof(ym_gfx_unix_window), window);
 }
 
 bool
@@ -190,35 +267,36 @@ ym_gfx_window_is_open(const ym_gfx_window* w)
 }
 
 void
+ym_gfx_window_get_size(ym_gfx_window* w,
+                       uint* out_width,
+                       uint* out_height)
+{
+    YM_ASSERT(w,
+              ym_errc_invalid_input,
+              "Window must not be NULL");
+
+    ym_gfx_unix_window* win = w;
+    *out_width = win->width;
+    *out_height = win->height;
+}
+
+void
+ym_gfx_window_clear(YM_UNUSED ym_gfx_window* w)
+{
+    YM_ASSERT(w,
+              ym_errc_invalid_input,
+              "Window must not be NULL");
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void
 ym_gfx_window_display(ym_gfx_window* w)
 {
     YM_ASSERT(w,
               ym_errc_invalid_input,
               "Window must not be NULL");
 
-    // Currently just a mock function.
-    // Only the glXSwapBuffers call will be left.
-    // will be left when finished (I guess).
-    glClearColor(1.0, 1.0, 1.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-1., 1., -1., 1., 1., 20.);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt(0., 0., 10., 0., 0., 0., 0., 1., 0.);
-
-    glBegin(GL_QUADS);
-    glColor3f(1., 0., 0.); glVertex3f(-.75, -.75, 0.);
-    glColor3f(0., 1., 0.); glVertex3f( .75, -.75, 0.);
-    glColor3f(0., 0., 1.); glVertex3f( .75,  .75, 0.);
-    glColor3f(1., 1., 0.); glVertex3f(-.75,  .75, 0.);
-    glEnd();
-
     ym_gfx_unix_window* window = w;
-
     glXSwapBuffers(window->display, window->win);
 }
 
@@ -245,8 +323,12 @@ ym_gfx_window_poll_events(ym_gfx_window* w)
         {
             case Expose:
             {
+                // Do we really need to do this several times?
+                // Or can we do it when we query for the mouse?
                 XWindowAttributes attributes;
                 XGetWindowAttributes(window->display, window->win, &attributes);
+                window->width = attributes.width;
+                window->height = attributes.height;
                 glViewport(0, 0, attributes.width, attributes.height);
             }
             break;
@@ -280,12 +362,36 @@ ym_gfx_window_poll_events(ym_gfx_window* w)
     char keys[32];
     XQueryKeymap(window->display, keys);
 
+    // Hax keyboard "support"
+    window->w = false;
+    window->a = false;
+    window->s = false;
+    window->d = false;
+    window->e = false;
+    window->q = false;
+    // eo Hax keyboard "support"
+
+
     for (int keycode = 0; keycode < 256; ++keycode)
     {
         if ((keys[keycode / 8] & (1 << (keycode % 8))) != 0)
         {
+            // Hax keyboard "support"
+            if (keycode == 38)
+                window->a = true;
+            if (keycode == 39)
+                window->s = true;
+            if (keycode == 25)
+                window->w = true;
+            if (keycode == 40)
+                window->d = true;
+            if (keycode == 26)
+                window->e = true;
+            if (keycode == 24)
+                window->q = true;
+            // eo hax keyboard "support"
             //YM_DEBUG("Key pressed: %d", keycode);
-            //KeySym keysym = XkbKeycodeToKeysym(win->display, keycode, 0, 0);
+            //KeySym keysym = XkbKeycodeToKeysym(window->display, keycode, 0, 0);
             //YM_DEBUG("Keysym: %d", keysym);
             //YM_DEBUG("Name: %s", XKeysymToString(keysym));
         }

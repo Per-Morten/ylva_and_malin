@@ -1,10 +1,14 @@
 set(headers
     ym_gfx.h
     ym_gfx_gl.h
+    ym_gfx_gl_procs.h
+    ym_gfx_sprite.h
 )
 
 set(source
-    ym_gfx.c
+    ym_gfx_gl.c
+    ym_gfx_gl_procs.c
+    ym_gfx_sprite.c
 )
 
 if (WIN32)
@@ -12,15 +16,15 @@ if (WIN32)
         ${headers}
         glext.h
         wglext.h
-        ym_gfx_gl_win.h
     )
 
     set(source
+        ${source}
         ym_gfx_win.c
-        ym_gfx_gl_win.c
     )
 else()
     set(source
+        ${source}
         ym_gfx_unix.c
     )
 endif()
@@ -38,6 +42,7 @@ target_include_directories(ym_graphics
 target_link_libraries(ym_graphics
     ym_core
     ym_memory
+    lodepng
 )
 
 if (WIN32)
@@ -48,6 +53,6 @@ else()
     target_link_libraries(ym_graphics
         X11
         GL
-        GLU
+        #GLU
     )
 endif()
