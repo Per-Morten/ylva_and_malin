@@ -142,6 +142,7 @@ free_list_deallocate(ym_allocator* allocator, int size, void* ptr)
 #define YM_MEMORY_TRACKING_MAX_SIZE 2048
 #define YM_MEMORY_TRACKING_MAX_STR_SIZE 20
 
+// This probably shouldn't be allocated here, it should be heap allocated in own debug memory region.
 static struct
 {
     int line;

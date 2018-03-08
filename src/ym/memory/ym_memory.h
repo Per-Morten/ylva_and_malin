@@ -30,9 +30,6 @@ ym_mem_init();
 ym_errc
 ym_mem_shutdown();
 
-ym_mem_region*
-ym_mem_get_region(ym_mem_reg_id id);
-
 void*
 ym_mem_reg_alloc(ym_mem_reg_id id, int size, char* file, int line);
 
