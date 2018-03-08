@@ -104,7 +104,6 @@ ym_gfx_create_window(u16 width,
                                      NULL, NULL,
                                      NULL, &errc);
 
-
     if (errc != XkbOD_Success || window->display == NULL)
     {
         // Add proper failchecking here, so we can actually display the error.
@@ -121,24 +120,79 @@ ym_gfx_create_window(u16 width,
         return ym_errc_system_error;
     }
 
-    // Rethink these attributes.
-    GLint attributes[] =
+    // Setup config attributes
+    int attributes[] =
     {
-        GLX_RGBA,
-        GLX_DEPTH_SIZE,
-        24,
-        GLX_DOUBLEBUFFER,
+        GLX_RENDER_TYPE, GLX_RGBA_BIT,
+        GLX_DRAWABLE_TYPE, GLX_WINDOW_BIT,
+        GLX_DOUBLEBUFFER, true,
+        GLX_RED_SIZE, 1,
+        GLX_GREEN_SIZE, 1,
+        GLX_BLUE_SIZE, 1,
         None
     };
 
-    XVisualInfo* visual_info = glXChooseVisual(window->display, 0, attributes);
+    int fb_cfg_count = 0;
+    GLXFBConfig* fb_cfgs = glXChooseFBConfig(window->display,
+                                             DefaultScreen(window->display),
+                                             attributes, &fb_cfg_count);
+    if (fb_cfg_count == 0)
+    {
+        XCloseDisplay(window->display);
+        YM_WARN("%s: Could not choose FBConfig",
+                ym_errc_str(ym_errc_system_error));
+        return ym_errc_system_error;
+    }
 
-    // Ensure proper error handling her.
-    // Might leak as we are not doing XCloseDisplay on win->display
+    XVisualInfo* visual_info = glXGetVisualFromFBConfig(window->display, fb_cfgs[0]);
     if (visual_info == NULL)
     {
         XCloseDisplay(window->display);
         YM_WARN("%s: Could not choose visual",
+                ym_errc_str(ym_errc_system_error));
+        return ym_errc_system_error;
+    }
+
+    // Create old context used to get glXCreateContextAttribsARB
+    GLXContext old_ctx = glXCreateContext(window->display, visual_info, 0, GL_TRUE);
+    if (old_ctx == NULL)
+    {
+        XCloseDisplay(window->display);
+        YM_WARN("%s: Could not create old context",
+                ym_errc_str(ym_errc_system_error));
+        return ym_errc_system_error;
+    }
+
+    PFNGLXCREATECONTEXTATTRIBSARBPROC glXCreateContextAttribsARB = NULL;
+    glXCreateContextAttribsARB = (PFNGLXCREATECONTEXTATTRIBSARBPROC)glXGetProcAddress((const GLubyte*)"glXCreateContextAttribsARB");
+
+    // Destroy mock context
+    glXMakeCurrent(window->display, 0, 0);
+    glXDestroyContext(window->display, old_ctx);
+
+    if (!glXCreateContextAttribsARB)
+    {
+        XCloseDisplay(window->display);
+        YM_WARN("%s: Could not create ContexAttribsARB",
+                ym_errc_str(ym_errc_system_error));
+        return ym_errc_system_error;
+    }
+
+    // Setup context attributes
+    int context_attribs[] =
+    {
+        GLX_CONTEXT_MAJOR_VERSION_ARB, 4,
+        GLX_CONTEXT_MINOR_VERSION_ARB, 2,
+        GLX_CONTEXT_FLAGS_ARB, GLX_CONTEXT_DEBUG_BIT_ARB | GLX_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
+        GLX_CONTEXT_PROFILE_MASK_ARB, GLX_CONTEXT_CORE_PROFILE_BIT_ARB,
+        None
+    };
+
+    GLXContext context = glXCreateContextAttribsARB(window->display, fb_cfgs[0], NULL, true, context_attribs);
+    if (!context)
+    {
+        XCloseDisplay(window->display);
+        YM_WARN("%s: Could not create gl context",
                 ym_errc_str(ym_errc_system_error));
         return ym_errc_system_error;
     }
@@ -171,14 +225,7 @@ ym_gfx_create_window(u16 width,
     Atom delete_event = XInternAtom(window->display, "WM_DELETE_WINDOW", false);
     XSetWMProtocols(window->display, window->win, &delete_event, 1);
 
-    // Look at: http://apoorvaj.io/creating-a-modern-opengl-context.html
-    // to get renderdoc to work.
-    GLXContext context = glXCreateContext(window->display,
-                                          visual_info,
-                                          NULL,
-                                          GL_TRUE);
-
-    // Changes the current context
+    // Setting up modern-opengl context source: http://apoorvaj.io/creating-a-modern-opengl-context.html
     glXMakeCurrent(window->display, window->win, context);
 
     window->is_open = true;
