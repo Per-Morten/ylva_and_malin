@@ -2,7 +2,8 @@
 #include <lodepng.h>
 
 // Should this be here, or should it be moved to another file?
-// so we can use our own memory locations.
+// Want to handle file etc outside of this area, and also send in memory.
+// This function should just be a wrapper for lodepng, nothing extra.
 ym_errc
 ym_gfx_load_png(const char* filename,
                 u8** out_image,
@@ -134,6 +135,10 @@ ym_sprite_init(ym_mem_region* region, ym_gfx_window* window)
                                   "u_atlas_row_count",
                                   &g_ym_render_cfg.uniforms.atlas_row_count);
 
+    // Create VAO
+    glGenVertexArrays(1, &g_ym_render_cfg.vao);
+    glBindVertexArray(g_ym_render_cfg.vao);
+
     // Create square to render sprites on
     GLfloat points[] =
     {
@@ -143,9 +148,28 @@ ym_sprite_init(ym_mem_region* region, ym_gfx_window* window)
         0.25f,  0.25f,
     };
 
+    // Create VBO and assign it to vao
     glGenBuffers(1, &g_ym_render_cfg.vbo);
     glBindBuffer(GL_ARRAY_BUFFER, g_ym_render_cfg.vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(points), points, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, NULL);
+
+    // Setup texture coordinates
+    GLfloat tex_coords[] =
+    {
+        0.0f, 1.0f,
+        0.0f, 0.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+    };
+
+    // Create texture_vbo and assing it to vao
+    glGenBuffers(1, &g_ym_render_cfg.texture_vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, g_ym_render_cfg.texture_vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(tex_coords), tex_coords, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, NULL);
 
     // Setup indices for ibo
     GLuint indices[] =
@@ -158,31 +182,6 @@ ym_sprite_init(ym_mem_region* region, ym_gfx_window* window)
     glGenBuffers(1, &g_ym_render_cfg.ibo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_ym_render_cfg.ibo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    glGenVertexArrays(1, &g_ym_render_cfg.vao);
-    glBindVertexArray(g_ym_render_cfg.vao);
-
-    glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, g_ym_render_cfg.vbo);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, NULL);
-
-    glBindVertexArray(g_ym_render_cfg.vao);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_ym_render_cfg.ibo);
-
-    // Setup texture coordinates
-    GLfloat tex_coords[] =
-    {
-        0.0f, 1.0f,
-        0.0f, 0.0f,
-        1.0f, 0.0f,
-        1.0f, 1.0f,
-    };
-
-    glGenBuffers(1, &g_ym_render_cfg.texture_vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, g_ym_render_cfg.texture_vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(tex_coords), tex_coords, GL_STATIC_DRAW);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, NULL);
-    glEnableVertexAttribArray(1);
 
     return ym_errc_success;
 }
@@ -319,7 +318,7 @@ ym_sprite_draw_extd(ym_sheet_id sheet_id,
     glBindTexture(GL_TEXTURE_2D, sheet_id);
     glUniform1ui(g_ym_render_cfg.uniforms.texture_id, sprite_id);
 
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+    glDrawElements(GL_TRIANGLES, g_ym_render_cfg.ibo_size, GL_UNSIGNED_INT, NULL);
 
     return ym_errc_success;
 }

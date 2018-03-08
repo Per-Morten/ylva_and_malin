@@ -63,3 +63,9 @@ ym_sprite_draw_extd(ym_sheet_id sheet_id,
                     ym_vec2 pos,
                     ym_vec2 scale,
                     float angle);
+
+// Will be used so we can start drawing async. As soon as this command is run,
+// The render thread will start drawing this layer in the background if possible.
+// Think about if this is really a good idea.
+ym_errc
+ym_sprite_commit_layer(uint layer);
