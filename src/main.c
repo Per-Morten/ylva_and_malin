@@ -112,8 +112,8 @@ main(YM_UNUSED int argc,
         typedef
         struct
         {
-            Display* display;
-            Window win;
+            void* display;
+            void* win;
             bool is_open;
             u8 pad[7];
 
