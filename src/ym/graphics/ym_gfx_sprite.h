@@ -53,7 +53,8 @@ ym_errc
 ym_sprite_draw(ym_sheet_id sheet_id,
                ym_sprite_id sprite_id,
                uint layer,
-               ym_vec2 pos);
+               ym_vec2 pos,
+               ym_vec2 camera_pos);
 
 /// \todo add layering support
 ym_errc

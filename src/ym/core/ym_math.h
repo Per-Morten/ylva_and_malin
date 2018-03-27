@@ -197,6 +197,94 @@ ym_scale_vec4(ym_vec4 vec)
     return mat;
 }
 
+// Taken from: http://antongerdelan.net/teaching/3dprog1/maths_cheat_sheet.pdf
+YM_INLINE
+ym_mat4
+ym_lookat(ym_vec4 camera_pos, ym_vec4 target_pos, ym_vec4 up_direction)
+{
+    //  rx,  ry,  rz,  -px,
+    //  ux,  uy,  uz,  -py,
+    // -fx, -fy, -fz,  -pz,
+    //   0,   0,   0,    1,
+
+    //  rx,  ux,  -fx,    0,
+    //  ry,  uy,  -fy,    0,
+    //  rz,  uz,  -fz,    0,
+    // -px, -py,  -pz,    1,
+
+    ym_vec4 camera_neg =
+    {
+        .x = -camera_pos.x,
+        .y = -camera_pos.y,
+        .z = -camera_pos.z,
+        .w = 1.0f,
+    };
+
+    ym_mat4 trans = ym_translate_vec4(camera_neg);
+
+    ym_vec4 distance =
+    {
+        .x = target_pos.x - camera_pos.x,
+        .y = target_pos.y - camera_pos.y,
+        .z = target_pos.z - camera_pos.z,
+        .w = 1.0f,
+    };
+
+    float magn = sqrtf(distance.x * distance.x +
+                       distance.y * distance.y +
+                       distance.z * distance.z);
+
+    distance.x /= magn;
+    distance.y /= magn;
+    distance.z /= magn;
+
+    // Cross product of forward and upward vector
+    ym_vec4 r =
+    {
+        .x = distance.y * up_direction.z - distance.z * up_direction.y,
+        .y = distance.z * up_direction.x - distance.x * up_direction.z,
+        .z = distance.x * up_direction.y - distance.y * up_direction.x,
+        .w = 1.0f,
+    };
+
+    ym_mat4 mat =
+    {
+        .val =
+        {
+            r.x, up_direction.x, -distance.x, 0.0f,
+            r.y, up_direction.y, -distance.y, 0.0f,
+            r.z, up_direction.z, -distance.z, 0.0f,
+            0.0f, 0.0f, 0.0f, 1.0f,
+        },
+    };
+
+    return ym_mul_mat4_mat4(trans, mat);
+}
+
+// Taken from: http://antongerdelan.net/teaching/3dprog1/maths_cheat_sheet.pdf
+YM_INLINE
+ym_mat4
+ym_project(float near, float far, float fov, float aspect)
+{
+    float range = tanf(fov * 0.5f) * near;
+    float sx = (2.0f * near) / (range * aspect + range * aspect);
+    float sy = near / range;
+    float sz = -(far + near) / (far - near);
+    float pz = -(2 * far * near) / (far - near);
+
+    ym_mat4 mat =
+    {
+        .val =
+        {
+              sx,   0.0f,   0.0f, 0.0f,
+            0.0f,     sy,   0.0f, 0.0f,
+            0.0f,   0.0f,     sz, -1.0f,
+            0.0f,   0.0f,     pz, 0.0f,
+        },
+    };
+
+    return mat;
+}
 
 YM_INLINE
 void

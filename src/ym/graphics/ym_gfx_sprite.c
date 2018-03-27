@@ -79,6 +79,15 @@ static const ym_mat4 ym_view_mat =
     },
 };
 
+//-1.000000 0.000000 0.000000 0.000000
+//0.000000 1.000000 0.000000 0.000000
+//0.000000 0.000000 -1.000000 0.000000
+//0.000000 0.000000 -1.000000 1.000000
+
+// 1.000000 0.000000 0.000000 0.000000
+// 0.000000 1.000000 0.000000 0.000000
+// 0.000000 0.000000 1.000000 0.000000
+// 0.000000 0.000000 -1.000000 1.000000
 
 ym_errc
 ym_sprite_init(ym_mem_region* region, ym_gfx_window* window)
@@ -237,7 +246,8 @@ ym_errc
 ym_sprite_draw(ym_sheet_id sheet_id,
                ym_sprite_id sprite_id,
                uint layer,
-               ym_vec2 pos)
+               ym_vec2 pos,
+               ym_vec2 camera_pos)
 {
     uint w_width;
     uint w_height;
@@ -245,14 +255,45 @@ ym_sprite_draw(ym_sheet_id sheet_id,
 
     ym_vec4 real_pos =
     {
-        .x = pos.x / w_width * 1.0f,
-        .y = pos.y / w_height * -1.0f,
+        .x = pos.x,
+        .y = -pos.y,
         .z = 0.0f,
         .w = 1.0f,
     };
 
     ym_mat4 translate = ym_translate_vec4(real_pos);
-    ym_mat4 res = ym_mul_mat4_mat4(translate, ym_view_mat);
+
+    // Testing
+    ym_vec4 camera = {.x = camera_pos.x, .y = camera_pos.y, .z = 1.0f, .w = 1.0f};
+    //ym_vec4 camera = {.x = 0.0f, .y = 0.0f, .z = 1.0f, .w = 1.0f};
+    //ym_vec4 target = {0.0f, 0.0f, 0.0f, 1.0f};
+    ym_vec4 target = {.x = camera_pos.x, .y = camera_pos.y, .z = 0.0f, .w = 1.0f};
+    ym_vec4 up_dir = {0.0f, 1.0f, 0.0f, 1.0f};
+    ym_mat4 view = ym_lookat(camera, target, up_dir);
+    //ym_mat4 view = ym_view_mat;
+
+    ym_mat4 project = ym_project(0.5f, 100.0f, 90.0f, (float)w_width / (float)w_height);
+    ym_mat4 tmp = ym_mul_mat4_mat4(view, translate);
+    ym_mat4 res = ym_mul_mat4_mat4(tmp, project);
+    //ym_mat4 res = ym_mul_mat4_mat4(view, translate);
+
+    // for (int i = 0; i < 4; i++)
+    // {
+    //     YM_DEBUG("%f %f %f %f",
+    //              res.val[i * 4 + 0],
+    //              res.val[i * 4 + 1],
+    //              res.val[i * 4 + 2],
+    //              res.val[i * 4 + 3]);
+    // }
+
+    //ym_mat4 res = ym_mul_mat4_mat4(translate, ym_view_mat);
+    // 0.25, 0.25, 0.0, 1.0
+    //res.val[15] = 1.0f;
+    ym_vec4 test_vec = {.x = 0.25f, .y = 0.25f, .z = 0.0f, .w = 1.0f};
+    ym_vec4 test_res = ym_mul_mat4_vec4(res, test_vec);
+    //YM_DEBUG("Test res: %f %f %f %f", test_res.x, test_res.y, test_res.z,test_res.w);
+
+
     glUniformMatrix4fv(g_ym_render_cfg.uniforms.mvp, 1, GL_FALSE, res.val);
 
     glBindTexture(GL_TEXTURE_2D, sheet_id);

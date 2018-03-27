@@ -56,6 +56,10 @@ struct
     bool d;
     bool e;
     bool q;
+    bool up;
+    bool down;
+    bool left;
+    bool right;
     // EO keyboard Hax
 
     // After removed hax,
@@ -369,6 +373,10 @@ ym_gfx_window_poll_events(ym_gfx_window* w)
     window->d = false;
     window->e = false;
     window->q = false;
+    window->left = false;
+    window->up = false;
+    window->right = false;
+    window->down = false;
     // eo Hax keyboard "support"
 
 
@@ -389,11 +397,20 @@ ym_gfx_window_poll_events(ym_gfx_window* w)
                 window->e = true;
             if (keycode == 24)
                 window->q = true;
+            if (keycode == 113) // left
+                window->left = true;
+            if (keycode == 111) // up
+                window->up = true;
+            if (keycode == 116) // down
+                window->down = true;
+            if (keycode == 114) // right
+                window->right = true;
+
             // eo hax keyboard "support"
-            //YM_DEBUG("Key pressed: %d", keycode);
-            //KeySym keysym = XkbKeycodeToKeysym(window->display, keycode, 0, 0);
-            //YM_DEBUG("Keysym: %d", keysym);
-            //YM_DEBUG("Name: %s", XKeysymToString(keysym));
+            // YM_DEBUG("Key pressed: %d", keycode);
+            // KeySym keysym = XkbKeycodeToKeysym(window->display, keycode, 0, 0);
+            // YM_DEBUG("Keysym: %d", keysym);
+            // YM_DEBUG("Name: %s", XKeysymToString(keysym));
         }
     }
 
