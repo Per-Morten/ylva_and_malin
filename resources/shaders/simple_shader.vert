@@ -18,7 +18,7 @@ void main()
     float col = u_texture_id % u_atlas_col_count;
 
     // u_atlas_row_count - 1 to count texture_id from top left, rather than bottom left.
-    float row = u_atlas_row_count - 1 - u_texture_id / u_atlas_row_count;
+    float row = u_atlas_row_count - 1 - u_texture_id / u_atlas_col_count;
 
     vec2 offset = vec2(col / u_atlas_col_count,
                        row / u_atlas_row_count);
