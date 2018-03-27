@@ -48,11 +48,14 @@ static struct
     struct
     {
         GLint color;
-        GLint mvp; // Not really mvp yet, just model and view.
+        GLint mvp;
         GLint texture_id;
         GLint atlas_col_count;
         GLint atlas_row_count;
     } uniforms;
+
+    ym_mat4 view_matrix;
+    ym_mat4 projection_matrix;
 
 } g_ym_render_cfg;
 
@@ -65,29 +68,6 @@ static struct
     uint col_count;
     ym_sheet_id id;
 } g_ym_sprite_info[3];
-
-
-// Simple view, allowing me to work in [0-1] space, rather than [-1 - 1]
-static const ym_mat4 ym_view_mat =
-{
-    .val =
-    {
-        1.0f,  0.0f,  0.0f,  0.0f,
-        0.0f,  1.0f,  0.0f,  0.0f,
-        0.0f,  0.0f,  1.0f,  0.0f,
-        -0.5f,  0.5f,  0.0f,  1.0f,
-    },
-};
-
-//-1.000000 0.000000 0.000000 0.000000
-//0.000000 1.000000 0.000000 0.000000
-//0.000000 0.000000 -1.000000 0.000000
-//0.000000 0.000000 -1.000000 1.000000
-
-// 1.000000 0.000000 0.000000 0.000000
-// 0.000000 1.000000 0.000000 0.000000
-// 0.000000 0.000000 1.000000 0.000000
-// 0.000000 0.000000 -1.000000 1.000000
 
 ym_errc
 ym_sprite_init(ym_mem_region* region, ym_gfx_window* window)
@@ -192,6 +172,12 @@ ym_sprite_init(ym_mem_region* region, ym_gfx_window* window)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_ym_render_cfg.ibo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
+    // Setup projection matrix
+    uint w_width;
+    uint w_height;
+    ym_gfx_window_get_size(g_window, &w_width, &w_height);
+    g_ym_render_cfg.projection_matrix = ym_project(0.5f, 100.0f, 90.0f, (float)w_width / (float)w_height);
+
     return ym_errc_success;
 }
 
@@ -246,13 +232,8 @@ ym_errc
 ym_sprite_draw(ym_sheet_id sheet_id,
                ym_sprite_id sprite_id,
                uint layer,
-               ym_vec2 pos,
-               ym_vec2 camera_pos)
+               ym_vec2 pos)
 {
-    uint w_width;
-    uint w_height;
-    ym_gfx_window_get_size(g_window, &w_width, &w_height);
-
     ym_vec4 real_pos =
     {
         .x = pos.x,
@@ -261,40 +242,11 @@ ym_sprite_draw(ym_sheet_id sheet_id,
         .w = 1.0f,
     };
 
-    ym_mat4 translate = ym_translate_vec4(real_pos);
+    ym_mat4 translated = ym_translate_vec4(real_pos);
+    ym_mat4 viewed = ym_mul_mat4_mat4(translated, g_ym_render_cfg.view_matrix);
+    ym_mat4 projected = ym_mul_mat4_mat4(viewed, g_ym_render_cfg.projection_matrix);
 
-    // Testing
-    ym_vec4 camera = {.x = camera_pos.x, .y = camera_pos.y, .z = 1.0f, .w = 1.0f};
-    //ym_vec4 camera = {.x = 0.0f, .y = 0.0f, .z = 1.0f, .w = 1.0f};
-    //ym_vec4 target = {0.0f, 0.0f, 0.0f, 1.0f};
-    ym_vec4 target = {.x = camera_pos.x, .y = camera_pos.y, .z = 0.0f, .w = 1.0f};
-    ym_vec4 up_dir = {0.0f, 1.0f, 0.0f, 1.0f};
-    ym_mat4 view = ym_lookat(camera, target, up_dir);
-    //ym_mat4 view = ym_view_mat;
-
-    ym_mat4 project = ym_project(0.5f, 100.0f, 90.0f, (float)w_width / (float)w_height);
-    ym_mat4 tmp = ym_mul_mat4_mat4(view, translate);
-    ym_mat4 res = ym_mul_mat4_mat4(tmp, project);
-    //ym_mat4 res = ym_mul_mat4_mat4(view, translate);
-
-    // for (int i = 0; i < 4; i++)
-    // {
-    //     YM_DEBUG("%f %f %f %f",
-    //              res.val[i * 4 + 0],
-    //              res.val[i * 4 + 1],
-    //              res.val[i * 4 + 2],
-    //              res.val[i * 4 + 3]);
-    // }
-
-    //ym_mat4 res = ym_mul_mat4_mat4(translate, ym_view_mat);
-    // 0.25, 0.25, 0.0, 1.0
-    //res.val[15] = 1.0f;
-    ym_vec4 test_vec = {.x = 0.25f, .y = 0.25f, .z = 0.0f, .w = 1.0f};
-    ym_vec4 test_res = ym_mul_mat4_vec4(res, test_vec);
-    //YM_DEBUG("Test res: %f %f %f %f", test_res.x, test_res.y, test_res.z,test_res.w);
-
-
-    glUniformMatrix4fv(g_ym_render_cfg.uniforms.mvp, 1, GL_FALSE, res.val);
+    glUniformMatrix4fv(g_ym_render_cfg.uniforms.mvp, 1, GL_FALSE, projected.val);
 
     glBindTexture(GL_TEXTURE_2D, sheet_id);
     glUniform1ui(g_ym_render_cfg.uniforms.texture_id, sprite_id);
@@ -312,14 +264,10 @@ ym_sprite_draw_extd(ym_sheet_id sheet_id,
                     ym_vec2 scale,
                     float angle)
 {
-    uint w_width;
-    uint w_height;
-    ym_gfx_window_get_size(g_window, &w_width, &w_height);
-
     ym_vec4 real_pos =
     {
-        .x = pos.x / w_width * 1.0f,
-        .y = pos.y / w_height * -1.0f,
+        .x = pos.x,
+        .y = -pos.y,
         .z = 0.0f,
         .w = 1.0f,
     };
@@ -350,11 +298,12 @@ ym_sprite_draw_extd(ym_sheet_id sheet_id,
         },
     };
 
-    ym_mat4 tmp = ym_mul_mat4_mat4(rotate, scale_mat);
-    ym_mat4 model = ym_mul_mat4_mat4(tmp, translate);
-    ym_mat4 res = ym_mul_mat4_mat4(model, ym_view_mat);
+    ym_mat4 scaled = ym_mul_mat4_mat4(rotate, scale_mat);
+    ym_mat4 translated = ym_mul_mat4_mat4(scaled, translate);
+    ym_mat4 viewed = ym_mul_mat4_mat4(translated, g_ym_render_cfg.view_matrix);
+    ym_mat4 projected = ym_mul_mat4_mat4(viewed, g_ym_render_cfg.projection_matrix);
 
-    glUniformMatrix4fv(g_ym_render_cfg.uniforms.mvp, 1, GL_FALSE, res.val);
+    glUniformMatrix4fv(g_ym_render_cfg.uniforms.mvp, 1, GL_FALSE, projected.val);
 
     glBindTexture(GL_TEXTURE_2D, sheet_id);
     glUniform1ui(g_ym_render_cfg.uniforms.texture_id, sprite_id);
@@ -362,4 +311,13 @@ ym_sprite_draw_extd(ym_sheet_id sheet_id,
     glDrawElements(GL_TRIANGLES, g_ym_render_cfg.ibo_size, GL_UNSIGNED_INT, NULL);
 
     return ym_errc_success;
+}
+
+void
+ym_sprite_set_camera_pos(ym_vec3 camera_pos)
+{
+    ym_vec4 camera = {.x = camera_pos.x, .y = camera_pos.y, .z = camera_pos.z, .w = 1.0f};
+    ym_vec4 target = {.x = camera_pos.x, .y = camera_pos.y, .z = 0.0f, .w = 1.0f};
+    ym_vec4 up_dir = {0.0f, 1.0f, 0.0f, 1.0f};
+    g_ym_render_cfg.view_matrix = ym_lookat(camera, target, up_dir);
 }

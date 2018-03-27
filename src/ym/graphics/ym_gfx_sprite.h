@@ -53,8 +53,7 @@ ym_errc
 ym_sprite_draw(ym_sheet_id sheet_id,
                ym_sprite_id sprite_id,
                uint layer,
-               ym_vec2 pos,
-               ym_vec2 camera_pos);
+               ym_vec2 pos);
 
 /// \todo add layering support
 ym_errc
@@ -70,3 +69,6 @@ ym_sprite_draw_extd(ym_sheet_id sheet_id,
 // Think about if this is really a good idea.
 ym_errc
 ym_sprite_commit_layer(uint layer);
+
+void
+ym_sprite_set_camera_pos(ym_vec3 camera_pos);

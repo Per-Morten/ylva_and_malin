@@ -85,22 +85,21 @@ main(YM_UNUSED int argc,
     ym_vec2 malin_pos =
     {
 
-        .x = 400.0f,
-        .y = 300.0f,
+        .x = 0.0f,
+        .y = 0.0f,
     };
 
     ym_vec2 ylva_pos =
     {
         .x = 0.0f,
         .y = 0.0f,
-        //.x = 400.0f,
-        //.y = 300.0f,
     };
 
-    ym_vec2 camera_pos =
+    ym_vec3 camera_pos =
     {
         .x = 0.0f,
         .y = 0.0f,
+        .z = 1.0f,
     };
 
     while (ym_gfx_window_is_open(window))
@@ -115,6 +114,7 @@ main(YM_UNUSED int argc,
             anim_timer = 0.0f;
             texture_id++;
             texture_id = texture_id % 12;
+            //YM_DEBUG("texture_id: %d", texture_id);
         }
 
         // SUPER HAX FOR TESTING TRANSFORMATIONS!
@@ -142,23 +142,23 @@ main(YM_UNUSED int argc,
 
         if (win_hax->w)
         {
-            ylva_pos.y -= 1 * dt;
-            //YM_DEBUG("w pressed, go up: %f", ylva_pos.y);
+            malin_pos.y -= 1 * dt;
+            //YM_DEBUG("w pressed, go up: %f", malin_pos.y);
         }
         if (win_hax->s)
         {
-            ylva_pos.y += 1 * dt;
-            //YM_DEBUG("s pressed, go down: %f", ylva_pos.y);
+            malin_pos.y += 1 * dt;
+            //YM_DEBUG("s pressed, go down: %f", malin_pos.y);
         }
         if (win_hax->a)
         {
-            ylva_pos.x -= 1 * dt;
-            //YM_DEBUG("a pressed, go left: %f", ylva_pos.x);
+            malin_pos.x -= 1 * dt;
+            //YM_DEBUG("a pressed, go left: %f", malin_pos.x);
         }
         if (win_hax->d)
         {
-            ylva_pos.x += 1 * dt;
-            //YM_DEBUG("d pressed, go right: %f", ylva_pos.x);
+            malin_pos.x += 1 * dt;
+            //YM_DEBUG("d pressed, go right: %f", malin_pos.x);
         }
         if (win_hax->e)
         {
@@ -173,22 +173,22 @@ main(YM_UNUSED int argc,
 
         if (win_hax->up)
         {
-            YM_DEBUG("up pressed");
+            //YM_DEBUG("down pressed");
             camera_pos.y += 1 * dt;
         }
         if (win_hax->down)
         {
-            YM_DEBUG("down pressed");
+            //YM_DEBUG("down pressed");
             camera_pos.y -= 1 * dt;
         }
         if (win_hax->left)
         {
-            YM_DEBUG("left pressed");
+            //YM_DEBUG("left pressed");
             camera_pos.x -= 1 * dt;
         }
         if (win_hax->right)
         {
-            YM_DEBUG("right pressed");
+            //YM_DEBUG("right pressed");
             camera_pos.x += 1 * dt;
         }
         // EO Super hax for testing transformations
@@ -199,8 +199,9 @@ main(YM_UNUSED int argc,
             .y = 1.0f,
         };
 
-        //ym_sprite_draw_extd(malin_sheet, texture_id, 0, malin_pos, scale, angle);
-        ym_sprite_draw(ylva_sheet, texture_id, 0, ylva_pos, camera_pos);
+        ym_sprite_set_camera_pos((ym_vec3){.x = malin_pos.x, .y = -malin_pos.y, .z = 1.0f});
+        ym_sprite_draw_extd(malin_sheet, texture_id, 0, malin_pos, scale, angle);
+        ym_sprite_draw(ylva_sheet, texture_id, 0, ylva_pos);
 
         ym_gfx_window_display(window);
 
