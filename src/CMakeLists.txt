@@ -9,7 +9,7 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 
 # Compiler setup
 if (NOT WIN32)
-    set(CMAKE_C_COMPILER gcc-7)
+    set(CMAKE_C_COMPILER gcc)
 endif()
 
 set(YM_STANDARD_FLAGS "")
@@ -78,6 +78,7 @@ if (NOT ${CMAKE_BUILD_TYPE} STREQUAL "Test")
         ym_graphics
         ym_memory
         ym_telemetry
+        ym_resource
     )
 
     set_target_properties(main PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "$ENV{YM_ROOT_DIR}")

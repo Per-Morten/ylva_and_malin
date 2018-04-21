@@ -37,6 +37,8 @@ ym_errc_str(ym_errc errc)
             return "ym_errc_gl_error";
         case ym_errc_out_of_memory:
             return "ym_errc_out_of_memory";
+        case ym_errc_container_full:
+            return "ym_errc_container_full";
     }
 
     return "Unknown Error!";

@@ -138,7 +138,7 @@ ym_gfx_create_window(u16 width,
 
     if (!wglChoosePixelFormatARB)
     {
-        YM_ERROR("Could not get proc address of \%s\", error: %u",
+        YM_ERROR("Could not get proc address of \"%s\", error: %u",
                  "wglChoosePixelFormatARB",
                  GetLastError());
     }
@@ -148,7 +148,7 @@ ym_gfx_create_window(u16 width,
 
     if (!wglCreateContextAttribsARB)
     {
-        YM_ERROR("Could not get proc address of \%s\", error: %u",
+        YM_ERROR("Could not get proc address of \"%s\", error: %u",
                  "wglCreateContextAttribsARB",
                  GetLastError());
     }

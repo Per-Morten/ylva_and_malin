@@ -3,6 +3,7 @@
 #include <ym_allocator.h>
 
 #include <stdio.h>
+#include <errno.h>
 
 static
 const char*
@@ -52,12 +53,14 @@ ym_gfx_gl_create_shader(const char* file_path,
               ym_errc_invalid_input,
               "file_path and out_shader must not be NULL");
 
+    errno = 0;
     FILE* file = fopen(file_path, "r");
-    if (!file)
+    if (!file || errno != 0)
     {
-        YM_WARN("%s:, Could not open file: %s",
+        YM_WARN("%s:, Could not open file: %s, system error: %s",
                 ym_errc_str(ym_errc_system_error),
-                file_path);
+                file_path,
+                strerror(errno));
         return ym_errc_system_error;
     }
 

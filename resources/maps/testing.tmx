@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="32" tileheight="32" nextobjectid="9">
+ <tileset firstgid="1" name="floor_0" tilewidth="32" tileheight="32" tilecount="64">
+  <image source="../sprites/floor_0.png" width="256" height="256"/>
+ </tileset>
+ <tileset firstgid="65" name="furniture_0" tilewidth="32" tileheight="32" tilecount="256">
+  <image source="../sprites/furniture_0.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="321" name="furniture_1" tilewidth="32" tileheight="32" tilecount="256">
+  <image source="../sprites/furniture_1.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="577" name="walls_0" tilewidth="32" tileheight="32" tilecount="240">
+  <image source="../sprites/walls_0.png" width="512" height="480"/>
+ </tileset>
+ <tileset firstgid="817" name="logic" tilewidth="32" tileheight="32" tilecount="4">
+  <image source="../sprites/logic.png" width="64" height="64"/>
+ </tileset>
+ <layer name="base" width="10" height="10">
+  <data encoding="csv">
+747,747,747,747,747,747,747,747,747,747,
+747,719,720,719,720,719,720,719,720,747,
+747,735,736,735,736,735,736,735,736,747,
+747,33,34,33,34,33,34,33,34,747,
+747,33,34,33,33,34,34,33,34,747,
+747,33,34,33,34,33,34,33,34,747,
+747,33,34,33,34,33,34,33,34,747,
+747,33,34,33,34,33,34,33,34,747,
+747,33,34,33,34,33,34,33,34,747,
+795,795,795,795,795,795,795,795,795,795
+</data>
+ </layer>
+ <layer name="furniture" width="10" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,
+0,411,412,481,68,68,0,0,0,0,
+0,427,428,497,84,84,230,135,136,0,
+0,443,444,0,0,0,246,151,152,0,
+0,355,0,0,0,0,0,0,301,0,
+0,371,228,0,0,0,0,0,0,0,
+0,387,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,115,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer name="logic" width="10" height="10" opacity="0.4">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,817,817,0,0,0,0,0,0,0,
+0,817,817,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,818,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+</map>
