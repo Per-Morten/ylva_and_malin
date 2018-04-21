@@ -78,6 +78,7 @@ if (NOT ${CMAKE_BUILD_TYPE} STREQUAL "Test")
         ym_graphics
         ym_memory
         ym_telemetry
+        ym_resource
     )
 
     set_target_properties(main PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "$ENV{YM_ROOT_DIR}")

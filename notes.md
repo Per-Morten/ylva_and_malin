@@ -10,6 +10,9 @@ However, need to translate this into OpenGL space when drawing.
 OpenGL space also currently goes from 0 to 2, rather than -1 to 1, unsure if I will move back again.
 Will let it be in [0->2) for the moment.
 
+#### Edit
+Moved away from this position now that I got proper projection to work.
+
 ## Unsigned vs Signed in Shaders
 Have had some problems with unsigned values in shaders stopping the shader from compiling,
 with no really good error messages, might just be that the shader compiler is a bit touchy,

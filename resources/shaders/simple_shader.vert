@@ -7,8 +7,8 @@ out vec2 tex_coords;
 
 uniform uint u_atlas_col_count = 3;
 uniform uint u_atlas_row_count = 4;
-uniform mat4 u_matrix;
 uniform uint u_texture_id = 0;
+uniform mat4 u_matrix;
 
 void main()
 {

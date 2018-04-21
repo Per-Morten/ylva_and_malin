@@ -7,6 +7,7 @@
 #include <ym_gfx_gl.h>
 #include <ym_gfx_sprite.h>
 #include <ym_telemetry.h>
+#include <ym_resource.h>
 
 ym_errc
 init_subsystems(ym_gfx_window* window)
@@ -67,6 +68,7 @@ main(YM_UNUSED int argc,
     if (errc != ym_errc_success)
         goto cleanup;
 
+
     ym_sheet_id malin_sheet;
     ym_sprite_load_sheet("resources/sprites/malin_regular.png", 3, 4,
                          &malin_sheet);
@@ -75,6 +77,29 @@ main(YM_UNUSED int argc,
     ym_sprite_load_sheet("resources/sprites/ylva_regular.png", 3, 4,
                          &ylva_sheet);
 
+    ym_tileset* tileset;
+    int tilecount;
+    ym_layer* layer;
+    int layercount;
+    ym_resource_load_map("resources/maps/testing.tmx",
+                         &tileset,
+                         &tilecount,
+                         &layer,
+                         &layercount);
+
+    // Load sheets
+    char filepath[256];
+    for (int i = 0; i < tilecount; i++)
+    {
+        strcpy(filepath, "resources/sprites/");
+        strcat(filepath, tileset[i].filename);
+        ym_sprite_load_sheet(filepath,
+                             tileset[i].rowcount,
+                             tileset[i].colcount,
+                             &tileset[i].sheet_id);
+    }
+
+    ym_resource_parse_map(tileset, tilecount, layer, layercount);
 
     ym_sprite_id texture_id = 0;
     double dt = 0.0;
@@ -85,21 +110,21 @@ main(YM_UNUSED int argc,
     ym_vec2 malin_pos =
     {
 
-        .x = 0.0f,
-        .y = 0.0f,
+        .x = 6.0f,
+        .y = 7.0f,
     };
 
     ym_vec2 ylva_pos =
     {
-        .x = 0.0f,
-        .y = 0.0f,
+        .x = 4.0f,
+        .y = 4.0f,
     };
 
     ym_vec3 camera_pos =
     {
         .x = 0.0f,
         .y = 0.0f,
-        .z = 1.0f,
+        .z = 2.0f,
     };
 
     while (ym_gfx_window_is_open(window))
@@ -199,7 +224,24 @@ main(YM_UNUSED int argc,
             .y = 1.0f,
         };
 
-        ym_sprite_set_camera_pos((ym_vec3){.x = malin_pos.x, .y = -malin_pos.y, .z = 1.0f});
+        for (int i = 0; i < layercount; i++)
+        {
+            for (int x = 0; x < 10; x++)
+            {
+                for (int y = 0; y < 10; y++)
+                {
+                    if (layer[i].sprite_ids[x][y] == 0)
+                        continue;
+                    ym_sprite_draw(layer[i].sheet_ids[x][y],
+                                   layer[i].sprite_ids[x][y],
+                                   0,
+                                   layer[i].coordinates[x][y]);
+                }
+            }
+//                ym_sprite_draw(floor_sheet, 0, 0, (ym_vec2){.x = i * 100.0f, .y = j * 100.0f});
+        }
+
+        ym_sprite_set_camera_pos((ym_vec3){.x = malin_pos.x, .y = -malin_pos.y, .z = camera_pos.z});
         ym_sprite_draw_extd(malin_sheet, texture_id, 0, malin_pos, scale, angle);
         ym_sprite_draw(ylva_sheet, texture_id, 0, ylva_pos);
 
