@@ -4,6 +4,7 @@
 #include <time.h>
 
 #ifdef WIN32
+#include <Windows.h>
 #else
 #include <sys/sysinfo.h>
 #include <sys/time.h>
@@ -14,7 +15,18 @@ double
 ym_clock_now()
 {
     #ifdef WIN32
-    return 0.0;
+    LARGE_INTEGER frequency;
+    LARGE_INTEGER time;
+    QueryPerformanceFrequency(&frequency);
+    QueryPerformanceCounter(&time);
+
+    // Multiply to avoid loss-of-precision
+    time.QuadPart *= 1E6;
+    time.QuadPart /= frequency.QuadPart;
+
+    // Divide to convert from microseconds to seconds.
+    return time.QuadPart / 1E6;
+
     #else
     struct timeval tp;
     gettimeofday(&tp, NULL);
