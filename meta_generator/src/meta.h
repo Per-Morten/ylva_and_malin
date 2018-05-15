@@ -7,7 +7,7 @@ namespace meta
 {
     struct type_info
     {
-        enum struct data_type
+        enum data_type
         {
             enumeration,
             structure,
@@ -24,12 +24,19 @@ namespace meta
         std::vector<key_value> values;
     };
 
-    // Return a pair of .h and .cpp file?
-    std::pair<std::string, std::string>
-    parse(const std::string& string);
+    struct file
+    {
+        std::string filename;
+        std::string contents;
+    };
 
-    std::size_t
-    tokenize_enum(const std::string& string,
+    // Return a pair of .h and .cpp file?
+    std::pair<file, file>
+    parse(const char* filename,
+          const char* string);
+
+    char*
+    tokenize_enum(const char* string,
                   type_info& info);
 
     std::pair<std::string, std::string>

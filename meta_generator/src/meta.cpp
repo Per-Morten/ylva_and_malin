@@ -3,8 +3,6 @@
 #include <algorithm>
 #include <cstdarg>
 #include <cstring>
-#include <iostream>
-#include <iterator>
 #include <vector>
 
 #include <logger.h>
@@ -14,7 +12,7 @@ namespace
     namespace local
     {
         std::string
-        fmt_string(const char* format, ...) noexcept
+        fmt(const char* format, ...) noexcept
         {
             std::va_list args1;
             va_start(args1, format);
@@ -30,24 +28,64 @@ namespace
     }
 }
 
-
-std::pair<std::string, std::string>
-meta::parse(const std::string& string)
+std::pair<meta::file, meta::file>
+meta::parse(const char* filename,
+            const char* string)
 {
     // Go through all declarations and tokenize them.
+    char type_buffer[256];
 
+    std::vector<meta::type_info> types;
+
+    for (auto itr = std::strstr(string, "typedef"); itr;)
+    {
+        auto errc = std::sscanf(itr, " typedef %s", type_buffer);
+        if (errc != 1)
+        {
+            LOG_WARN("Could note decipher typedef");
+            return {};
+        }
+
+        // To ensure that we skip to the next typedef the next time we search.
+        // Won't impact tokenizing, as it need to get to the opening { anyway
+        itr += sizeof("typedef");
+
+        if (!std::strcmp(type_buffer, "enum"))
+        {
+            types.push_back({});
+            itr = tokenize_enum(itr, types.back());
+        }
+
+        itr = std::strstr(itr, "typedef");
+    }
+
+    std::string declarations = "#pragma once\n";
+    std::string definitions = local::fmt("#include <%s_meta.h>\n",
+                                         filename);
     // Generate to_string function for all items.
+    for (const auto& item : types)
+    {
+        if (item.type == meta::type_info::enumeration)
+        {
+            auto[decl, def] = generate_enum_to_string(item);
+            declarations += decl;
+            definitions += def;
+        }
+    }
 
-    // Can just do += on declarations and definitions.
-    return {};
+    // Create filenames
+    file header = {local::fmt("%s_meta.h", filename), declarations};
+    file cpp = {local::fmt("%s_meta.cpp", filename), definitions};
+
+    return {header, cpp};
 }
 
-// Might be easier to do this with char* actually XD
-std::size_t
-meta::tokenize_enum(const std::string& string,
+// Returns pointer to the place where parsing should continue.
+char*
+meta::tokenize_enum(const char* string,
                     meta::type_info& info)
 {
-    info.type = meta::type_info::data_type::enumeration;
+    info.type = meta::type_info::enumeration;
 
     // Buffers for sscanf
     char name_buf[256];
@@ -56,37 +94,34 @@ meta::tokenize_enum(const std::string& string,
     // Used as replacement if no value is found within
     int value = 0;
 
-    auto line_start = string.find("{\n") + sizeof("{\n");
-    auto line_end = string.find("\n", line_start) + sizeof("\n");
-    auto line = string.substr(line_start, line_end - line_start);
+    auto enum_start = std::strstr(string, "{\n") + sizeof("{\n");
+    auto enum_stop = std::strchr(enum_start, '}');
 
-    while (line.find("}") == std::string::npos)
+    while (enum_start < enum_stop)
     {
-        auto errc = std::sscanf(line.c_str(), " %[^, /]s", name_buf);
+        auto errc = std::sscanf(enum_start, " %[^, /}]s", name_buf);
         if (errc == 1)
         {
-            errc = std::sscanf(line.c_str(), " %*s = %[^,/]s", value_buf);
+            errc = std::sscanf(enum_start, " %*s = %[^,/]s", value_buf);
             if (errc != 1)
                 std::sprintf(value_buf, "%d", value++);
 
             info.values.push_back({name_buf, value_buf});
         }
 
-        line_start = line_end;
-        line_end = string.find("\n", line_start) + sizeof("\n");
-        line = string.substr(line_start, line_end - line_start);
+        enum_start = std::strchr(enum_start, '\n') + sizeof('\n');
     }
 
-    auto errc = std::sscanf(line.c_str(), " } %[^;]s;", name_buf);
+    auto errc = std::sscanf(enum_stop, " } %[^;]s;", name_buf);
     if (errc != 1)
     {
-        LOG_WARN("Could not parse enumeration name, line: %s", line.c_str());
+        LOG_WARN("Could not parse enumeration name, line: %s", enum_stop);
         return {};
     }
 
     info.name = name_buf;
 
-    return line_end;
+    return enum_stop;
 }
 
 std::pair<std::string, std::string>
@@ -94,19 +129,19 @@ meta::generate_enum_to_string(const meta::type_info& e)
 {
     constexpr auto decl_fmt =
     "const char*\n"
-    "%s_to_string(%s e);\n";
+    "%s_to_string(%s e);\n\n";
 
     std::string decl_str =
-        local::fmt_string(decl_fmt, e.name.c_str(), e.name.c_str());
+        local::fmt(decl_fmt, e.name.c_str(), e.name.c_str());
 
 
     std::string case_stmt;
     for (const auto& item : e.values)
     {
         case_stmt +=
-            local::fmt_string("        case %s:\n"
-                              "            return \"%s\";\n",
-                              item.key.c_str(), item.key.c_str());
+            local::fmt("        case %s:\n"
+                       "            return \"%s\";\n",
+                       item.key.c_str(), item.key.c_str());
     }
 
     constexpr auto def_fmt =
@@ -117,14 +152,14 @@ meta::generate_enum_to_string(const meta::type_info& e)
     "%s"
     "    }\n\n"
     "    return \"%s: Unknown Value!\";\n"
-    "}\n";
+    "}\n\n";
 
     std::string def_str =
-        local::fmt_string(def_fmt,
-                          e.name.c_str(),
-                          e.name.c_str(),
-                          case_stmt.c_str(),
-                          e.name.c_str());
+        local::fmt(def_fmt,
+                   e.name.c_str(),
+                   e.name.c_str(),
+                   case_stmt.c_str(),
+                   e.name.c_str());
 
     return std::make_pair(decl_str, def_str);
 }
