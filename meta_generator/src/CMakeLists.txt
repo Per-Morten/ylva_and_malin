@@ -17,3 +17,8 @@ target_include_directories(meta PUBLIC
 )
 
 add_executable(main main.cpp)
+
+target_link_libraries(main
+meta
+stdc++fs
+)
