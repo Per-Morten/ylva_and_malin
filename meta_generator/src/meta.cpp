@@ -59,6 +59,9 @@ meta::parse(const char* filename,
         itr = std::strstr(itr, "typedef");
     }
 
+    if (types.empty())
+        return {};
+
     std::string declarations = "#pragma once\n";
     std::string definitions = local::fmt("#include <%s_meta.h>\n",
                                          filename);
@@ -81,7 +84,7 @@ meta::parse(const char* filename,
 }
 
 // Returns pointer to the place where parsing should continue.
-char*
+const char*
 meta::tokenize_enum(const char* string,
                     meta::type_info& info)
 {

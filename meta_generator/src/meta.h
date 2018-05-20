@@ -35,7 +35,7 @@ namespace meta
     parse(const char* filename,
           const char* string);
 
-    char*
+    const char*
     tokenize_enum(const char* string,
                   type_info& info);
 
