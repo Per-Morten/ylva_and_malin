@@ -2,3 +2,4 @@ build/
 doc/doxygen/html
 *.orig
 doc/doxygen/html/
+*.vs/
