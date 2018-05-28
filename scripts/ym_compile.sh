@@ -1,14 +1,117 @@
 #!/bin/bash
 
+# ym_internal_compile()
+# {
+#     local windows_toolset=""
+#     if [[ "$(uname)" ==  "MINGW64_NT-10.0" ]];
+#     then
+#         windows_toolset=-T"v140_clang_c2"
+#     fi
+
+#     cmake ${windows_toolset} -DCMAKE_BUILD_TYPE=${1} ${YM_SOURCE_DIR}
+
+#     if [[ "$(uname)" != "MINGW64_NT-10.0" ]];
+#     then
+#         make "-j8";
+#     fi
+# }
+
+# ym_internal_print_compile_options()
+# {
+#     printf "Compilation options:"
+#     printf "\n\t- debug"
+#     printf "\n\t- release"
+#     printf "\n\t- test"
+#     printf "\n\t- rebuild | clean"
+#     printf "\n\n\n"
+# }
+
+# ym_compile()
+# {
+#     pushd ${YM_ROOT_DIR} >/dev/null
+#     local build_type="release"
+#     local run=false
+
+#     # Ugly, fix later
+#     if [[ ${#} -gt 0 ]];
+#     then
+#         if [[ ${1} =~ -r ]];
+#         then
+#             run=true
+
+#             if [[ ${#} -gt 1 ]];
+#             then
+#                 build_type=${2,,}
+#             fi
+#         else
+#             build_type=${1,,}
+#         fi
+
+#         # Set to lowercase
+#     else
+#         ym_internal_print_compile_options
+#     fi
+
+#     if [[ ${build_type} =~ (rebuild|clean) ]];
+#     then
+#         rm -rf ./build
+#         build_type="release"
+#     fi
+
+#     printf "Building with type: %s\n" ${build_type}
+
+#     if [[ ! -d "build" ]];
+#     then
+#         mkdir build
+#     fi
+#     pushd build >/dev/null
+
+#     # Setup build type dir
+#     if [[ ! -d ${build_type} ]];
+#     then
+#         mkdir ${build_type}
+#     fi
+
+#     pushd ${build_type} >/dev/null
+
+#     # Uppercase first letter
+#     # Also should check if compilation succeeded
+#     # If it didn't we shouldn't run the program
+#     ym_internal_compile ${build_type,,^}
+#     local compile_res=${?}
+
+#     popd >/dev/null # eo build_type dir
+
+#     # Pop out of the rest
+#     popd >/dev/null # eo build dir
+
+#     if [[ ${run} == true && ${compile_res} -eq 0 ]];
+#     then
+#         ./build/${build_type}/bin/main
+#     fi
+#     popd >/dev/null # eo YM_ROOT_DIR
+
+#     return ${compile_res}
+# }
+
+# $1: Build target
+# $2: Build type
 ym_internal_compile()
 {
-    local windows_toolset=""
-    if [[ "$(uname)" ==  "MINGW64_NT-10.0" ]];
+    if [[ ${1} == "editor" ]];
     then
-        windows_toolset=-T"v140_clang_c2"
+        cmake -DCMAKE_BUILD_TYPE=${2} ${YM_ROOT_DIR}/editor/src
     fi
 
-    cmake ${windows_toolset} -DCMAKE_BUILD_TYPE=${1} ${YM_SOURCE_DIR}
+    if [[ ${1} == "game" ]];
+    then
+        local toolset=""
+        if [[ "$(uname)" == "MINGW64_NT-10.0" ]];
+        then
+            local toolset=-T"v140_clang_c2"
+        fi
+        cmake ${toolset} -DCMAKE_BUILD_TYPE=${2} ${YM_SOURCE_DIR}
+    fi
 
     if [[ "$(uname)" != "MINGW64_NT-10.0" ]];
     then
@@ -16,80 +119,51 @@ ym_internal_compile()
     fi
 }
 
-ym_internal_print_compile_options()
-{
-    printf "Compilation options:"
-    printf "\n\t- debug"
-    printf "\n\t- release"
-    printf "\n\t- test"
-    printf "\n\t- rebuild | clean"
-    printf "\n\n\n"
-}
-
 ym_compile()
 {
     pushd ${YM_ROOT_DIR} >/dev/null
     local build_type="release"
-    local run=false
+    local build_target="game"
 
-    # Ugly, fix later
-    if [[ ${#} -gt 0 ]];
-    then
-        if [[ ${1} =~ -r ]];
+    for i in `seq 1 ${#}`;
+    do
+        if [[ ${!i} =~ -o ]];
         then
-            run=true
-
-            if [[ ${#} -gt 1 ]];
-            then
-                build_type=${2,,}
-            fi
-        else
-            build_type=${1,,}
+            local next=$((i+1));
+            build_target=${!next,,};
         fi
 
-        # Set to lowercase
-    else
-        ym_internal_print_compile_options
-    fi
+        if [[ ${!i} =~ -t ]];
+        then
+            local next=$((i+1));
+            build_type=${!next,,};
+        fi
 
-    if [[ ${build_type} =~ (rebuild|clean) ]];
+        if [[ ${!i} =~ -h ]];
+        then
+            printf "Usage: "
+            printf "\n\t-o target (editor, game)"
+            printf "\n\t-t type (debug, release, test, rebuild | clean"
+            printf "\n\n"
+        fi
+    done
+
+    if [[ ${build_type} =~ clean ]];
     then
         rm -rf ./build
-        build_type="release"
+        return
     fi
 
-    printf "Building with type: %s\n" ${build_type}
+    printf "Building target: %s - %s\n" ${build_target} ${build_type}
 
-    if [[ ! -d "build" ]];
-    then
-        mkdir build
-    fi
-    pushd build >/dev/null
+    mkdir -p build/${build_target}/${build_type}
+    pushd build/${build_target}/ >/dev/null
 
-    # Setup build type dir
-    if [[ ! -d ${build_type} ]];
-    then
-        mkdir ${build_type}
-    fi
-
-    pushd ${build_type} >/dev/null
-
-    # Uppercase first letter
-    # Also should check if compilation succeeded
-    # If it didn't we shouldn't run the program
-    ym_internal_compile ${build_type,,^}
+    ym_internal_compile_2 ${build_target} ${build_type,,^}
     local compile_res=${?}
 
-    popd >/dev/null # eo build_type dir
-
-    # Pop out of the rest
-    popd >/dev/null # eo build dir
-
-    if [[ ${run} == true && ${compile_res} -eq 0 ]];
-    then
-        ./build/${build_type}/bin/main
-    fi
-    popd >/dev/null # eo YM_ROOT_DIR
+    popd >/dev/null
+    popd >/dev/null
 
     return ${compile_res}
 }

@@ -7,3 +7,4 @@ Editor:
 * Set layer
 * Hide layer
 * Saving/Loading of maps
+* Show Currently selected tile at mouse position.
