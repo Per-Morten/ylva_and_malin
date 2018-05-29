@@ -94,8 +94,8 @@
 #     return ${compile_res}
 # }
 
-# $1: Build target
-# $2: Build type
+# $0: Build target
+# $1: Build type
 ym_internal_compile()
 {
     if [[ ${1} == "editor" ]];
@@ -159,7 +159,7 @@ ym_compile()
     mkdir -p build/${build_target}/${build_type}
     pushd build/${build_target}/ >/dev/null
 
-    ym_internal_compile_2 ${build_target} ${build_type,,^}
+    ym_internal_compile ${build_target} ${build_type,,^}
     local compile_res=${?}
 
     popd >/dev/null
