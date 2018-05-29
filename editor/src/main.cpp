@@ -1,15 +1,18 @@
-#include <logger.h>
-#include <string>
 #include <iostream>
+#include <queue>
+#include <stdio.h>
+#include <string>
 #include <vector>
 
-#include <imgui.h>
-#include <imgui_impl_sdl_gl3.h>
-#include <stdio.h>
 #include <GL/GLEW.h>
 #include <gl/GLU.h>
-#include <SDL.h>
+#include <imgui.h>
+#include <imgui_impl_sdl_gl3.h>
 #include <lodepng.h>
+#include <SDL.h>
+
+#include <logger.h>
+#include <texture.h>
 
 #define NOC_FILE_DIALOG_IMPLEMENTATION
 #define NOC_FILE_DIALOG_WIN32
@@ -23,66 +26,55 @@
 // Do a queue of commands within the context?
 // Should make it possible to
 
-struct editor_context
+enum class event_t
 {
+    save,
+    save_as,
+    load,
+    undo,
+    redo,
+    cut,
+    copy,
+    paste,
+};
+
+struct editor_ctx_t
+{
+    std::vector<texture_t> texture_sheets{};
+    std::size_t current_sheet{};
+    std::queue<event_t> events{};
     bool eraser_mode{ false };
-    GLuint sprite_sheet_id{};
-    unsigned int width;
-    unsigned int height;
 };
 
 void
-setup_texture(editor_context& ctx)
+setup_textures(editor_ctx_t& ctx)
 {
-    GLubyte* image;
-    unsigned int width;
-    unsigned int height;
-
     // TODO: Go through and load all sprites from the sprites folder!
-    const auto filename = "resources/sprites/malin_regular.png";
-
-
-    unsigned error = lodepng_decode32_file(&image,
-                                           &width,
-                                           &height,
-                                           filename);
-
-    ctx.height = height;
-    ctx.width = width;
-
-    // Create texture slot
-    glActiveTexture(GL_TEXTURE0);
-    GLenum err = glGetError();
-    if (err != GL_NO_ERROR)
+    const char* files[] =
     {
-        LOG_WARN("Could not set active texture for %s",
-                filename);
-        free(image);
+        "resources/sprites/malin_regular.png",
+        "resources/sprites/ylva_regular.png",
+    };
 
-        return;
+    ctx.texture_sheets.resize(std::size(files));
+    const auto res = create_textures(files,
+                                     ctx.texture_sheets.size(),
+                                     ctx.texture_sheets.data());
+
+    if (res < ctx.texture_sheets.size())
+    {
+        for (int i = res; i < ctx.texture_sheets.size(); i++)
+        {
+            LOG_WARN("Could not load texture: %s", files[i]);
+        }
     }
 
-    glGenTextures(1, &ctx.sprite_sheet_id);
-    glBindTexture(GL_TEXTURE_2D, ctx.sprite_sheet_id);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0,
-                 GL_RGBA, GL_UNSIGNED_BYTE, image);
-
-    err = glGetError();
-    if (err != GL_NO_ERROR)
-    {
-        LOG_WARN("glTexImage2D failed for %s",
-                filename);
-        return;
-    }
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    ctx.texture_sheets.resize(res);
+    ctx.current_sheet = 0;
 }
 
 void
-gui_update(editor_context& ctx)
+gui_update(editor_ctx_t& ctx)
 {
     if (ImGui::BeginMainMenuBar())
     {
@@ -90,24 +82,15 @@ gui_update(editor_context& ctx)
         {
             if (ImGui::MenuItem("Save", "CTRL+S"))
             {
-                LOG_DEBUG("Save clicked");
-
-                // Either save with filename that is inside ctx.
-                // If that is nullptr, then open proper saver.
-                const auto filename = noc_file_dialog_open(NOC_FILE_DIALOG_SAVE, nullptr,
-                                                           nullptr, nullptr);
+                ctx.events.push(event_t::save);
             }
             if (ImGui::MenuItem("Save as", "CTRL+Shift+S"))
             {
-                const auto filename = noc_file_dialog_open(NOC_FILE_DIALOG_SAVE, nullptr,
-                                                           nullptr, nullptr);
-                LOG_DEBUG("Save As clicked");
+                ctx.events.push(event_t::save_as);
             }
             if (ImGui::MenuItem("Load", "CTRL+O"))
             {
-                const auto filename = noc_file_dialog_open(NOC_FILE_DIALOG_OPEN, nullptr,
-                                                           nullptr, nullptr);
-                LOG_DEBUG("Load clicked");
+                ctx.events.push(event_t::load);
             }
             ImGui::EndMenu();
         }
@@ -116,24 +99,25 @@ gui_update(editor_context& ctx)
         {
             if (ImGui::MenuItem("Undo", "CTRL+Z"))
             {
+                ctx.events.push(event_t::undo);
 
             }
             if (ImGui::MenuItem("Redo", "CTRL+Y", false, false))
             {
-
+                ctx.events.push(event_t::redo);
             }  // Disabled item
             ImGui::Separator();
             if (ImGui::MenuItem("Cut", "CTRL+X"))
             {
-
+                ctx.events.push(event_t::cut);
             }
             if (ImGui::MenuItem("Copy", "CTRL+C"))
             {
-
+                ctx.events.push(event_t::copy);
             }
             if (ImGui::MenuItem("Paste", "CTRL+V"))
             {
-
+                ctx.events.push(event_t::paste);
             }
             ImGui::EndMenu();
         }
@@ -160,11 +144,6 @@ gui_update(editor_context& ctx)
     if (ImGui::Checkbox("Eraser mode", &ctx.eraser_mode))
         LOG_DEBUG("Eraser mode selected");
 
-    ImTextureID my_tex_id = (ImTextureID*)ctx.sprite_sheet_id;
-    ImGuiIO& io = ImGui::GetIO();
-    float my_tex_w = (float)ctx.width;
-    float my_tex_h = (float)ctx.height;
-
     //ImGui::Text("%.0fx%.0f", my_tex_w, my_tex_h);
     ImVec2 mouse_pos = ImGui::GetMousePos();
     ImVec2 cursor_pos = ImGui::GetCursorPos();
@@ -173,7 +152,8 @@ gui_update(editor_context& ctx)
 
     ImGui::SetCursorScreenPos(ImVec2(6.0f, 75.0f));
     //ImGui::SetCursorPosY(75.0f);
-    ImGui::Image(my_tex_id, ImVec2(my_tex_w, my_tex_h), ImVec2(0,0), ImVec2(1,1), ImColor(255,255,255,255), ImColor(255,255,255,128));
+    texture_t& tex = ctx.texture_sheets[ctx.current_sheet];
+    ImGui::Image((ImTextureID*)tex.id, ImVec2(tex.width, tex.height), ImVec2(0, 0), ImVec2(1, 1), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
 
     ImVec2 cursor_pos_2 = ImGui::GetCursorPos();
 
@@ -195,10 +175,36 @@ gui_update(editor_context& ctx)
 }
 
 void
-logic_update(SDL_Event& event,
-             editor_context& ctx)
+keyboard_update(SDL_Event& event,
+                editor_ctx_t& ctx)
 {
 
+}
+
+void
+logic_update(editor_ctx_t& ctx)
+{
+    while (!ctx.events.empty())
+    {
+        auto event = ctx.events.front();
+        ctx.events.pop();
+        if (event == event_t::save)
+        {
+            LOG_DEBUG("Save");
+        }
+        if (event == event_t::save_as)
+        {
+            LOG_DEBUG("Save As");
+            const auto filename = noc_file_dialog_open(NOC_FILE_DIALOG_SAVE, nullptr,
+                                                       nullptr, nullptr);
+        }
+        if (event == event_t::load)
+        {
+            LOG_DEBUG("Load");
+            const auto filename = noc_file_dialog_open(NOC_FILE_DIALOG_OPEN, nullptr,
+                                                       nullptr, nullptr);
+        }
+    }
 }
 
 
@@ -232,8 +238,8 @@ main(int argc,
 
     bool window_open = true;
 
-    editor_context editor_ctx;
-    setup_texture(editor_ctx);
+    editor_ctx_t editor_ctx;
+    setup_textures(editor_ctx);
 
     while (window_open)
     {
@@ -241,7 +247,7 @@ main(int argc,
         while (SDL_PollEvent(&event))
         {
             ImGui_ImplSdlGL3_ProcessEvent(&event);
-            logic_update(event, editor_ctx);
+            keyboard_update(event, editor_ctx);
 
             if (event.type == SDL_QUIT)
                 window_open = false;
@@ -249,6 +255,7 @@ main(int argc,
         ImGui_ImplSdlGL3_NewFrame(window);
         // Draw my own stuff!
 
+        logic_update(editor_ctx);
         gui_update(editor_ctx);
 
         // ImGui::ShowDemoWindow(nullptr);
@@ -264,6 +271,7 @@ main(int argc,
         SDL_GL_SwapWindow(window);
     }
 
+    delete_textures(editor_ctx.texture_sheets.data(), editor_ctx.texture_sheets.size());
     ImGui_ImplSdlGL3_Shutdown();
     ImGui::DestroyContext();
 

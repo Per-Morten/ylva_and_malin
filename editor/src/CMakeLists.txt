@@ -26,16 +26,19 @@ endif()
 
 set(headers
     logger.h
+    texture.h
+
     third_party/imgui.h
 )
 
 set(source
+    texture.cpp
+
     third_party/imgui.cpp
     third_party/imgui_draw.cpp
     third_party/imgui_demo.cpp
     third_party/imgui_impl_sdl_gl3.cpp
     third_party/lodepng.cpp
-
 )
 
 add_executable(main main.cpp ${headers} ${source})
