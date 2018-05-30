@@ -54,6 +54,11 @@ setup_textures(editor_ctx_t& ctx)
     {
         "resources/sprites/malin_regular.png",
         "resources/sprites/ylva_regular.png",
+        "resources/sprites/floor_0.png",
+        "resources/sprites/furniture_0.png",
+        "resources/sprites/furniture_1.png",
+        "resources/sprites/walls_0.png",
+        "resources/sprites/logic.png",
     };
 
     ctx.texture_sheets.resize(std::size(files));
@@ -100,7 +105,6 @@ gui_update(editor_ctx_t& ctx)
             if (ImGui::MenuItem("Undo", "CTRL+Z"))
             {
                 ctx.events.push(event_t::undo);
-
             }
             if (ImGui::MenuItem("Redo", "CTRL+Y", false, false))
             {
@@ -134,15 +138,19 @@ gui_update(editor_ctx_t& ctx)
                  ImGuiWindowFlags_NoMove |
                  ImGuiWindowFlags_NoResize);
 
+
+
+    // Eraser
+    if (ImGui::Checkbox("Eraser mode", &ctx.eraser_mode))
+        LOG_DEBUG("Eraser mode selected");
+
     // Layer
     // Unsure how to do this. Maybe A Slider Int?
     // Or have max number of layers, and radio buttons?
     // Or just int entry field?
     // Also should indicate that something is logic.
-
-    // Eraser
-    if (ImGui::Checkbox("Eraser mode", &ctx.eraser_mode))
-        LOG_DEBUG("Eraser mode selected");
+    auto curr_sheet = (int*)&ctx.current_sheet;
+    ImGui::SliderInt("Sprite Sheet", curr_sheet, 0, ctx.texture_sheets.size() - 1);
 
     //ImGui::Text("%.0fx%.0f", my_tex_w, my_tex_h);
     ImVec2 mouse_pos = ImGui::GetMousePos();
@@ -230,7 +238,7 @@ main(int argc,
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    //ImGuiIO& io = ImGui::GetIO(); (void)io;
 
     ImGui_ImplSdlGL3_Init(window);
 
@@ -258,7 +266,7 @@ main(int argc,
         logic_update(editor_ctx);
         gui_update(editor_ctx);
 
-        // ImGui::ShowDemoWindow(nullptr);
+        ImGui::ShowDemoWindow(nullptr);
 
 
 
