@@ -4,27 +4,20 @@
 #include <string>
 #include <vector>
 
-#include <GL/GLEW.h>
-#include <gl/GLU.h>
-#include <imgui.h>
-#include <imgui_impl_sdl_gl3.h>
-#include <lodepng.h>
-#include <SDL.h>
-
 #include <logger.h>
-#include <texture.h>
 
 #define NOC_FILE_DIALOG_IMPLEMENTATION
 #define NOC_FILE_DIALOG_WIN32
 #include <noc_file_dialog.h>
 
-// Because, come on SDL :/
-#undef main
+#include <imgui.h>
+#include <imgui-SFML.h>
 
-// TODO: Fix cleaner startup.
+#include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
 
 // Do a queue of commands within the context?
-// Should make it possible to
 
 enum class event_t
 {
@@ -41,7 +34,7 @@ enum class event_t
 struct editor_ctx_t
 {
     // Drawing related
-    std::vector<texture_t> texture_sheets{};
+    std::vector<sf::Texture> texture_sheets{};
     std::size_t current_sheet{};
     int current_layer{};
     bool eraser_mode{ false };
@@ -65,21 +58,12 @@ setup_textures(editor_ctx_t& ctx)
         "resources/sprites/logic.png",
     };
 
-    ctx.texture_sheets.resize(std::size(files));
-    const auto res = create_textures(files,
-                                     ctx.texture_sheets.size(),
-                                     ctx.texture_sheets.data());
-
-    if (res < ctx.texture_sheets.size())
+    for (const auto& file : files)
     {
-        for (int i = res; i < ctx.texture_sheets.size(); i++)
-        {
-            LOG_WARN("Could not load texture: %s", files[i]);
-        }
+        sf::Texture tex;
+        tex.loadFromFile(file);
+        ctx.texture_sheets.push_back(tex);
     }
-
-    ctx.texture_sheets.resize(res);
-    ctx.current_sheet = 0;
 }
 
 void
@@ -163,9 +147,8 @@ gui_update(editor_ctx_t& ctx)
         "furniture_1",
         "furniture_2",
     };
-    // ImGui::Combo("Layer", &ctx.current_layer, layers, IM_ARRAYSIZE(layers));
+
     ImGui::ListBox("Layer", &ctx.current_layer, layers, IM_ARRAYSIZE(layers), 3);
-    // ImGui::SliderInt("Layer", &ctx.current_layer, )
 
     // Sprite Sheet
     // See Demo window about images.
@@ -182,8 +165,9 @@ gui_update(editor_ctx_t& ctx)
 
     //ImGui::SetCursorScreenPos(ImVec2(6.0f, 75.0f));
     //ImGui::SetCursorPosY(75.0f);
-    texture_t& tex = ctx.texture_sheets[ctx.current_sheet];
-    ImGui::Image((ImTextureID*)tex.id, ImVec2(tex.width, tex.height), ImVec2(0, 0), ImVec2(1, 1), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
+    //texture_t& tex = ctx.texture_sheets[ctx.current_sheet];
+    //ImGui::Image((ImTextureID*)tex.id, ImVec2(tex.width, tex.height), ImVec2(0, 0), ImVec2(1, 1), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
+    ImGui::Image(ctx.texture_sheets[ctx.current_sheet]);
 
     ImVec2 cursor_pos_2 = ImGui::GetCursorPos();
 
@@ -199,12 +183,12 @@ gui_update(editor_ctx_t& ctx)
     ImGui::End();
 }
 
-void
-keyboard_update(SDL_Event& event,
-                editor_ctx_t& ctx)
-{
-
-}
+//void
+//keyboard_update(SDL_Event& event,
+//                editor_ctx_t& ctx)
+//{
+//
+//}
 
 void
 logic_update(editor_ctx_t& ctx)
@@ -237,51 +221,30 @@ int
 main(int argc,
      char** argv)
 {
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0)
-    {
-        printf("Error: %s\n", SDL_GetError());
-        return -1;
-    }
-
-    auto window = SDL_CreateWindow("YM Editor",
-                                   SDL_WINDOWPOS_UNDEFINED,
-                                   SDL_WINDOWPOS_UNDEFINED,
-                                   1280, 720,
-                                   SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
-
-    auto gl_context = SDL_GL_CreateContext(window);
-    SDL_GL_SetSwapInterval(1);
-    glewInit();
-
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    //ImGuiIO& io = ImGui::GetIO(); (void)io;
-
-    ImGui_ImplSdlGL3_Init(window);
-
-    ImGui::StyleColorsDark();
+    sf::RenderWindow window(sf::VideoMode(1280, 720), "YM Editor");
+    window.setFramerateLimit(60);
+    ImGui::SFML::Init(window);
 
     bool window_open = true;
 
     editor_ctx_t editor_ctx;
     setup_textures(editor_ctx);
 
+    sf::Clock clock;
     while (window_open)
     {
-        SDL_Event event;
-        while (SDL_PollEvent(&event))
+        sf::Event event;
+        while (window.pollEvent(event))
         {
-            ImGui_ImplSdlGL3_ProcessEvent(&event);
-            keyboard_update(event, editor_ctx);
-
-            if (event.type == SDL_QUIT)
+            ImGui::SFML::ProcessEvent(event);
+            if (event.type == sf::Event::Closed)
+            {
                 window_open = false;
+                window.close();
+            }
         }
-        ImGui_ImplSdlGL3_NewFrame(window);
-
-
-        // Draw my own stuff!
-
+        ImGui::SFML::Update(window, clock.restart());
+        window.clear(sf::Color(115, 140, 153, 255));
 
 
 
@@ -291,23 +254,11 @@ main(int argc,
         ImGui::ShowDemoWindow(nullptr);
 
 
-
-
-        glViewport(0, 0, (int)ImGui::GetIO().DisplaySize.x, (int)ImGui::GetIO().DisplaySize.y);
-        glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
-        glClear(GL_COLOR_BUFFER_BIT);
-        ImGui::Render();
-        ImGui_ImplSdlGL3_RenderDrawData(ImGui::GetDrawData());
-        SDL_GL_SwapWindow(window);
+        ImGui::SFML::Render(window);
+        window.display();
     }
 
-    delete_textures(editor_ctx.texture_sheets.data(), editor_ctx.texture_sheets.size());
-    ImGui_ImplSdlGL3_Shutdown();
-    ImGui::DestroyContext();
-
-    SDL_GL_DeleteContext(gl_context);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
+    ImGui::SFML::Shutdown();
 
     return 0;
 }

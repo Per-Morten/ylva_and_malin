@@ -26,18 +26,17 @@ endif()
 
 set(headers
     logger.h
-    texture.h
 
     third_party/imgui.h
+    third_party/imgui-SFML.h
 )
 
 set(source
-    texture.cpp
 
     third_party/imgui.cpp
     third_party/imgui_draw.cpp
     third_party/imgui_demo.cpp
-    third_party/imgui_impl_sdl_gl3.cpp
+    third_party/imgui-SFML.cpp
     third_party/lodepng.cpp
 )
 
@@ -47,13 +46,18 @@ add_executable(main main.cpp ${headers} ${source})
 target_include_directories(main PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}"
     "${CMAKE_CURRENT_SOURCE_DIR}/third_party/"
-    "$ENV{SDL_HOME}/include"
-    "$ENV{GLEW_HOME}/include"
+    "$ENV{SFML_HOME}/include"
 )
 
 target_link_libraries(main
-    "$ENV{SDL_HOME}/lib/SDL2.lib"
-    "$ENV{GLEW_HOME}/lib/glew32.lib"
+    # For weird reason SFML textures don't work when using release libs. Don't bother fixing it, as debug is enough for editor
+    "$ENV{SFML_HOME}/lib/sfml-audio-d.lib"
+    "$ENV{SFML_HOME}/lib/sfml-graphics-d.lib"
+    "$ENV{SFML_HOME}/lib/sfml-main-d.lib"
+    "$ENV{SFML_HOME}/lib/sfml-network-d.lib"
+    "$ENV{SFML_HOME}/lib/sfml-system-d.lib"
+    "$ENV{SFML_HOME}/lib/sfml-window-d.lib"
+
     "OpenGL32.lib"
 )
 
