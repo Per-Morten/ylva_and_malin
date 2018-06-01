@@ -10,35 +10,30 @@ create_textures(const char** texture_paths,
     glActiveTexture(GL_TEXTURE0);
     for (int i = 0; i < count; i++)
     {
+        // Load Image
         GLubyte* image;
-        unsigned int width;
-        unsigned int height;
+        auto errc = lodepng_decode32_file(&image,
+                                          &out_textures[i].width,
+                                          &out_textures[i].height,
+                                          texture_paths[i]);
 
-        auto error = lodepng_decode32_file(&image,
-                                           &width,
-                                           &height,
-                                           texture_paths[i]);
-
-        if (error)
+        if (errc)
         {
             LOG_WARN("Could not decode file: %s, error: %s",
                       texture_paths[i],
-                      lodepng_error_text(error));
+                      lodepng_error_text(errc));
             return i;
         }
 
-        out_textures[i].width = width;
-        out_textures[i].height = height;
-
+        // Setup OpenGL Texture
         glGenTextures(1, &out_textures[i].id);
         glBindTexture(GL_TEXTURE_2D, out_textures[i].id);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0,
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, out_textures[i].width, out_textures[i].height, 0,
                      GL_RGBA, GL_UNSIGNED_BYTE, image);
 
         free(image);
 
-        auto gl_errc = glGetError();
-        if (gl_errc != GL_NO_ERROR)
+        if (auto gl_errc = glGetError(); gl_errc != GL_NO_ERROR)
         {
             LOG_WARN("glTexImage2D failed for %s",
                      texture_paths[i]);

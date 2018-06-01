@@ -1,12 +1,13 @@
 #pragma once
 #include <GL/GLEW.h>
 #include <gl/GLU.h>
+#include <SDL.h>
 
 struct texture_t
 {
     GLuint id{};
-    unsigned int width;
-    unsigned int height;
+    unsigned int width{};
+    unsigned int height{};
 };
 
 int

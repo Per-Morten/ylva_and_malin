@@ -40,10 +40,14 @@ enum class event_t
 
 struct editor_ctx_t
 {
+    // Drawing related
     std::vector<texture_t> texture_sheets{};
     std::size_t current_sheet{};
-    std::queue<event_t> events{};
+    int current_layer{};
     bool eraser_mode{ false };
+
+    // Events
+    std::queue<event_t> events{};
 };
 
 void
@@ -149,6 +153,24 @@ gui_update(editor_ctx_t& ctx)
     // Or have max number of layers, and radio buttons?
     // Or just int entry field?
     // Also should indicate that something is logic.
+    const char* layers[] =
+    {
+        "logic_0",
+        "logic_1",
+        "floor_0",
+        "floor_1",
+        "furniture_0",
+        "furniture_1",
+        "furniture_2",
+    };
+    // ImGui::Combo("Layer", &ctx.current_layer, layers, IM_ARRAYSIZE(layers));
+    ImGui::ListBox("Layer", &ctx.current_layer, layers, IM_ARRAYSIZE(layers), 3);
+    // ImGui::SliderInt("Layer", &ctx.current_layer, )
+
+    // Sprite Sheet
+    // See Demo window about images.
+    // Also, remember to be able to switch between sprite sheets.
+    // And also, add and remove sprite sheets.
     auto curr_sheet = (int*)&ctx.current_sheet;
     ImGui::SliderInt("Sprite Sheet", curr_sheet, 0, ctx.texture_sheets.size() - 1);
 
@@ -158,7 +180,7 @@ gui_update(editor_ctx_t& ctx)
 
     ImVec2 size = ImGui::GetItemRectSize();
 
-    ImGui::SetCursorScreenPos(ImVec2(6.0f, 75.0f));
+    //ImGui::SetCursorScreenPos(ImVec2(6.0f, 75.0f));
     //ImGui::SetCursorPosY(75.0f);
     texture_t& tex = ctx.texture_sheets[ctx.current_sheet];
     ImGui::Image((ImTextureID*)tex.id, ImVec2(tex.width, tex.height), ImVec2(0, 0), ImVec2(1, 1), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
@@ -172,12 +194,7 @@ gui_update(editor_ctx_t& ctx)
     ImGui::Text("Cursorpos2: %.0f, %.0f", cursor_pos_2.x, cursor_pos_2.y);
 
 
-    // Need a copy or something as well, in the case were we add custom attributes.
 
-    // Sprite Sheet
-    // See Demo window about images.
-    // Also, remember to be able to switch between sprite sheets.
-    // And also, add and remove sprite sheets.
 
     ImGui::End();
 }
@@ -261,7 +278,12 @@ main(int argc,
                 window_open = false;
         }
         ImGui_ImplSdlGL3_NewFrame(window);
+
+
         // Draw my own stuff!
+
+
+
 
         logic_update(editor_ctx);
         gui_update(editor_ctx);
