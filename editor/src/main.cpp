@@ -17,6 +17,13 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 
+namespace ui
+{
+    const ImVec2 sheet_position(6.0f, 256.0f);
+    const ImVec2 sheet_size(256.0f, 256.0f);
+}
+
+
 // Do a queue of commands within the context?
 
 enum class event_t
@@ -31,13 +38,29 @@ enum class event_t
     paste,
 };
 
+enum class mode_t
+{
+    insert,
+    mark,
+    erase,
+};
+
+struct texture_sheet_t
+{
+    sf::Texture texture;
+    int col_count;
+    int row_count;
+};
+
 struct editor_ctx_t
 {
     // Drawing related
-    std::vector<sf::Texture> texture_sheets{};
+    std::vector<texture_sheet_t> texture_sheets{};
     std::size_t current_sheet{};
     int current_layer{};
-    bool eraser_mode{ false };
+    mode_t current_mode{ mode_t::insert };
+
+    sf::Sprite current_sprite{};
 
     // Events
     std::queue<event_t> events{};
@@ -58,11 +81,24 @@ setup_textures(editor_ctx_t& ctx)
         "resources/sprites/logic.png",
     };
 
-    for (const auto& file : files)
+    const int dimensions[][2] =
     {
-        sf::Texture tex;
-        tex.loadFromFile(file);
-        ctx.texture_sheets.push_back(tex);
+        {4, 3},
+        {4, 3},
+        {8, 8},
+        {16, 16},
+        {16, 16},
+        {16, 16},
+        {1, 2},
+    };
+
+    ctx.texture_sheets.resize(std::size(files));
+    for (std::size_t i = 0; i < ctx.texture_sheets.size(); i++)
+    {
+        ctx.texture_sheets[i].texture.loadFromFile(files[i]);
+        ctx.texture_sheets[i].row_count = dimensions[i][0];
+        ctx.texture_sheets[i].col_count = dimensions[i][1];
+
     }
 }
 
@@ -128,9 +164,16 @@ gui_update(editor_ctx_t& ctx)
 
 
 
-    // Eraser
-    if (ImGui::Checkbox("Eraser mode", &ctx.eraser_mode))
-        LOG_DEBUG("Eraser mode selected");
+    // Mode
+    auto mode = (int*)&ctx.current_mode;
+    ImGui::RadioButton("erase", mode, (int)mode_t::erase);
+    ImGui::SameLine();
+    ImGui::RadioButton("mark", mode, (int)mode_t::mark);
+    ImGui::SameLine();
+    ImGui::RadioButton("insert", mode, (int)mode_t::insert);
+
+    //if (ImGui::Checkbox("Eraser mode", &ctx.eraser_mode))
+        //LOG_DEBUG("Eraser mode selected");
 
     // Layer
     // Unsure how to do this. Maybe A Slider Int?
@@ -163,11 +206,11 @@ gui_update(editor_ctx_t& ctx)
 
     ImVec2 size = ImGui::GetItemRectSize();
 
-    //ImGui::SetCursorScreenPos(ImVec2(6.0f, 75.0f));
+    ImGui::SetCursorScreenPos(ui::sheet_position);
     //ImGui::SetCursorPosY(75.0f);
     //texture_t& tex = ctx.texture_sheets[ctx.current_sheet];
     //ImGui::Image((ImTextureID*)tex.id, ImVec2(tex.width, tex.height), ImVec2(0, 0), ImVec2(1, 1), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
-    ImGui::Image(ctx.texture_sheets[ctx.current_sheet]);
+    ImGui::Image(ctx.texture_sheets[ctx.current_sheet].texture, { ui::sheet_size.x, ui::sheet_size.y });
 
     ImVec2 cursor_pos_2 = ImGui::GetCursorPos();
 
@@ -182,13 +225,6 @@ gui_update(editor_ctx_t& ctx)
 
     ImGui::End();
 }
-
-//void
-//keyboard_update(SDL_Event& event,
-//                editor_ctx_t& ctx)
-//{
-//
-//}
 
 void
 logic_update(editor_ctx_t& ctx)
@@ -216,6 +252,56 @@ logic_update(editor_ctx_t& ctx)
     }
 }
 
+void
+input_update(editor_ctx_t& ctx,
+             const sf::Event& event,
+             const sf::RenderWindow& window)
+{
+    const auto screen_x = sf::Mouse::getPosition(window).x;
+    const auto screen_y = sf::Mouse::getPosition(window).y;
+    const auto screen_img_x = screen_x - ui::sheet_position.x;
+    const auto screen_img_y = screen_y - ui::sheet_position.y;
+    const auto sheet = &ctx.texture_sheets[ctx.current_sheet];
+    const auto ratio_x = (float)sheet->texture.getSize().x / ui::sheet_size.x;
+    const auto ratio_y = (float)sheet->texture.getSize().y / ui::sheet_size.y;
+    const auto adjusted_ms_x = screen_img_x * ratio_x;
+    const auto adjusted_ms_y = screen_img_y * ratio_y;
+    const auto sprite_size_x = (float)sheet->texture.getSize().x / sheet->col_count;
+    const auto sprite_size_y = (float)sheet->texture.getSize().y / sheet->row_count;
+    const int col = adjusted_ms_x / sprite_size_x;
+    const int row = adjusted_ms_y / sprite_size_y;
+
+    if (event.type == sf::Event::MouseButtonReleased &&
+        event.mouseButton.y >= ui::sheet_position.y && event.mouseButton.y <= ui::sheet_position.y + ui::sheet_size.y &&
+        event.mouseButton.x >= ui::sheet_position.x && event.mouseButton.x <= ui::sheet_position.x + ui::sheet_size.x)
+    {
+        ctx.current_sprite = sf::Sprite(ctx.texture_sheets[ctx.current_sheet].texture, sf::IntRect(col * 32, row * 32, 32, 32));
+    }
+
+
+
+
+
+
+    ImGui::Begin("Debug", nullptr,
+                 ImGuiWindowFlags_NoTitleBar |
+                 ImGuiWindowFlags_AlwaysAutoResize |
+                 ImGuiWindowFlags_NoCollapse |
+                 ImGuiWindowFlags_NoResize);
+    ImGui::Text("screen_x: %d, screen_y: %d", screen_x, screen_y);
+    ImGui::Text("screen_img_x: %f, screen_img_y: %f", screen_img_x, screen_img_y);
+    ImGui::Text("ratio_x: %f, ratio_y: %f", ratio_x, ratio_y);
+    ImGui::Text("adjusted_ms: %f, adjusted_ms: %f", adjusted_ms_x, adjusted_ms_y);
+    ImGui::Text("sprite_size_x: %f, sprite_size_y: %f", adjusted_ms_x, adjusted_ms_y);
+    ImGui::Text("col: %d, row: %d", col, row);
+
+
+
+
+
+    ImGui::End();
+}
+
 
 int
 main(int argc,
@@ -233,6 +319,8 @@ main(int argc,
     sf::Clock clock;
     while (window_open)
     {
+        ImGui::SFML::Update(window, clock.restart());
+        window.clear(sf::Color(115, 140, 153, 255));
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -243,13 +331,20 @@ main(int argc,
                 window.close();
             }
         }
-        ImGui::SFML::Update(window, clock.restart());
-        window.clear(sf::Color(115, 140, 153, 255));
-
-
-
+        input_update(editor_ctx, event, window);
+        
         logic_update(editor_ctx);
         gui_update(editor_ctx);
+
+        if (editor_ctx.current_mode == mode_t::insert)
+        {
+            editor_ctx.current_sprite.setPosition({ (float)sf::Mouse::getPosition(window).x, (float)sf::Mouse::getPosition(window).y });
+            window.draw(editor_ctx.current_sprite);
+        }
+
+        //window.setMouseCursorVisible(editor_ctx.current_mode != mode_t::insert);
+
+
 
         ImGui::ShowDemoWindow(nullptr);
 
