@@ -108,7 +108,7 @@ ym_internal_compile()
         local toolset=""
         if [[ "$(uname)" == "MINGW64_NT-10.0" ]];
         then
-            local toolset=-T"v140_clang_c2"
+            local toolset=-T"v141_clang_c2"
         fi
         cmake ${toolset} -DCMAKE_BUILD_TYPE=${2} ${YM_SOURCE_DIR}
     fi
