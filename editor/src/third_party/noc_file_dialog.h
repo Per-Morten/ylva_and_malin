@@ -79,7 +79,7 @@ static char *g_noc_file_dialog_ret = NULL;
 
 #include <gtk/gtk.h>
 
-const char *noc_file_dialog_open(int flags,
+const char* noc_file_dialog_open(int flags,
                                  const char *filters,
                                  const char *default_path,
                                  const char *default_name)
@@ -144,6 +144,16 @@ const char *noc_file_dialog_open(int flags,
     while (gtk_events_pending()) gtk_main_iteration();
     return g_noc_file_dialog_ret;
 }
+
+// #include <nautilus.h>
+
+// const char* noc_file_dialog_open(int flags,
+//                                  const char *filters,
+//                                  const char *default_path,
+//                                  const char *default_name)
+// {
+//     return nullptr;
+// }
 
 #endif
 
