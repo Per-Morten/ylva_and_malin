@@ -137,7 +137,7 @@ struct TextureSheet
     int row_count;
     int first_id;
 
-    // Filename for the textureSheet
+    // Filename for the TextureSheet
     std::string filename;
 };
 
@@ -154,7 +154,6 @@ struct Command
     std::string arguments;
 };
 
-// TODO: Find out how to re-factor this.
 struct EditorCtx
 {
     // Drawing related
@@ -163,7 +162,7 @@ struct EditorCtx
 
     // Cell related
     std::size_t current_sprite_id{};
-    std::size_t current_cell{};
+    sf::Vector2<std::size_t> current_cell{};
 
     // Mode related
     Mode current_mode{ Mode::insert };
@@ -176,7 +175,7 @@ struct EditorCtx
     // Grid, not 2D, first dimension is which layer we are currently on.
     // TODO: Move to 2D representation, i.e. Three vectors inside each other,
     //       No reason to stay in 1D, and 2D will probably make resizing logic easier.
-    std::vector<std::vector<Cell>> grid;
+    std::vector<std::vector<std::vector<Cell>>> grid;
     int width{10};
     int height{10};
     int current_layer{};
@@ -241,10 +240,13 @@ void
 setup_grid(EditorCtx& ctx)
 {
     ctx.grid.resize(7);
-
     for (std::size_t i = 0; i < ctx.grid.size(); i++)
     {
-        ctx.grid[i].resize(ctx.width * ctx.height);
+        ctx.grid[i].resize(ctx.height);
+        for (std::size_t row = 0; row < ctx.grid[i].size(); row++)
+        {
+            ctx.grid[i][row].resize(ctx.width);
+        }
     }
 }
 
@@ -294,51 +296,46 @@ save_map(EditorCtx& ctx)
     // Print logic definitions
     std::fprintf(file, "%zu\n0 WALKABLE\n1 UNWALKABLE\n", commands.size() + 2);
     for (const auto& command : commands)
-    {
         std::fprintf(file, "%d %s\n", command.first, command.second.c_str());
-    }
 
     std::fprintf(file, "\n");
 
     // Print graphics paths
     std::fprintf(file, "%zu\n", ctx.texture_sheets.size());
-    for (std::size_t i = 0; i < ctx.texture_sheets.size(); i++)
-    {
-        std::fprintf(file, "resources/sprites/%s %d\n", ctx.texture_sheets[i].filename.c_str(), ctx.texture_sheets[i].first_id);
-    }
+    for (const auto& texture : ctx.texture_sheets)
+        std::fprintf(file, "resources/sprites/%s %d\n", texture.filename.c_str(), texture.first_id);
+
     std::fprintf(file, "\n");
 
 
     // Print graphics layers
-    const auto print_layer = [file](const auto& grid, int height, int width)
+    const auto print_layer = [file](const auto& grid)
     {
-        for (int row = 0; row < height; row++)
+        for (const auto& row : grid)
         {
-            for (int col = 0; col < width; col++)
+            for (const auto& col : row)
             {
-                const auto& cell = grid[std::size_t(row * width + col)];
-                std::fprintf(file, "%5d ", cell.sheet_id + cell.texture_id);
+                std::fprintf(file, "%d ", col.sheet_id + col.texture_id);
             }
             std::fprintf(file, "\n");
         }
     };
+
     std::fprintf(file, "%zu\n%zu\n", 2, ctx.grid.size() - 2);
 
     // Print logic layers
     for (std::size_t i = 0; i < 2; i++)
     {
-        print_layer(ctx.grid[i], ctx.height, ctx.width);
+        print_layer(ctx.grid[i]);
         std::fprintf(file, "\n");
     }
 
     // Print graphics layers
     for (std::size_t i = 2; i < ctx.grid.size(); i++)
     {
-        print_layer(ctx.grid[i], ctx.height, ctx.width);
+        print_layer(ctx.grid[i]);
         std::fprintf(file, "\n");
     }
-
-
 
     std::fclose(file);
 }
@@ -403,19 +400,22 @@ load_map(EditorCtx& ctx)
 
     // Graphics
     {
-        ctx.grid.clear();
         int logic_count;
         int graphics_count;
         inn >> logic_count >> graphics_count;
 
+        ctx.grid.clear();
         ctx.grid.resize(logic_count + graphics_count);
 
         for (std::size_t i = 0; i < ctx.grid.size(); i++)
         {
-            ctx.grid[i].resize(ctx.width * ctx.height);
+
+            ctx.grid[i].resize(ctx.height);
 
             for (int row = 0; row < ctx.height; row++)
             {
+                ctx.grid[i][row].resize(ctx.width);
+
                 for (int col = 0; col < ctx.width; col++)
                 {
                     int texture_id;
@@ -427,16 +427,14 @@ load_map(EditorCtx& ctx)
                         while (texture_id < ctx.texture_sheets[c].first_id)
                             c++;
 
-                        auto& sheet = ctx.texture_sheets[c];
+                        const auto& sheet = ctx.texture_sheets[c];
 
-                        constexpr auto mod_w_zero = [](int dividend, int divisor)
-                        {
-                            return (divisor == 0) ? dividend : dividend % divisor;
-                        };
+                        auto& new_cell = ctx.grid[i][row][col];
+                        new_cell.sheet_id = sheet.first_id;
+                        new_cell.texture_id = (sheet.first_id == 0)
+                                            ? texture_id
+                                            : texture_id % sheet.first_id;
 
-                        auto& cell = ctx.grid[i][std::size_t(row * ctx.width + col)];
-                        cell.sheet_id = sheet.first_id;
-                        cell.texture_id = mod_w_zero(texture_id, sheet.first_id);
                     }
                 }
             }
@@ -656,12 +654,10 @@ tools_update(EditorCtx& ctx,
              const sf::Event& event,
              const sf::RenderWindow& window)
 {
-    auto sheet_rect = sf::RectangleShape({UI::sheet_size.x, UI::sheet_size.y});
-    const auto sheet_position = sf::Vector2f(UI::get_sheet_position(window).x, UI::get_sheet_position(window).y);
-    sheet_rect.setPosition(sheet_position);
+    const auto sheet_position = UI::get_sheet_position(window);
 
     if (event.type == sf::Event::MouseButtonReleased &&
-        sheet_rect.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y)))
+        sf::FloatRect(sheet_position, UI::sheet_size).contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y)))
     {
         const auto screen_x = event.mouseButton.x;
         const auto screen_y = event.mouseButton.y;
@@ -701,18 +697,17 @@ tools_update(EditorCtx& ctx,
 // Be careful about using this for holding values, prefer for temporary functionality.
 template<class Predicate>
 std::vector<Cell*>
-get_cells_where(std::vector<Cell>& grid,
-                int col_count,
-                int row_count,
-                Predicate pred)
+get_cells_where(std::vector<std::vector<Cell>>& grid,
+                    Predicate pred)
 {
     std::vector<Cell*> res;
-    for (int row = 0; row != row_count; row++)
-        for (int col = 0; col != col_count; col++)
+    for (std::size_t row = 0; row != grid.size(); row++)
+        for (std::size_t col = 0; col != grid[row].size(); col++)
             if (pred(row, col))
-                res.push_back(&grid[row * col_count + col]);
+                res.push_back(&grid[row][col]);
 
     return res;
+
 }
 
 void
@@ -754,7 +749,7 @@ grid_update(EditorCtx& ctx,
                 return rect.contains(window.mapPixelToCoords(sf::Vector2i(event.mouseButton.x, event.mouseButton.y)));
             };
 
-            for (auto item : get_cells_where(ctx.grid[ctx.current_layer], ctx.width, ctx.height, query))
+            for (auto item : get_cells_where(ctx.grid[ctx.current_layer], query))
             {
                 item->texture_id = texture_id;
                 item->sheet_id = sheet_id;
@@ -792,7 +787,7 @@ grid_update(EditorCtx& ctx,
                    rect.contains(ctx.mark_area.getPosition());
         };
 
-        for (auto item : get_cells_where(ctx.grid[ctx.current_layer], ctx.width, ctx.height, query))
+        for (auto item : get_cells_where(ctx.grid[ctx.current_layer], query))
         {
             item->texture_id = texture_id;
             item->sheet_id = sheet_id;
@@ -811,31 +806,27 @@ grid_update(EditorCtx& ctx,
 }
 
 void
-draw_layer(const std::vector<Cell>& layer,
-           int col_count,
-           int row_count,
+draw_layer(const std::vector<std::vector<Cell>>& layer,
            const std::vector<TextureSheet>& textures,
            sf::RenderWindow& window)
 {
-    sf::RectangleShape shape;
-    shape.setSize(Sprite::sprite_size);
-    shape.setFillColor(sf::Color(255, 255, 255, 255));
+    sf::RectangleShape shape(Sprite::sprite_size);
 
-    for (int row = 0; row < row_count; row++)
+    for (std::size_t row = 0; row < layer.size(); row++)
     {
-        for (int col = 0; col < col_count; col++)
+        for (std::size_t col = 0; col < layer[row].size(); col++)
         {
-            const auto& cell = layer[row * col_count + col];
+            const auto& cell = layer[row][col];
 
             if (cell.sheet_id + cell.texture_id > 0)
             {
 
-                const auto sheet = *std::find_if(textures.cbegin(),
-                                                 textures.cend(),
-                                                 [&cell](const auto& item)
-                                                 {
-                                                    return item.first_id == cell.sheet_id;
-                                                 });
+                const auto& sheet = *std::find_if(textures.cbegin(),
+                                                  textures.cend(),
+                                                  [&cell](const auto& item)
+                                                  {
+                                                     return item.first_id == cell.sheet_id;
+                                                  });
 
                 setup_sprite_texture(sheet, cell.texture_id, shape);
 
@@ -848,14 +839,12 @@ draw_layer(const std::vector<Cell>& layer,
 }
 
 void
-draw_grid(const std::vector<std::vector<Cell>>& grid,
-          int col_count,
-          int row_count,
+draw_grid(const std::vector<std::vector<std::vector<Cell>>>& grid,
           const std::vector<TextureSheet>& textures,
           sf::RenderWindow& window)
 {
     for (const auto& layer : grid)
-        draw_layer(layer, row_count, col_count, textures, window);
+        draw_layer(layer, textures, window);
 }
 
 void
@@ -973,16 +962,12 @@ main([[maybe_unused]] int argc,
         logic_update(editor_ctx);
 
         draw_grid(editor_ctx.grid,
-                  editor_ctx.width,
-                  editor_ctx.height,
                   editor_ctx.texture_sheets,
                   window);
 
         // Ensure drawing the layer I am currently on.
         // Prefer this to making everything transparent.
         draw_layer(editor_ctx.grid[editor_ctx.current_layer],
-                   editor_ctx.width,
-                   editor_ctx.height,
                    editor_ctx.texture_sheets,
                    window);
 
