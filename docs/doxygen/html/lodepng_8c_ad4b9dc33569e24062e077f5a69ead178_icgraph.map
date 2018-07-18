@@ -1,0 +1,20 @@
+<map id="lodepng_info_cleanup" name="lodepng_info_cleanup">
+<area shape="rect" id="node2" href="$lodepng_8c.html#a14a4dc4c26e03acb5ab36880aacbd85a" title="lodepng_info_copy" alt="" coords="200,157,331,184"/>
+<area shape="rect" id="node5" href="$lodepng_8c.html#a90e82b0ccc75cfb27ccc9756c8d96f07" title="lodepng_encode" alt="" coords="398,107,514,133"/>
+<area shape="rect" id="node12" href="$lodepng_8c.html#a0bee70fa0a93ca4463b35a3ceb9910e3" title="lodepng_inspect" alt="" coords="207,259,323,285"/>
+<area shape="rect" id="node13" href="$lodepng_8c.html#a74109bf9860e2eb4bfa872ab8cf0f000" title="lodepng_state_cleanup" alt="" coords="379,208,533,235"/>
+<area shape="rect" id="node3" href="$lodepng_8c.html#a87514bea6f324553184e48794a0ec3fc" title="lodepng_state_copy" alt="" coords="597,157,736,184"/>
+<area shape="rect" id="node4" href="$lodepng_8c.html#ab56bbf4d0a24238ef2d6fe125705a8ce" title="lodepng_error_text" alt="" coords="805,157,935,184"/>
+<area shape="rect" id="node6" href="$lodepng_8c.html#ada7bc92db6e9f8906a1fc85caa0b17aa" title="lodepng_encode_memory" alt="" coords="581,56,752,83"/>
+<area shape="rect" id="node7" href="$lodepng_8c.html#a75d7f3e4e388b74b7b5214c76c66382f" title="lodepng_encode32" alt="" coords="805,107,935,133"/>
+<area shape="rect" id="node8" href="$lodepng_8c.html#a4100642d70071029967c16afd72193ff" title="lodepng_encode24" alt="" coords="805,5,935,32"/>
+<area shape="rect" id="node9" href="$lodepng_8c.html#a009ac38098765fcae32c9d91770b94df" title="lodepng_encode_file" alt="" coords="800,56,940,83"/>
+<area shape="rect" id="node10" href="$lodepng_8c.html#a018a3bd975fb886cdf1f6f544f2882e4" title="lodepng_encode32_file" alt="" coords="988,31,1143,57"/>
+<area shape="rect" id="node11" href="$lodepng_8c.html#a4f8f383c22ceb7c22b1cc7e774f0bad2" title="lodepng_encode24_file" alt="" coords="988,81,1143,108"/>
+<area shape="rect" id="node14" href="$lodepng_8c.html#a623138ad43ce7eae0346e4324ba1f14e" title="lodepng_decode_memory" alt="" coords="581,259,752,285"/>
+<area shape="rect" id="node15" href="$lodepng_8c.html#a67c3a7ee81836f6e5c9ba6487a1b38f5" title="lodepng_decode32" alt="" coords="805,208,935,235"/>
+<area shape="rect" id="node16" href="$lodepng_8c.html#ad7df6a47afc81f1854cf5a23471cf96b" title="lodepng_decode24" alt="" coords="805,259,935,285"/>
+<area shape="rect" id="node17" href="$lodepng_8c.html#a6eec335315ecb6182292ebd37ef02b4a" title="lodepng_decode_file" alt="" coords="800,309,940,336"/>
+<area shape="rect" id="node18" href="$lodepng_8c.html#a3eca27e18f0e71cf1c21e1c1f5ff4aab" title="lodepng_decode32_file" alt="" coords="988,284,1143,311"/>
+<area shape="rect" id="node19" href="$lodepng_8c.html#aadc99e713f6408d391dfa140d8e95b96" title="lodepng_decode24_file" alt="" coords="988,335,1143,361"/>
+</map>

@@ -1,0 +1,20 @@
+<map id="Catch::Detail::stringify" name="Catch::Detail::stringify">
+<area shape="rect" id="node2" href="$namespaceCatch_1_1Detail.html#a242396de537c5176710d680cc9ca6b93" title="Catch::Detail::convertUnknown\lEnumToString" alt="" coords="207,5,412,47"/>
+<area shape="rect" id="node4" href="$structCatch_1_1StringMaker_3_01char[SZ]_4.html#a095e415534f9145300271befe9853357" title="Catch::StringMaker\l\&lt; char[SZ]\&gt;::convert" alt="" coords="238,71,381,112"/>
+<area shape="rect" id="node5" href="$structCatch_1_1StringMaker_3_01signed_01char[SZ]_4.html#a23ac689cc79dbcfe9b1765fe9e25690e" title="Catch::StringMaker\l\&lt; signed char[SZ]\&gt;::\lconvert" alt="" coords="238,135,381,191"/>
+<area shape="rect" id="node6" href="$structCatch_1_1StringMaker_3_01unsigned_01char[SZ]_4.html#a590d64c72b0cc75c113f1eea95d52b66" title="Catch::StringMaker\l\&lt; unsigned char[SZ]\&gt;\l::convert" alt="" coords="235,215,383,271"/>
+<area shape="rect" id="node7" href="$namespaceCatch_1_1Detail.html#a6650a1dff325bf29962ff15ae73fd972" title="Catch::Detail::rangeToString" alt="" coords="215,295,403,322"/>
+<area shape="rect" id="node8" href="$namespaceCatch.html#ae162dc66b7767a52e7e4283915fd3d9f" title="Catch::rangeToString" alt="" coords="236,346,383,373"/>
+<area shape="rect" id="node11" href="$structCatch_1_1StringMaker_3_01T[SZ]_4.html#ab10ef3c2111d6faa2ed2f23a1e00c29a" title="Catch::StringMaker\l\&lt; T[SZ]\&gt;::convert" alt="" coords="797,389,931,431"/>
+<area shape="rect" id="node12" href="$classCatch_1_1Detail_1_1Approx.html#acd26adba86a066b9f40dad467f23bc85" title="Catch::Detail::Approx\l::epsilon" alt="" coords="235,448,383,489"/>
+<area shape="rect" id="node14" href="$classCatch_1_1Detail_1_1Approx.html#a6467dc18791e1a1f4c15c4fb63cf5051" title="Catch::Detail::Approx\l::margin" alt="" coords="235,513,383,555"/>
+<area shape="rect" id="node15" href="$structCatch_1_1Matchers_1_1Vector_1_1ContainsElementMatcher.html#aea3b674389a0afd82af6ba4b10f86ae6" title="Catch::Matchers::Vector\l::ContainsElementMatcher\l::describe" alt="" coords="221,578,398,634"/>
+<area shape="rect" id="node16" href="$structCatch_1_1Matchers_1_1Vector_1_1ContainsMatcher.html#abe6a9ea3d6506c9a1f75ff524f35832e" title="Catch::Matchers::Vector\l::ContainsMatcher::describe" alt="" coords="216,657,403,699"/>
+<area shape="rect" id="node17" href="$structCatch_1_1Matchers_1_1Vector_1_1EqualsMatcher.html#a36b5f7ecada4081d6c65bebe8ddea6f4" title="Catch::Matchers::Vector\l::EqualsMatcher::describe" alt="" coords="222,723,397,764"/>
+<area shape="rect" id="node18" href="$structCatch_1_1Matchers_1_1Vector_1_1UnorderedEqualsMatcher.html#a7202d811200317abc58c844f663823df" title="Catch::Matchers::Vector\l::UnorderedEqualsMatcher\l::describe" alt="" coords="221,787,398,843"/>
+<area shape="rect" id="node19" href="$classCatch_1_1MatchExpr.html#ad3e41adb597750b2219bb37e51185629" title="Catch::MatchExpr::stream\lReconstructedExpression" alt="" coords="221,867,397,908"/>
+<area shape="rect" id="node3" href="$namespaceCatch_1_1Detail.html#abf38276f70bd8b4d9ffe61c6e042304b" title="Catch::Detail::convertUnstreamable" alt="" coords="460,13,691,39"/>
+<area shape="rect" id="node9" href="$namespaceCatch.html#af13494e925a793e3e7143c6ce6f442c2" title="Catch::rangeToString" alt="" coords="502,346,649,373"/>
+<area shape="rect" id="node10" href="$structCatch_1_1StringMaker_3_01R_00_01typename_01std_1_1enable__if_3_01is__range_3_01R_01_4_1_1ve8233c20b54b69b4771fbd413409d181.html#ac6088db00103a7482fb9bc04b1603362" title="Catch::StringMaker\l\&lt; R, typename std::enable\l_if\&lt; is_range\&lt; R \&gt;::value\l &amp;&amp;!::Catch::Detail::IsStreamInsertable\l\&lt; R \&gt;::value \&gt;::type \&gt;::convert" alt="" coords="739,279,989,365"/>
+<area shape="rect" id="node13" href="$classCatch_1_1Detail_1_1Approx.html#ad8b2757f4804f9a1d3fa674efb98c20e" title="Catch::Detail::Approx\l::operator()" alt="" coords="501,480,649,521"/>
+</map>

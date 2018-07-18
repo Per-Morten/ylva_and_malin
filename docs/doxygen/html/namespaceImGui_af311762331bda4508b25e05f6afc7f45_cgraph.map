@@ -1,0 +1,8 @@
+<map id="ImGui::RenderRectFilledRangeH" name="ImGui::RenderRectFilledRangeH">
+<area shape="rect" id="node2" href="$structImDrawList.html#a6e8b2ae6cc8c905606e4400e4cfdeeeb" title="ImDrawList::AddRectFilled" alt="" coords="272,5,451,32"/>
+<area shape="rect" id="node3" href="$structImDrawList.html#a828d944325ed58d8b57abd3647bffaaf" title="ImDrawList::PathLineTo" alt="" coords="280,56,443,83"/>
+<area shape="rect" id="node5" href="$structImDrawList.html#a713cca3862e88aa1ee671db1c4cf6bdb" title="ImDrawList::PathArcToFast" alt="" coords="269,107,454,133"/>
+<area shape="rect" id="node6" href="$structImDrawList.html#acb69ef7febcc54c9e5e09d2460c85b61" title="ImDrawList::PathArcTo" alt="" coords="282,157,441,184"/>
+<area shape="rect" id="node7" href="$structImDrawList.html#aea9301cb99ebf4b27f5d3959017567c9" title="ImDrawList::PathFillConvex" alt="" coords="268,208,455,235"/>
+<area shape="rect" id="node4" href="$classImVector.html#a68387993f2a5f5c3b2a7139d9ab778b8" title="ImVector::push_back" alt="" coords="503,107,649,133"/>
+</map>

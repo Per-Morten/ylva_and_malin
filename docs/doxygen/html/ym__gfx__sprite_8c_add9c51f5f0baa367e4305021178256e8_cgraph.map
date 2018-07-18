@@ -1,0 +1,6 @@
+<map id="ym_sprite_init" name="ym_sprite_init">
+<area shape="rect" id="node2" href="$ym__gfx__gl_8c.html#a57dc6d5f557651613385a935cc2cec6a" title="ym_gfx_gl_create_shader" alt="" coords="160,5,331,32"/>
+<area shape="rect" id="node4" href="$ym__gfx__gl_8c.html#a7dae5fc73f0a855fb18545deab09f0a3" title="ym_gfx_gl_create_program" alt="" coords="156,56,335,83"/>
+<area shape="rect" id="node5" href="$ym__gfx__gl_8c.html#a1ece02d8460c3600ac9870e97e94761d" title="ym_gfx_gl_get_uniform" alt="" coords="167,107,324,133"/>
+<area shape="rect" id="node3" href="$group__ym__core.html#ga6b390ea91e9ea4307bfd377827f00197" title="Translates an ym_errc to a human readable string. " alt="" coords="383,56,473,83"/>
+</map>

@@ -1,0 +1,12 @@
+<map id="game/src/ym/graphics/ym_gfx.h" name="game/src/ym/graphics/ym_gfx.h">
+<area shape="rect" id="node2" href="$main_8c.html" title="game/src/main.c" alt="" coords="44,370,162,397"/>
+<area shape="rect" id="node3" href="$ym__gfx__gl_8h.html" title="game/src/ym/graphics\l/ym_gfx_gl.h" alt="" coords="278,95,429,136"/>
+<area shape="rect" id="node10" href="$ym__gfx__unix_8c.html" title="game/src/ym/graphics\l/ym_gfx_unix.c" alt="" coords="453,184,604,225"/>
+<area shape="rect" id="node11" href="$ym__gfx__win_8c.html" title="game/src/ym/graphics\l/ym_gfx_win.c" alt="" coords="628,184,778,225"/>
+<area shape="rect" id="node4" href="$ym__gfx__gl_8c.html" title="game/src/ym/graphics\l/ym_gfx_gl.c" alt="" coords="52,273,202,315"/>
+<area shape="rect" id="node5" href="$ym__gfx__gl__procs_8c.html" title="game/src/ym/graphics\l/ym_gfx_gl_procs.c" alt="" coords="52,184,202,225"/>
+<area shape="rect" id="node6" href="$ym__gfx__sprite_8h.html" title="game/src/ym/graphics\l/ym_gfx_sprite.h" alt="" coords="278,184,429,225"/>
+<area shape="rect" id="node7" href="$ym__gfx__sprite_8c.html" title="game/src/ym/graphics\l/ym_gfx_sprite.c" alt="" coords="454,273,605,315"/>
+<area shape="rect" id="node8" href="$ym__resource_8h.html" title="game/src/ym/resource\l/ym_resource.h" alt="" coords="278,273,430,315"/>
+<area shape="rect" id="node9" href="$ym__resource_8c.html" title="game/src/ym/resource\l/ym_resource.c" alt="" coords="278,363,430,404"/>
+</map>

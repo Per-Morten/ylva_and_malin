@@ -1,0 +1,14 @@
+<map id="ImGui::EndDragDropTarget" name="ImGui::EndDragDropTarget">
+<area shape="rect" id="node2" href="$wglext_8h.html#a9e6b7f1933461ef318bb000d6bd13b83" title="void" alt="" coords="305,5,352,32"/>
+<area shape="rect" id="node3" href="$classImVector.html#ae2d401b4ec5f1113cdb8edb5a61a38f7" title="ImVector::clear" alt="" coords="273,56,384,83"/>
+<area shape="rect" id="node4" href="$wglext_8h.html#aa1efb7b85228601549d183556de19dfc" title="HANDLE" alt="" coords="290,107,367,133"/>
+<area shape="rect" id="node5" href="$imgui_8cpp.html#ab0c1cae5ca2331c54681553722d0f72c" title="ImTextCountUtf8BytesFromStr" alt="" coords="471,157,675,184"/>
+<area shape="rect" id="node6" href="$wglext_8h.html#a500a82aecba06f4550f6849b8099ca21" title="int" alt="" coords="723,247,761,273"/>
+<area shape="rect" id="node7" href="$classImVector.html#ac371dd62e56ae486b1a5038cf07eee56" title="ImVector::resize" alt="" coords="269,259,388,285"/>
+<area shape="rect" id="node8" href="$imgui_8cpp.html#a6c310426654de2fac6776408bdfd1f01" title="ImTextStrToUtf8" alt="" coords="513,284,633,311"/>
+<area shape="rect" id="node9" href="$imgui_8cpp.html#ac2561e31f0de066ef0bb5bfbb541c8ae" title="ImTextCountCharsFromUtf8" alt="" coords="235,360,423,387"/>
+<area shape="rect" id="node11" href="$imgui_8cpp.html#aeb054c43ad8aae45de24efc759a0ff7a" title="ImTextStrFromUtf8" alt="" coords="261,411,396,437"/>
+<area shape="rect" id="node12" href="$classImVector.html#a0605d0ed312e7fad24e3602f6b1b9310" title="ImVector::empty" alt="" coords="269,461,388,488"/>
+<area shape="rect" id="node13" href="$classImVector.html#a300a8b559cd87a78063046ef81151bce" title="ImVector::begin" alt="" coords="271,512,386,539"/>
+<area shape="rect" id="node10" href="$imgui_8cpp.html#a036b9dd7f0942fd34e385cc115f36631" title="ImTextCharFromUtf8" alt="" coords="499,360,646,387"/>
+</map>

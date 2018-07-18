@@ -1,0 +1,6 @@
+<map id="ImGui_ImplSdlGL3_CreateDeviceObjects" name="ImGui_ImplSdlGL3_CreateDeviceObjects">
+<area shape="rect" id="node2" href="$imgui__impl__sdl__gl3_8cpp.html#a371a60fbbf3f50e04bc048c3b08e19ab" title="ImGui_ImplSdlGL3_CreateFonts\lTexture" alt="" coords="272,27,483,69"/>
+<area shape="rect" id="node3" href="$namespaceImGui.html#a3179e560812f878f3961ce803a5d9302" title="ImGui::GetIO" alt="" coords="575,5,675,32"/>
+<area shape="rect" id="node4" href="$structImFontAtlas.html#a8abb0c4e67ebb38249d4df71218c4eec" title="ImFontAtlas::GetTexDataAs\lRGBA32" alt="" coords="531,57,719,98"/>
+<area shape="rect" id="node5" href="$namespaceImGui.html#aed896913f2e140cd0ad7431060dba50b" title="ImGui::MemAlloc" alt="" coords="767,64,889,91"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="lodepng_state_copy" name="lodepng_state_copy">
+<area shape="rect" id="node2" href="$lodepng_8cpp.html#a74109bf9860e2eb4bfa872ab8cf0f000" title="lodepng_state_cleanup" alt="" coords="203,5,357,32"/>
+<area shape="rect" id="node3" href="$lodepng_8cpp.html#a66345d4cdab130c6cbd3166d7a0a5257" title="lodepng_color_mode_init" alt="" coords="197,56,363,83"/>
+<area shape="rect" id="node4" href="$lodepng_8cpp.html#ae50c1ddde2fa8004b46da433f3e20974" title="lodepng_info_init" alt="" coords="221,107,339,133"/>
+<area shape="rect" id="node5" href="$lodepng_8cpp.html#a7801819a161b96f65259680126e270f1" title="lodepng_color_mode_copy" alt="" coords="192,157,368,184"/>
+<area shape="rect" id="node6" href="$lodepng_8cpp.html#a14a4dc4c26e03acb5ab36880aacbd85a" title="lodepng_info_copy" alt="" coords="215,208,345,235"/>
+<area shape="rect" id="node7" href="$lodepng_8cpp.html#a2659e18b691b087c3b8610f44d9be8b1" title="lodepng_chunk_create" alt="" coords="204,259,356,285"/>
+<area shape="rect" id="node8" href="$lodepng_8cpp.html#a83344b5c8c5839ca42858dd3578220ef" title="lodepng_get_bpp" alt="" coords="220,309,340,336"/>
+<area shape="rect" id="node9" href="$lodepng_8cpp.html#a865c89cf0456b876e3bd5698bc910336" title="lodepng_chunk_append" alt="" coords="201,360,359,387"/>
+<area shape="rect" id="node10" href="$lodepng_8cpp.html#adad919b6dd09fb56cf285b3b46efb2cb" title="lodepng_chunk_next" alt="" coords="209,411,351,437"/>
+</map>

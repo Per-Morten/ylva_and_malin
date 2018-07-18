@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['yes',['Yes',['../structCatch_1_1CaseSensitive.html#aad49d3aee2d97066642fffa919685c6aa7c5550b69ec3c502e6f609b67f9613c6',1,'Catch::CaseSensitive']]],
+  ['ym_5falloc_5fstrategy_5flinear',['ym_alloc_strategy_linear',['../ym__allocator_8h.html#ac9d40f881ae8e7dad374b10e48eedbd6a6d0a22cff3b2a891707a8f00612eb2ce',1,'ym_allocator.h']]],
+  ['ym_5falloc_5fstrategy_5fpool',['ym_alloc_strategy_pool',['../ym__allocator_8h.html#ac9d40f881ae8e7dad374b10e48eedbd6a36f7f776091afe63142a295df43e3f2b',1,'ym_allocator.h']]],
+  ['ym_5falloc_5fstrategy_5fregion',['ym_alloc_strategy_region',['../ym__allocator_8h.html#ac9d40f881ae8e7dad374b10e48eedbd6a057f6737ba82e55ae1cf391ff73b31c6',1,'ym_allocator.h']]],
+  ['ym_5falloc_5fstrategy_5fstack',['ym_alloc_strategy_stack',['../ym__allocator_8h.html#ac9d40f881ae8e7dad374b10e48eedbd6a4f513dae2b1ffb8abc26662804065ea0',1,'ym_allocator.h']]],
+  ['ym_5ferrc_5fbad_5falloc',['ym_errc_bad_alloc',['../ym__error_8h.html#gabebbfecc8cebabc106e11a49217ef609a6b2ccd14e503f4e902aec8cc4c02f22e',1,'ym_error.h']]],
+  ['ym_5ferrc_5fcontainer_5ffull',['ym_errc_container_full',['../ym__error_8h.html#gabebbfecc8cebabc106e11a49217ef609a7b31237dd484d4f73aa8c8aae27a20a0',1,'ym_error.h']]],
+  ['ym_5ferrc_5fgl_5ferror',['ym_errc_gl_error',['../ym__error_8h.html#gabebbfecc8cebabc106e11a49217ef609ab78ed0552310be90f881a330d63e3b69',1,'ym_error.h']]],
+  ['ym_5ferrc_5finvalid_5finput',['ym_errc_invalid_input',['../ym__error_8h.html#gabebbfecc8cebabc106e11a49217ef609af9ab1a0ad99b17103f7e9009f76c2c50',1,'ym_error.h']]],
+  ['ym_5ferrc_5fmem_5fleak',['ym_errc_mem_leak',['../ym__error_8h.html#gabebbfecc8cebabc106e11a49217ef609a051475d8ca962da14d92d30c4dbd1e8f',1,'ym_error.h']]],
+  ['ym_5ferrc_5fout_5fof_5fmemory',['ym_errc_out_of_memory',['../ym__error_8h.html#gabebbfecc8cebabc106e11a49217ef609ad6368f4f829b1c2d76b1c02d3fdc0036',1,'ym_error.h']]],
+  ['ym_5ferrc_5fsuccess',['ym_errc_success',['../ym__error_8h.html#gabebbfecc8cebabc106e11a49217ef609a9feda7a6cb4982496dc229ed385018bf',1,'ym_error.h']]],
+  ['ym_5ferrc_5fsystem_5ferror',['ym_errc_system_error',['../ym__error_8h.html#gabebbfecc8cebabc106e11a49217ef609a80b1a216d2c57474a8061015046d694d',1,'ym_error.h']]],
+  ['ym_5ferrc_5funinitialized',['ym_errc_uninitialized',['../ym__error_8h.html#gabebbfecc8cebabc106e11a49217ef609a03ecd922f177ab57868a7974b896f4c3',1,'ym_error.h']]],
+  ['ym_5fmem_5freg_5fcount',['ym_mem_reg_count',['../ym__memory__regions_8h.html#aa0de2c83d40dd29e48a4514c47d660fbad07ca2126a99972da839ce11ceaa89b8',1,'ym_memory_regions.h']]],
+  ['ym_5fmem_5freg_5fgfx',['ym_mem_reg_gfx',['../ym__memory__regions_8h.html#aa0de2c83d40dd29e48a4514c47d660fba861417977ac2ffeb6188842efbf10f26',1,'ym_memory_regions.h']]],
+  ['ym_5fmem_5freg_5fgl',['ym_mem_reg_gl',['../ym__memory__regions_8h.html#aa0de2c83d40dd29e48a4514c47d660fba8b69f971bcb2dbb34cde111030495d9e',1,'ym_memory_regions.h']]],
+  ['ym_5fmem_5freg_5fregion_5fheads',['ym_mem_reg_region_heads',['../ym__memory__regions_8h.html#aa0de2c83d40dd29e48a4514c47d660fbadf54221acce2757c2787ce5ec2ef1d72',1,'ym_memory_regions.h']]],
+  ['ym_5fmem_5freg_5ftelemetry',['ym_mem_reg_telemetry',['../ym__memory__regions_8h.html#aa0de2c83d40dd29e48a4514c47d660fba9c33df8fe0ed8f9c4792bf1b6e6ece3a',1,'ym_memory_regions.h']]],
+  ['ym_5fmem_5fusage_5fdynamic',['ym_mem_usage_dynamic',['../ym__memory_8h.html#ac3a6cde8d11d02424286272d42d9fe75a45c2605e22db95210c38eb74d310dee6',1,'ym_memory.h']]],
+  ['ym_5fmem_5fusage_5fscoped',['ym_mem_usage_scoped',['../ym__memory_8h.html#ac3a6cde8d11d02424286272d42d9fe75ae25cc3070e8f9f542ce5691fa67c0799',1,'ym_memory.h']]],
+  ['ym_5fmem_5fusage_5fstatic',['ym_mem_usage_static',['../ym__memory_8h.html#ac3a6cde8d11d02424286272d42d9fe75a42b0eb983d59627bc441a14d5979fd4e',1,'ym_memory.h']]]
+];

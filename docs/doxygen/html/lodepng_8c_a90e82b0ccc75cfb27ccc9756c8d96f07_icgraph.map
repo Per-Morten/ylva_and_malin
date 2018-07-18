@@ -1,0 +1,9 @@
+<map id="lodepng_encode" name="lodepng_encode">
+<area shape="rect" id="node2" href="$lodepng_8c.html#ada7bc92db6e9f8906a1fc85caa0b17aa" title="lodepng_encode_memory" alt="" coords="169,107,340,133"/>
+<area shape="rect" id="node8" href="$lodepng_8c.html#ab56bbf4d0a24238ef2d6fe125705a8ce" title="lodepng_error_text" alt="" coords="393,157,523,184"/>
+<area shape="rect" id="node3" href="$lodepng_8c.html#a75d7f3e4e388b74b7b5214c76c66382f" title="lodepng_encode32" alt="" coords="393,5,523,32"/>
+<area shape="rect" id="node4" href="$lodepng_8c.html#a4100642d70071029967c16afd72193ff" title="lodepng_encode24" alt="" coords="393,56,523,83"/>
+<area shape="rect" id="node5" href="$lodepng_8c.html#a009ac38098765fcae32c9d91770b94df" title="lodepng_encode_file" alt="" coords="388,107,528,133"/>
+<area shape="rect" id="node6" href="$lodepng_8c.html#a018a3bd975fb886cdf1f6f544f2882e4" title="lodepng_encode32_file" alt="" coords="576,81,731,108"/>
+<area shape="rect" id="node7" href="$lodepng_8c.html#a4f8f383c22ceb7c22b1cc7e774f0bad2" title="lodepng_encode24_file" alt="" coords="576,132,731,159"/>
+</map>

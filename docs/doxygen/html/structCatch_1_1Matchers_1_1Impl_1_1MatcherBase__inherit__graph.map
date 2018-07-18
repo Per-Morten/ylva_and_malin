@@ -1,0 +1,4 @@
+<map id="Catch::Matchers::Impl::MatcherBase&lt; T &gt;" name="Catch::Matchers::Impl::MatcherBase&lt; T &gt;">
+<area shape="rect" id="node2" href="$classCatch_1_1Matchers_1_1Impl_1_1MatcherUntypedBase.html" title="{Catch::Matchers::Impl\l::MatcherUntypedBase\n|# m_cachedToString\l|+ MatcherUntypedBase()\l+ MatcherUntypedBase()\l+ operator=()\l+ toString()\l# ~MatcherUntypedBase()\l# describe()\l}" alt="" coords="5,5,180,171"/>
+<area shape="rect" id="node3" href="$structCatch_1_1Matchers_1_1Impl_1_1MatcherMethod.html" title="{Catch::Matchers::Impl\l::MatcherMethod\&lt; T \&gt;\n||+ match()\l}" alt="" coords="205,42,357,134"/>
+</map>

@@ -1,0 +1,8 @@
+<map id="Catch::ReusableStringStream::str" name="Catch::ReusableStringStream::str">
+<area shape="rect" id="node2" href="$structCatch_1_1StringMaker.html#ab2c357e22b754802c4b1351257103eb6" title="Catch::StringMaker\l::convert" alt="" coords="278,5,413,47"/>
+<area shape="rect" id="node3" href="$namespaceCatch_1_1Detail.html#a6650a1dff325bf29962ff15ae73fd972" title="Catch::Detail::rangeToString" alt="" coords="467,42,655,69"/>
+<area shape="rect" id="node4" href="$namespaceCatch.html#ae162dc66b7767a52e7e4283915fd3d9f" title="Catch::rangeToString" alt="" coords="272,122,419,149"/>
+<area shape="rect" id="node7" href="$structCatch_1_1StringMaker_3_01T[SZ]_4.html#ab10ef3c2111d6faa2ed2f23a1e00c29a" title="Catch::StringMaker\l\&lt; T[SZ]\&gt;::convert" alt="" coords="761,165,895,207"/>
+<area shape="rect" id="node5" href="$namespaceCatch.html#af13494e925a793e3e7143c6ce6f442c2" title="Catch::rangeToString" alt="" coords="487,122,634,149"/>
+<area shape="rect" id="node6" href="$structCatch_1_1StringMaker_3_01R_00_01typename_01std_1_1enable__if_3_01is__range_3_01R_01_4_1_1ve8233c20b54b69b4771fbd413409d181.html#ac6088db00103a7482fb9bc04b1603362" title="Catch::StringMaker\l\&lt; R, typename std::enable\l_if\&lt; is_range\&lt; R \&gt;::value\l &amp;&amp;!::Catch::Detail::IsStreamInsertable\l\&lt; R \&gt;::value \&gt;::type \&gt;::convert" alt="" coords="703,55,953,141"/>
+</map>

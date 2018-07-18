@@ -1,0 +1,20 @@
+<map id="game/src/main.c" name="game/src/main.c">
+<area shape="rect" id="node4" href="$ym__core_8h.html" title="ym_core.h" alt="" coords="589,453,671,480"/>
+<area shape="rect" id="node27" href="$ym__memory_8h.html" title="ym_memory.h" alt="" coords="235,379,340,405"/>
+<area shape="rect" id="node29" href="$ym__gfx_8h.html" title="ym_gfx.h" alt="" coords="325,304,401,331"/>
+<area shape="rect" id="node30" href="$ym__gfx__gl_8h.html" title="ym_gfx_gl.h" alt="" coords="546,229,639,256"/>
+<area shape="rect" id="node35" href="$ym__gfx__sprite_8h.html" title="ym_gfx_sprite.h" alt="" coords="535,155,650,181"/>
+<area shape="rect" id="node36" href="$ym__telemetry_8h.html" title="ym_telemetry.h" alt="" coords="426,304,538,331"/>
+<area shape="rect" id="node37" href="$ym__resource_8h.html" title="ym_resource.h" alt="" coords="563,80,671,107"/>
+<area shape="rect" id="node5" href="$ym__assert_8h.html" title="ym_assert.h" alt="" coords="637,603,732,629"/>
+<area shape="rect" id="node6" href="$ym__error_8h.html" title="ym_error.h" alt="" coords="745,677,829,704"/>
+<area shape="rect" id="node7" href="$ym__attributes_8h.html" title="ym_attributes.h" alt="" coords="731,752,843,779"/>
+<area shape="rect" id="node8" href="$ym__log_8h.html" title="ym_log.h" alt="" coords="558,677,633,704"/>
+<area shape="rect" id="node13" href="$ym__atomic_8h.html" title="ym_atomic.h" alt="" coords="283,528,380,555"/>
+<area shape="rect" id="node18" href="$ym__math_8h.html" title="ym_math.h" alt="" coords="120,528,207,555"/>
+<area shape="rect" id="node19" href="$ym__time_8h.html" title="ym_time.h" alt="" coords="1053,528,1135,555"/>
+<area shape="rect" id="node24" href="$ym__types_8h.html" title="ym_types.h" alt="" coords="455,528,546,555"/>
+<area shape="rect" id="node26" href="$ym__warnings_8h.html" title="ym_warnings.h" alt="" coords="621,528,732,555"/>
+<area shape="rect" id="node28" href="$ym__memory__regions_8h.html" title="ym_memory_regions.h" alt="" coords="210,453,365,480"/>
+<area shape="rect" id="node31" href="$ym__gfx__gl__procs_8h.html" title="ym_gfx_gl_procs.h" alt="" coords="563,304,695,331"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="ImGui::BeginDragDropTargetCustom" name="ImGui::BeginDragDropTargetCustom">
+<area shape="rect" id="node2" href="$namespaceImGui.html#ae0b8ea0e06c457316d6aed6c5b2a1c25" title="ImGui::IsMouseHoveringRect" alt="" coords="244,56,439,83"/>
+<area shape="rect" id="node3" href="$structImRect.html#ac02d5cf6ce0358aea9ed9df43d368f3f" title="ImRect::ClipWith" alt="" coords="499,5,621,32"/>
+<area shape="rect" id="node4" href="$structImRect.html#a12a7643b3988e306edcf9f4fe9523b99" title="ImRect::Contains" alt="" coords="497,56,623,83"/>
+<area shape="rect" id="node5" href="$namespaceImGui.html#a83331a8afa5316bc98ed9c98b151ac01" title="ImGui::IsKeyPressed" alt="" coords="487,107,633,133"/>
+<area shape="rect" id="node6" href="$namespaceImGui.html#ad94a09fc01052f02fe11bec5a3c11275" title="ImGui::GetKeyPressedAmount" alt="" coords="681,107,884,133"/>
+<area shape="rect" id="node7" href="$namespaceImGui.html#ad3af0fc327467a44116d7d04018b9124" title="ImGui::CalcTypematicPressed\lRepeatAmount" alt="" coords="932,99,1133,141"/>
+<area shape="rect" id="node8" href="$wglext_8h.html#a500a82aecba06f4550f6849b8099ca21" title="int" alt="" coords="1181,107,1220,133"/>
+</map>

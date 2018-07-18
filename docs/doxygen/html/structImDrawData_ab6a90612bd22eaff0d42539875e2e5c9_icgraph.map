@@ -1,0 +1,8 @@
+<map id="ImDrawData::Clear" name="ImDrawData::Clear">
+<area shape="rect" id="node2" href="$namespaceImGui.html#ab3f1fc018f903b7ad79fd10663375774" title="ImGui::NewFrame" alt="" coords="188,56,317,83"/>
+<area shape="rect" id="node3" href="$namespaceImGui_1_1SFML.html#a23e3d87824f8ec92ec879aa5fda774f4" title="ImGui::SFML::Update" alt="" coords="391,5,542,32"/>
+<area shape="rect" id="node6" href="$structImVec4.html#aff9b4879855ba13fafb9d59091332aa8" title="ImVec4::Color" alt="" coords="413,56,520,83"/>
+<area shape="rect" id="node7" href="$imgui__impl__sdl__gl3_8h.html#abea6fc349979d4dcda6e028f62c6afee" title="ImGui_ImplSdlGL3_NewFrame" alt="" coords="365,107,568,133"/>
+<area shape="rect" id="node4" href="$namespaceImGui_1_1SFML.html#a6ac5b3b4d267251063f3697b9fa0ac7d" title="ImGui::SFML::Update" alt="" coords="616,5,767,32"/>
+<area shape="rect" id="node5" href="$editor_2src_2main_8cpp.html#aa2ea97ae3b5138344f2832f44ba93d4c" title="main" alt="" coords="815,5,865,32"/>
+</map>

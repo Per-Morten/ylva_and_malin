@@ -1,0 +1,11 @@
+<map id="game/src/ym/core/ym_core.h" name="game/src/ym/core/ym_core.h">
+<area shape="rect" id="node2" href="$ym__assert_8h.html" title="ym_assert.h" alt="" coords="422,169,516,196"/>
+<area shape="rect" id="node3" href="$ym__error_8h.html" title="ym_error.h" alt="" coords="322,244,406,271"/>
+<area shape="rect" id="node4" href="$ym__attributes_8h.html" title="ym_attributes.h" alt="" coords="308,319,420,345"/>
+<area shape="rect" id="node5" href="$ym__log_8h.html" title="ym_log.h" alt="" coords="550,244,625,271"/>
+<area shape="rect" id="node10" href="$ym__atomic_8h.html" title="ym_atomic.h" alt="" coords="263,95,360,121"/>
+<area shape="rect" id="node15" href="$ym__math_8h.html" title="ym_math.h" alt="" coords="695,95,782,121"/>
+<area shape="rect" id="node17" href="$ym__time_8h.html" title="ym_time.h" alt="" coords="826,95,909,121"/>
+<area shape="rect" id="node22" href="$ym__types_8h.html" title="ym_types.h" alt="" coords="424,95,514,121"/>
+<area shape="rect" id="node24" href="$ym__warnings_8h.html" title="ym_warnings.h" alt="" coords="934,95,1044,121"/>
+</map>

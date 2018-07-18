@@ -1,0 +1,9 @@
+<map id="ImFontAtlas::GetTexDataAsRGBA32" name="ImFontAtlas::GetTexDataAsRGBA32">
+<area shape="rect" id="node2" href="$namespaceImGui_1_1SFML.html#a1f969f6c562da1c000f4d5277a8ff075" title="ImGui::SFML::UpdateFontTexture" alt="" coords="241,5,461,32"/>
+<area shape="rect" id="node6" href="$imgui__impl__sdl__gl3_8cpp.html#a371a60fbbf3f50e04bc048c3b08e19ab" title="ImGui_ImplSdlGL3_CreateFonts\lTexture" alt="" coords="246,57,457,98"/>
+<area shape="rect" id="node3" href="$namespaceImGui_1_1SFML.html#a52384615894fc35d07dfaccb1bcdb514" title="ImGui::SFML::Init" alt="" coords="555,5,682,32"/>
+<area shape="rect" id="node4" href="$namespaceImGui_1_1SFML.html#ab68ea5215c08d005c6db5e5995c111ad" title="ImGui::SFML::Init" alt="" coords="814,5,941,32"/>
+<area shape="rect" id="node5" href="$editor_2src_2main_8cpp.html#aa2ea97ae3b5138344f2832f44ba93d4c" title="main" alt="" coords="1027,5,1077,32"/>
+<area shape="rect" id="node7" href="$imgui__impl__sdl__gl3_8h.html#a91547ba46b4743d2b7d7a93e719402b7" title="ImGui_ImplSdlGL3_CreateDevice\lObjects" alt="" coords="509,57,728,98"/>
+<area shape="rect" id="node8" href="$imgui__impl__sdl__gl3_8h.html#abea6fc349979d4dcda6e028f62c6afee" title="ImGui_ImplSdlGL3_NewFrame" alt="" coords="776,64,979,91"/>
+</map>

@@ -1,0 +1,17 @@
+<map id="lodepng_has_palette_alpha" name="lodepng_has_palette_alpha">
+<area shape="rect" id="node2" href="$game_2src_2third__party_2lodepng_2lodepng_8h.html#a93f12a150968449f016fe93decc1e074" title="lodepng_can_have_alpha" alt="" coords="195,132,363,159"/>
+<area shape="rect" id="node3" href="$game_2src_2third__party_2lodepng_2lodepng_8h.html#a85ad0fb992db8bb6e1c0facbde650c87" title="lodepng_get_color_profile" alt="" coords="411,132,580,159"/>
+<area shape="rect" id="node4" href="$game_2src_2third__party_2lodepng_2lodepng_8h.html#a6b6c9c17717ab1a2159eab8048aa730a" title="lodepng_auto_choose\l_color" alt="" coords="628,125,776,166"/>
+<area shape="rect" id="node5" href="$game_2src_2third__party_2lodepng_2lodepng_8h.html#a90e82b0ccc75cfb27ccc9756c8d96f07" title="lodepng_encode" alt="" coords="824,132,940,159"/>
+<area shape="rect" id="node6" href="$game_2src_2third__party_2lodepng_2lodepng_8h.html#ada7bc92db6e9f8906a1fc85caa0b17aa" title="lodepng_encode_memory" alt="" coords="988,107,1159,133"/>
+<area shape="rect" id="node12" href="$game_2src_2third__party_2lodepng_2lodepng_8h.html#ab56bbf4d0a24238ef2d6fe125705a8ce" title="lodepng_error_text" alt="" coords="1212,157,1341,184"/>
+<area shape="rect" id="node7" href="$game_2src_2third__party_2lodepng_2lodepng_8h.html#a75d7f3e4e388b74b7b5214c76c66382f" title="lodepng_encode32" alt="" coords="1211,5,1342,32"/>
+<area shape="rect" id="node8" href="$game_2src_2third__party_2lodepng_2lodepng_8h.html#a4100642d70071029967c16afd72193ff" title="lodepng_encode24" alt="" coords="1211,56,1342,83"/>
+<area shape="rect" id="node9" href="$game_2src_2third__party_2lodepng_2lodepng_8h.html#a009ac38098765fcae32c9d91770b94df" title="lodepng_encode_file" alt="" coords="1207,107,1347,133"/>
+<area shape="rect" id="node10" href="$game_2src_2third__party_2lodepng_2lodepng_8h.html#a018a3bd975fb886cdf1f6f544f2882e4" title="lodepng_encode32_file" alt="" coords="1395,56,1549,83"/>
+<area shape="rect" id="node11" href="$game_2src_2third__party_2lodepng_2lodepng_8h.html#a4f8f383c22ceb7c22b1cc7e774f0bad2" title="lodepng_encode24_file" alt="" coords="1395,107,1549,133"/>
+<area shape="rect" id="node13" href="$ym__gfx__sprite_8h.html#ab64072416a9de514b64b72ae7c1a75ee" title="PNG loading. " alt="" coords="1410,157,1534,184"/>
+<area shape="rect" id="node14" href="$ym__gfx__gl_8h.html#a634550c9e37d0603466c42bf2b1bc176" title="ym_gfx_gl_create_texture" alt="" coords="1597,157,1769,184"/>
+<area shape="rect" id="node15" href="$ym__gfx__sprite_8h.html#a6e4494eb27a251f7b01e30e87e794b98" title="ym_sprite_load_sheet" alt="" coords="1817,157,1967,184"/>
+<area shape="rect" id="node16" href="$main_8c.html#ab4d47ebd3e19150a6c615756b9738eed" title="main" alt="" coords="2015,157,2065,184"/>
+</map>

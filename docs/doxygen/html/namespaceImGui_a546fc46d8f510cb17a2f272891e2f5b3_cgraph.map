@@ -1,0 +1,12 @@
+<map id="ImGui::OpenPopupOnItemClick" name="ImGui::OpenPopupOnItemClick">
+<area shape="rect" id="node2" href="$namespaceImGui.html#aef586112e8d1eb26ce28198d9efe9bba" title="ImGui::IsMouseReleased" alt="" coords="260,5,431,32"/>
+<area shape="rect" id="node3" href="$namespaceImGui.html#ac9a400eff3a9561d95e80486c52a660b" title="ImGui::IsItemHovered" alt="" coords="270,56,421,83"/>
+<area shape="rect" id="node5" href="$structImGuiWindow.html#a66400a63bc0b54d7d29e08d1b1b1a42b" title="ImGuiWindow::GetID" alt="" coords="272,107,419,133"/>
+<area shape="rect" id="node9" href="$namespaceImGui.html#a6ce26d34d09c7657d7abd8e28cbb1b85" title="ImGui::OpenPopupEx" alt="" coords="271,183,420,209"/>
+<area shape="rect" id="node4" href="$namespaceImGui.html#add3290865a67327258c3a32b695adb28" title="ImGui::IsItemFocused" alt="" coords="479,5,631,32"/>
+<area shape="rect" id="node6" href="$classImVector.html#a3e4424d3fca190894598a6575f9d2401" title="ImVector::back" alt="" coords="499,157,610,184"/>
+<area shape="rect" id="node7" href="$imgui_8cpp.html#aa55e55e944172fc87494a342da489970" title="ImHash" alt="" coords="521,56,589,83"/>
+<area shape="rect" id="node8" href="$namespaceImGui.html#a85a245c78a9f7c351636bdad6e60c488" title="ImGui::KeepAliveID" alt="" coords="485,107,624,133"/>
+<area shape="rect" id="node10" href="$classImVector.html#a68387993f2a5f5c3b2a7139d9ab778b8" title="ImVector::push_back" alt="" coords="481,208,628,235"/>
+<area shape="rect" id="node11" href="$classImVector.html#ac371dd62e56ae486b1a5038cf07eee56" title="ImVector::resize" alt="" coords="495,259,614,285"/>
+</map>

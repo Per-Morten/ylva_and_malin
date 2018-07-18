@@ -1,0 +1,7 @@
+<map id="ImGui::DestroyContext" name="ImGui::DestroyContext">
+<area shape="rect" id="node2" href="$namespaceImGui_1_1SFML.html#a2e9801a991d524d4f26a5933cdf29e3d" title="ImGui::SFML::Shutdown" alt="" coords="215,5,381,32"/>
+<area shape="rect" id="node4" href="$namespaceImGui.html#a289dbbbffdadcf1231821d97a7c4a9be" title="ImGui::SetCurrentContext" alt="" coords="211,56,385,83"/>
+<area shape="rect" id="node5" href="$imgui_8h.html#a3c856832c3fe1da8767a9353da3707e1" title="IM_DELETE" alt="" coords="250,107,346,133"/>
+<area shape="rect" id="node3" href="$namespaceImGui.html#a3179e560812f878f3961ce803a5d9302" title="ImGui::GetIO" alt="" coords="443,5,543,32"/>
+<area shape="rect" id="node6" href="$namespaceImGui.html#a269ec695c6e722ec3da85dae37f0675d" title="ImGui::MemFree" alt="" coords="433,107,553,133"/>
+</map>

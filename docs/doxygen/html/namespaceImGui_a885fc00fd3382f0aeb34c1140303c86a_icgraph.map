@@ -1,0 +1,11 @@
+<map id="ImGui::InputScalarN" name="ImGui::InputScalarN">
+<area shape="rect" id="node2" href="$namespaceImGui.html#ad7b5c47b0ff982749dfdbe2e3d32b397" title="ImGui::InputFloat2" alt="" coords="195,5,325,32"/>
+<area shape="rect" id="node4" href="$structImVec4.html#aff9b4879855ba13fafb9d59091332aa8" title="ImVec4::Color" alt="" coords="626,208,733,235"/>
+<area shape="rect" id="node6" href="$namespaceImGui.html#a654b614a653848b8fc9a4ad8d1fa4257" title="ImGui::InputFloat3" alt="" coords="195,56,325,83"/>
+<area shape="rect" id="node7" href="$namespaceImGui.html#a2e45de8550d78834f6c9a0a16db4c38c" title="ImGui::InputFloat4" alt="" coords="195,107,325,133"/>
+<area shape="rect" id="node8" href="$namespaceImGui.html#a4142cc4545d789d76d51dee61c959a03" title="ImGui::InputInt2" alt="" coords="202,208,318,235"/>
+<area shape="rect" id="node9" href="$namespaceImGui.html#ab02fc4a19ed153984d3585296e1c74b1" title="ImGui::InputInt3" alt="" coords="202,259,318,285"/>
+<area shape="rect" id="node10" href="$namespaceImGui.html#ac714ecf202c82dc6caa0cbf344c85a13" title="ImGui::InputInt4" alt="" coords="202,157,318,184"/>
+<area shape="rect" id="node3" href="$namespaceImGui.html#af95643a0ce4893b9e57c12991922fb18" title="ImGui::ShowDemoWindow" alt="" coords="373,107,553,133"/>
+<area shape="rect" id="node5" href="$structExampleAppLog.html#a5ad3a4bdb89171b84aeaff96948a1f77" title="ExampleAppLog::Draw" alt="" coords="601,107,757,133"/>
+</map>

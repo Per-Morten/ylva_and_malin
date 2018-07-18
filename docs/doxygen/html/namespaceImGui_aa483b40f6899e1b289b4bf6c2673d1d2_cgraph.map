@@ -1,0 +1,5 @@
+<map id="ImGui::RenderTextWrapped" name="ImGui::RenderTextWrapped">
+<area shape="rect" id="node2" href="$structImDrawList.html#ac5221bd86b3429f6d5b6e6ffe454942d" title="ImDrawList::AddText" alt="" coords="239,5,385,32"/>
+<area shape="rect" id="node3" href="$namespaceImGui.html#a0de2d9bd347d9866511eb8d014e62556" title="ImGui::GetColorU32" alt="" coords="241,56,383,83"/>
+<area shape="rect" id="node4" href="$namespaceImGui.html#abe2691de0b1a71c774ab24cc91564a94" title="ImGui::ColorConvertFloat4\lToU32" alt="" coords="433,49,612,90"/>
+</map>

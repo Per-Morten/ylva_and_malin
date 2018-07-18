@@ -1,0 +1,8 @@
+<map id="ym_sprite_load_sheet" name="ym_sprite_load_sheet">
+<area shape="rect" id="node2" href="$ym__gfx__gl_8c.html#a605fde046f0a1e09ecdcc5c6aa801a45" title="ym_gfx_gl_create_texture" alt="" coords="203,81,375,108"/>
+<area shape="rect" id="node7" href="$ym__gfx__sprite_8c.html#ad1e153db11073eb74eff465ef5a5ca7c" title="add_sheet_" alt="" coords="244,132,333,159"/>
+<area shape="rect" id="node3" href="$ym__gfx__sprite_8c.html#acf7a549cf8885832a40a8f934aa5c4ce" title="PNG loading. " alt="" coords="423,56,547,83"/>
+<area shape="rect" id="node5" href="$group__ym__core.html#ga6b390ea91e9ea4307bfd377827f00197" title="Translates an ym_errc to a human readable string. " alt="" coords="627,107,717,133"/>
+<area shape="rect" id="node4" href="$lodepng_8cpp.html#a3eca27e18f0e71cf1c21e1c1f5ff4aab" title="lodepng_decode32_file" alt="" coords="595,5,749,32"/>
+<area shape="rect" id="node6" href="$lodepng_8cpp.html#ab56bbf4d0a24238ef2d6fe125705a8ce" title="lodepng_error_text" alt="" coords="607,56,737,83"/>
+</map>

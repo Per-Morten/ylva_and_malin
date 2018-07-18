@@ -1,0 +1,5 @@
+<map id="ym_destroy_allocator" name="ym_destroy_allocator">
+<area shape="rect" id="node2" href="$ym__allocator_8c.html#a612f68abf3dd7603e01bc2dce58691ac" title="ym_allocate" alt="" coords="200,5,292,32"/>
+<area shape="rect" id="node3" href="$group__ym__core.html#ga6b390ea91e9ea4307bfd377827f00197" title="Translates an ym_errc to a human readable string. " alt="" coords="495,5,585,32"/>
+<area shape="rect" id="node4" href="$ym__allocator_8c.html#ae80d66780035883ccc7a78c90f3d94b7" title="ym_deallocate" alt="" coords="340,31,447,57"/>
+</map>

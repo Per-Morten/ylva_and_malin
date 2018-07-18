@@ -1,0 +1,6 @@
+<map id="ImGui::EndFrame" name="ImGui::EndFrame">
+<area shape="rect" id="node2" href="$namespaceImGui.html#ab51a164f547317c16c441f1599e3946d" title="ImGui::Render" alt="" coords="179,5,285,32"/>
+<area shape="rect" id="node5" href="$structImVec4.html#aff9b4879855ba13fafb9d59091332aa8" title="ImVec4::Color" alt="" coords="355,56,462,83"/>
+<area shape="rect" id="node3" href="$namespaceImGui_1_1SFML.html#a850ba18f010cf284347e6cbc2abb8dc4" title="ImGui::SFML::Render" alt="" coords="333,5,484,32"/>
+<area shape="rect" id="node4" href="$editor_2src_2main_8cpp.html#aa2ea97ae3b5138344f2832f44ba93d4c" title="main" alt="" coords="532,5,583,32"/>
+</map>

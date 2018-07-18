@@ -1,0 +1,45 @@
+<map id="main" name="main">
+<area shape="rect" id="node2" href="$ym__memory_8c.html#ad247e6c56cea1939f74b5b761f03d2e2" title="ym_mem_init" alt="" coords="145,56,245,83"/>
+<area shape="rect" id="node5" href="$group__ym__gfx.html#ga0c848fd94e443f5d3868ed3ad25980fa" title="Initializes the ym_gfx module with a given memory region. " alt="" coords="151,183,240,209"/>
+<area shape="rect" id="node6" href="$group__ym__gfx.html#gaba53e49378c490611d98c8cee2d62cc4" title="Creates a ym_gfx_window with the specified width, height, and name. " alt="" coords="116,233,275,260"/>
+<area shape="rect" id="node7" href="$group__ym__core.html#ga6b390ea91e9ea4307bfd377827f00197" title="Translates an ym_errc to a human readable string. " alt="" coords="813,424,904,451"/>
+<area shape="rect" id="node11" href="$main_8c.html#af5be5e7604f6e50063b230a74a66ddb5" title="init_subsystems" alt="" coords="137,360,254,387"/>
+<area shape="rect" id="node20" href="$ym__gfx__sprite_8c.html#a1bd1c9910c0c8502683a59e5273274ee" title="ym_sprite_load_sheet" alt="" coords="121,512,270,539"/>
+<area shape="rect" id="node26" href="$ym__resource_8c.html#af039f7af8f888d18712931c5718bb01b" title="ym_resource_load_map" alt="" coords="115,461,275,488"/>
+<area shape="rect" id="node28" href="$ym__resource_8c.html#afb5a5a28fa275d262bbe5d8be7c2cc48" title="ym_resource_parse_map" alt="" coords="111,613,279,640"/>
+<area shape="rect" id="node29" href="$group__ym__gfx.html#gad7eb8191674bbd232b6b0a8f1059340e" title="Checks if the current supplied window is open, or if it has been closed. " alt="" coords="111,664,279,691"/>
+<area shape="rect" id="node30" href="$ym__time_8h.html#a89c280bf2fe85b683cb9c5472ddd522b" title="ym_clock_now" alt="" coords="141,715,250,741"/>
+<area shape="rect" id="node31" href="$group__ym__gfx.html#gadd7a087d1f716666c3f257db74663ee7" title="Polls events tied to the window in question. " alt="" coords="124,766,267,807"/>
+<area shape="rect" id="node32" href="$group__ym__gfx.html#gac24319f47c3781419110d231e58b1fd0" title="Clears the given window. " alt="" coords="120,832,271,859"/>
+<area shape="rect" id="node33" href="$ym__gfx__sprite_8c.html#ae1997cc0ed56900074f435e9dd92b929" title="ym_sprite_draw" alt="" coords="363,883,478,909"/>
+<area shape="rect" id="node36" href="$ym__gfx__sprite_8c.html#a281fc7c06efaaf4e595596fc818ca8e8" title="ym_sprite_set_camera_pos" alt="" coords="104,933,287,960"/>
+<area shape="rect" id="node38" href="$ym__gfx__sprite_8c.html#aa82c937ce7fb823d3245f3102fd4f403" title="ym_sprite_draw_extd" alt="" coords="347,984,494,1011"/>
+<area shape="rect" id="node39" href="$group__ym__gfx.html#ga134552d6c55222835f9e2abb237e9d0c" title="Displays everything that has been rendered to the window. " alt="" coords="113,1035,277,1061"/>
+<area shape="rect" id="node40" href="$main_8c.html#a3ffe94cf13a349aa471614e610b09eb5" title="shutdown_subsystems" alt="" coords="117,1085,273,1112"/>
+<area shape="rect" id="node42" href="$group__ym__gfx.html#gaedd1b9155e76b1a16a3777c58400fa68" title="Destroys/deallocates the window pointed to by window. " alt="" coords="112,1136,279,1163"/>
+<area shape="rect" id="node43" href="$ym__memory_8c.html#ae5dceef7dd83b76a245d93097d3fe013" title="ym_mem_shutdown" alt="" coords="126,1187,265,1213"/>
+<area shape="rect" id="node3" href="$ym__allocator_8c.html#a7b46f2d2f67361e783a258c8c9424091" title="ym_create_allocator" alt="" coords="351,5,490,32"/>
+<area shape="rect" id="node4" href="$ym__memory__regions_8h.html#afb7ff8e8d17a440e310e8626779ed819" title="ym_mem_reg_id_str" alt="" coords="351,56,491,83"/>
+<area shape="rect" id="node8" href="$wglext_8h.html#aaf5a06bd464c6ec72cf68b4819afebe3" title="HDC" alt="" coords="395,208,447,235"/>
+<area shape="rect" id="node9" href="$wglext_8h.html#ac592fca28a23754f86edf2739d21068c" title="HGLRC" alt="" coords="386,259,455,285"/>
+<area shape="rect" id="node10" href="$wglext_8h.html#a27e741d83d43f1ecddfe8b256a6e4355" title="UINT" alt="" coords="393,157,448,184"/>
+<area shape="rect" id="node12" href="$ym__gfx__gl_8c.html#a00d8a36b0124846140a0cb3d08fc1dbc" title="ym_gfx_gl_init" alt="" coords="367,309,474,336"/>
+<area shape="rect" id="node14" href="$ym__gfx__sprite_8c.html#abbbfe40b3cc78f5b27dec18149c1228e" title="ym_sprite API implementation " alt="" coords="369,360,472,387"/>
+<area shape="rect" id="node13" href="$ym__gfx__gl__procs_8c.html#adfe837a9c2b65edf80ed8f6897ff524d" title="ym_gfx_gl_load_procs" alt="" coords="568,171,720,197"/>
+<area shape="rect" id="node15" href="$ym__gfx__gl_8c.html#a57dc6d5f557651613385a935cc2cec6a" title="ym_gfx_gl_create_shader" alt="" coords="559,323,729,349"/>
+<area shape="rect" id="node16" href="$ym__gfx__gl_8c.html#a7dae5fc73f0a855fb18545deab09f0a3" title="ym_gfx_gl_create_program" alt="" coords="555,373,733,400"/>
+<area shape="rect" id="node17" href="$ym__gfx__gl_8c.html#a1ece02d8460c3600ac9870e97e94761d" title="ym_gfx_gl_get_uniform" alt="" coords="565,221,723,248"/>
+<area shape="rect" id="node18" href="$group__ym__gfx.html#gaca4a4f8fd884eb7a91ba781134d837c6" title="Gets the width and height dimension of the given window. " alt="" coords="558,424,730,451"/>
+<area shape="rect" id="node19" href="$ym__math_8h.html#ae96931e1b8bf5069bc46b13d17ac6cce" title="ym_project" alt="" coords="601,272,687,299"/>
+<area shape="rect" id="node21" href="$ym__gfx__gl_8c.html#a605fde046f0a1e09ecdcc5c6aa801a45" title="ym_gfx_gl_create_texture" alt="" coords="335,563,507,589"/>
+<area shape="rect" id="node25" href="$ym__gfx__sprite_8c.html#ad1e153db11073eb74eff465ef5a5ca7c" title="add_sheet_" alt="" coords="376,512,465,539"/>
+<area shape="rect" id="node22" href="$ym__gfx__sprite_8c.html#acf7a549cf8885832a40a8f934aa5c4ce" title="PNG loading. " alt="" coords="582,664,706,691"/>
+<area shape="rect" id="node23" href="$lodepng_8cpp.html#a3eca27e18f0e71cf1c21e1c1f5ff4aab" title="lodepng_decode32_file" alt="" coords="781,689,936,716"/>
+<area shape="rect" id="node24" href="$lodepng_8cpp.html#ab56bbf4d0a24238ef2d6fe125705a8ce" title="lodepng_error_text" alt="" coords="794,639,923,665"/>
+<area shape="rect" id="node27" href="$wglext_8h.html#a9e6b7f1933461ef318bb000d6bd13b83" title="void" alt="" coords="397,461,444,488"/>
+<area shape="rect" id="node34" href="$ym__math_8h.html#ae3122cbbfe45ca1f78e4ba1c0cc49bd2" title="ym_translate_vec4" alt="" coords="578,908,710,935"/>
+<area shape="rect" id="node35" href="$ym__math_8h.html#ad4b2074eed2d90da82a90202c8996a44" title="ym_mul_mat4_mat4" alt="" coords="574,959,714,985"/>
+<area shape="rect" id="node37" href="$ym__math_8h.html#ac74c78411d39d5a06507d716ba8158e6" title="ym_lookat" alt="" coords="379,933,462,960"/>
+<area shape="rect" id="node41" href="$ym__gfx__sprite_8c.html#aaade15eb8bf1ccbfe8701a7ae789136d" title="ym_sprite_shutdown" alt="" coords="349,1085,492,1112"/>
+<area shape="rect" id="node44" href="$allocator__tests_8c.html#a30791ed44f8d6459b6cfd0aee3a740e6" title="ym_print_allocator_logs" alt="" coords="341,1187,500,1213"/>
+</map>

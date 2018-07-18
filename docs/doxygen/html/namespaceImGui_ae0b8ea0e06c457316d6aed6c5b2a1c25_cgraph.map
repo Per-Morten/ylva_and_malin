@@ -1,0 +1,8 @@
+<map id="ImGui::IsMouseHoveringRect" name="ImGui::IsMouseHoveringRect">
+<area shape="rect" id="node2" href="$structImRect.html#ac02d5cf6ce0358aea9ed9df43d368f3f" title="ImRect::ClipWith" alt="" coords="260,5,383,32"/>
+<area shape="rect" id="node3" href="$structImRect.html#a12a7643b3988e306edcf9f4fe9523b99" title="ImRect::Contains" alt="" coords="259,56,384,83"/>
+<area shape="rect" id="node4" href="$namespaceImGui.html#a83331a8afa5316bc98ed9c98b151ac01" title="ImGui::IsKeyPressed" alt="" coords="248,107,395,133"/>
+<area shape="rect" id="node5" href="$namespaceImGui.html#ad94a09fc01052f02fe11bec5a3c11275" title="ImGui::GetKeyPressedAmount" alt="" coords="443,107,645,133"/>
+<area shape="rect" id="node6" href="$namespaceImGui.html#ad3af0fc327467a44116d7d04018b9124" title="ImGui::CalcTypematicPressed\lRepeatAmount" alt="" coords="693,99,895,141"/>
+<area shape="rect" id="node7" href="$wglext_8h.html#a500a82aecba06f4550f6849b8099ca21" title="int" alt="" coords="943,107,981,133"/>
+</map>

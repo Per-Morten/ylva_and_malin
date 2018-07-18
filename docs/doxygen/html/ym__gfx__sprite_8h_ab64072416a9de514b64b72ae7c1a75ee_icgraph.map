@@ -1,0 +1,5 @@
+<map id="ym_gfx_load_png" name="ym_gfx_load_png">
+<area shape="rect" id="node2" href="$ym__gfx__gl_8h.html#a634550c9e37d0603466c42bf2b1bc176" title="ym_gfx_gl_create_texture" alt="" coords="177,5,349,32"/>
+<area shape="rect" id="node3" href="$ym__gfx__sprite_8h.html#a6e4494eb27a251f7b01e30e87e794b98" title="ym_sprite_load_sheet" alt="" coords="397,5,547,32"/>
+<area shape="rect" id="node4" href="$main_8c.html#ab4d47ebd3e19150a6c615756b9738eed" title="main" alt="" coords="595,5,645,32"/>
+</map>

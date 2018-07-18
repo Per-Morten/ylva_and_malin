@@ -1,0 +1,7 @@
+<map id="ImGui::LoadIniSettingsFromMemory" name="ImGui::LoadIniSettingsFromMemory">
+<area shape="rect" id="node2" href="$namespaceImGui.html#aed896913f2e140cd0ad7431060dba50b" title="ImGui::MemAlloc" alt="" coords="269,5,391,32"/>
+<area shape="rect" id="node3" href="$imgui_8cpp.html#a2b5b2ff91a5980e3143141a882216fe8" title="ImStrchrRange" alt="" coords="275,56,385,83"/>
+<area shape="rect" id="node4" href="$namespaceImGui.html#ad9e15440c52f63aa96ef3b3938d566f8" title="ImGui::FindSettingsHandler" alt="" coords="239,107,421,133"/>
+<area shape="rect" id="node6" href="$namespaceImGui.html#a269ec695c6e722ec3da85dae37f0675d" title="ImGui::MemFree" alt="" coords="270,157,390,184"/>
+<area shape="rect" id="node5" href="$imgui_8cpp.html#aa55e55e944172fc87494a342da489970" title="ImHash" alt="" coords="469,107,537,133"/>
+</map>

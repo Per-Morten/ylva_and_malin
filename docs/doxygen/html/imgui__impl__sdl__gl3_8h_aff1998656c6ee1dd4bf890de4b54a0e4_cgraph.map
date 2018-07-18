@@ -1,0 +1,6 @@
+<map id="ImGui_ImplSdlGL3_RenderDrawData" name="ImGui_ImplSdlGL3_RenderDrawData">
+<area shape="rect" id="node2" href="$namespaceImGui.html#a3179e560812f878f3961ce803a5d9302" title="ImGui::GetIO" alt="" coords="341,5,441,32"/>
+<area shape="rect" id="node3" href="$wglext_8h.html#a500a82aecba06f4550f6849b8099ca21" title="int" alt="" coords="371,56,410,83"/>
+<area shape="rect" id="node4" href="$structImDrawData.html#abbfb7f8351b436da654f93b6f103f0e2" title="ImDrawData::ScaleClipRects" alt="" coords="293,107,488,133"/>
+<area shape="rect" id="node5" href="$wglext_8h.html#aabfa311c5408021f5d4bac9c0fc711d7" title="GLboolean" alt="" coords="349,157,433,184"/>
+</map>

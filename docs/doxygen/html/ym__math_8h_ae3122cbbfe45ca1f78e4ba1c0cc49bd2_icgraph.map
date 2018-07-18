@@ -1,0 +1,7 @@
+<map id="ym_translate_vec4" name="ym_translate_vec4">
+<area shape="rect" id="node2" href="$ym__math_8h.html#ac74c78411d39d5a06507d716ba8158e6" title="ym_lookat" alt="" coords="217,5,300,32"/>
+<area shape="rect" id="node5" href="$ym__gfx__sprite_8h.html#ae1997cc0ed56900074f435e9dd92b929" title="ym_sprite_draw" alt="" coords="414,56,529,83"/>
+<area shape="rect" id="node6" href="$ym__gfx__sprite_8h.html#aa82c937ce7fb823d3245f3102fd4f403" title="ym_sprite_draw_extd" alt="" coords="185,107,332,133"/>
+<area shape="rect" id="node3" href="$ym__gfx__sprite_8h.html#a281fc7c06efaaf4e595596fc818ca8e8" title="ym_sprite_set_camera_pos" alt="" coords="380,5,563,32"/>
+<area shape="rect" id="node4" href="$main_8c.html#ab4d47ebd3e19150a6c615756b9738eed" title="main" alt="" coords="611,56,661,83"/>
+</map>

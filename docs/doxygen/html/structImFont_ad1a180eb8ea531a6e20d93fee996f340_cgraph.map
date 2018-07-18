@@ -1,0 +1,7 @@
+<map id="ImFont::GetDebugName" name="ImFont::GetDebugName">
+<area shape="rect" id="node2" href="$namespaceImGui.html#a9971ce57f2a288ac3a12df886c5550d1" title="ImGui::RenderText" alt="" coords="219,56,352,83"/>
+<area shape="rect" id="node3" href="$namespaceImGui.html#a7671e1dbc803a31b06081b52a771d83f" title="ImGui::FindRenderedTextEnd" alt="" coords="400,5,595,32"/>
+<area shape="rect" id="node4" href="$structImDrawList.html#ac5221bd86b3429f6d5b6e6ffe454942d" title="ImDrawList::AddText" alt="" coords="424,56,571,83"/>
+<area shape="rect" id="node5" href="$namespaceImGui.html#a0de2d9bd347d9866511eb8d014e62556" title="ImGui::GetColorU32" alt="" coords="427,107,568,133"/>
+<area shape="rect" id="node6" href="$namespaceImGui.html#abe2691de0b1a71c774ab24cc91564a94" title="ImGui::ColorConvertFloat4\lToU32" alt="" coords="643,99,821,141"/>
+</map>

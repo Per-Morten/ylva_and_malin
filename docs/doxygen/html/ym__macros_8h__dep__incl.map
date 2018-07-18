@@ -1,0 +1,16 @@
+<map id="src/ym/core/ym_macros.h" name="src/ym/core/ym_macros.h">
+<area shape="rect" id="node2" href="$ym__assert_8h.html" title="src/ym/core/ym_assert.h" alt="" coords="335,229,501,256"/>
+<area shape="rect" id="node3" href="$ym__core_8h.html" title="src/ym/core/ym_core.h" alt="" coords="207,304,363,331"/>
+<area shape="rect" id="node11" href="$ym__attributes_8h.html" title="src/ym/core/ym_attributes.h" alt="" coords="204,80,389,107"/>
+<area shape="rect" id="node12" href="$ym__error_8h.html" title="src/ym/core/ym_error.h" alt="" coords="102,155,259,181"/>
+<area shape="rect" id="node14" href="$ym__log_8h.html" title="src/ym/core/ym_log.h" alt="" coords="465,155,613,181"/>
+<area shape="rect" id="node4" href="$ym__gfx_8h.html" title="src/ym/graphics/ym\l_gfx.h" alt="" coords="5,453,143,495"/>
+<area shape="rect" id="node6" href="$ym__memory_8h.html" title="src/ym/memory/ym_memory.h" alt="" coords="173,379,373,405"/>
+<area shape="rect" id="node9" href="$ym__telemetry_8h.html" title="src/ym/telemetry/ym\l_telemetry.h" alt="" coords="339,453,481,495"/>
+<area shape="rect" id="node5" href="$ym__gfx_8cpp.html" title="src/ym/graphics/ym\l_gfx.cpp" alt="" coords="5,543,143,584"/>
+<area shape="rect" id="node7" href="$memory__tests_8cpp.html" title="src/ym/memory/tests\l/memory_tests.cpp" alt="" coords="167,453,314,495"/>
+<area shape="rect" id="node8" href="$ym__memory_8cpp.html" title="src/ym/memory/ym_memory.cpp" alt="" coords="505,461,720,487"/>
+<area shape="rect" id="node10" href="$ym__telemetry_8cpp.html" title="src/ym/telemetry/ym\l_telemetry.cpp" alt="" coords="339,543,481,584"/>
+<area shape="rect" id="node13" href="$ym__error_8cpp.html" title="src/ym/core/ym_error.cpp" alt="" coords="38,229,209,256"/>
+<area shape="rect" id="node15" href="$ym__log_8cpp.html" title="src/ym/core/ym_log.cpp" alt="" coords="627,229,790,256"/>
+</map>

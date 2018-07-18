@@ -1,0 +1,7 @@
+<map id="ImGuiTextFilter::PassFilter" name="ImGuiTextFilter::PassFilter">
+<area shape="rect" id="node2" href="$structImGuiTextFilter_1_1TextRange.html#a067d8b7cb8515796bd271e8c9dc87d08" title="ImGuiTextFilter::TextRange\l::empty" alt="" coords="247,5,431,47"/>
+<area shape="rect" id="node3" href="$structImGuiTextFilter_1_1TextRange.html#a5e315256010969ee6492c4e2eac915ef" title="ImGuiTextFilter::TextRange\l::front" alt="" coords="247,71,431,112"/>
+<area shape="rect" id="node4" href="$imgui_8cpp.html#a457a373caeddd76d58ff282da05273b4" title="ImStristr" alt="" coords="303,137,375,163"/>
+<area shape="rect" id="node5" href="$structImGuiTextFilter_1_1TextRange.html#a19332b170087c8c66a2cc28a6878259d" title="ImGuiTextFilter::TextRange\l::begin" alt="" coords="247,188,431,229"/>
+<area shape="rect" id="node6" href="$structImGuiTextFilter_1_1TextRange.html#aa8fb3190dc7063acbc86ea51ad98bb08" title="ImGuiTextFilter::TextRange::end" alt="" coords="232,254,445,281"/>
+</map>

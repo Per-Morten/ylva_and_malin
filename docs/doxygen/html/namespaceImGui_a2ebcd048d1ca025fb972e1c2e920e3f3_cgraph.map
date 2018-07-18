@@ -1,0 +1,14 @@
+<map id="ImGui::LogFinish" name="ImGui::LogFinish">
+<area shape="rect" id="node2" href="$namespaceImGui.html#ade3ea98b4e2e73c8d4ffeecab0d1aa5b" title="ImGui::LogText" alt="" coords="202,56,314,83"/>
+<area shape="rect" id="node7" href="$structImGuiTextBuffer.html#aa6c3065e4921494de9066a556e59e365" title="ImGuiTextBuffer::size" alt="" coords="183,107,333,133"/>
+<area shape="rect" id="node8" href="$namespaceImGui.html#aa4824a1b351c063b4aff9b9f4fb5fd4d" title="ImGui::SetClipboardText" alt="" coords="175,157,341,184"/>
+<area shape="rect" id="node9" href="$structImGuiTextBuffer.html#a6ee810efa9d4dffaffd026bb1486fea6" title="ImGuiTextBuffer::begin" alt="" coords="179,208,337,235"/>
+<area shape="rect" id="node11" href="$structImGuiTextBuffer.html#a9e4edc9f950bc9e35d5c3b3071dbc0df" title="ImGuiTextBuffer::clear" alt="" coords="181,259,335,285"/>
+<area shape="rect" id="node3" href="$structImGuiTextBuffer.html#a49c29d4bf2871fc7635e9e15af145d92" title="ImGuiTextBuffer::appendfv" alt="" coords="397,5,576,32"/>
+<area shape="rect" id="node5" href="$wglext_8h.html#a500a82aecba06f4550f6849b8099ca21" title="int" alt="" coords="801,31,840,57"/>
+<area shape="rect" id="node6" href="$namespaceImGui.html#a7671e1dbc803a31b06081b52a771d83f" title="ImGui::FindRenderedTextEnd" alt="" coords="389,107,584,133"/>
+<area shape="rect" id="node4" href="$imgui_8cpp.html#a2e0022a073d369645a0daab17f823779" title="ImFormatStringV" alt="" coords="632,5,753,32"/>
+<area shape="rect" id="node10" href="$classImVector.html#a5b0108d6b1a4a11609723f8305fb9011" title="ImVector::front" alt="" coords="432,208,541,235"/>
+<area shape="rect" id="node12" href="$classImVector.html#ae2d401b4ec5f1113cdb8edb5a61a38f7" title="ImVector::clear" alt="" coords="431,259,542,285"/>
+<area shape="rect" id="node13" href="$classImVector.html#a68387993f2a5f5c3b2a7139d9ab778b8" title="ImVector::push_back" alt="" coords="413,309,560,336"/>
+</map>

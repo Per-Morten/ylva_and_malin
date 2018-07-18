@@ -1,0 +1,6 @@
+<map id="ImGuiColumnsSet" name="ImGuiColumnsSet">
+<area shape="rect" id="node2" href="$classImVector.html" title="{ImVector\&lt; ImGuiColumnData \&gt;\n|+ Size\l+ Capacity\l|+ ImVector()\l+ ImVector()\l+ ~ImVector()\l+ operator=()\l+ empty()\l+ size()\l+ capacity()\l+ operator[]()\l+ operator[]()\l+ clear()\land 21 more...\l}" alt="" coords="5,689,212,928"/>
+<area shape="rect" id="node3" href="$structImGuiColumnData.html" title="{ImGuiColumnData\n|+ OffsetNorm\l+ OffsetNormBeforeResize\l+ Flags\l|+ ImGuiColumnData()\l}" alt="" coords="18,520,199,627"/>
+<area shape="rect" id="node4" href="$structImRect.html" title="{ImRect\n||+ ImRect()\l+ ImRect()\l+ ImRect()\l+ ImRect()\l+ GetCenter()\l+ GetSize()\l+ GetWidth()\l+ GetHeight()\l+ GetTL()\l+ GetTR()\land 16 more...\l}" alt="" coords="55,233,162,457"/>
+<area shape="rect" id="node5" href="$structImVec2.html" title="{ImVec2\n|+ x\l+ y\l|+ ImVec2()\l+ ImVec2()\l+ operator[]()\l+ ImVec2()\l+ operator sf::Vector2\&lt; T \&gt;()\l}" alt="" coords="14,5,203,156"/>
+</map>

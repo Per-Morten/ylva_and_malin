@@ -1,0 +1,7 @@
+<map id="ImGui::PushFont" name="ImGui::PushFont">
+<area shape="rect" id="node2" href="$namespaceImGui.html#a4f83c0a884e07247a00700d3dd3d01e3" title="ImGui::SetCurrentFont" alt="" coords="190,31,345,57"/>
+<area shape="rect" id="node5" href="$classImVector.html#a68387993f2a5f5c3b2a7139d9ab778b8" title="ImVector::push_back" alt="" coords="194,81,341,108"/>
+<area shape="rect" id="node6" href="$structImDrawList.html#a7ac41e329a9df911b4823ef0150cee16" title="ImDrawList::PushTextureID" alt="" coords="175,132,360,159"/>
+<area shape="rect" id="node3" href="$structImFont.html#aa718f736f8d8b9f04f6f9f08150d70ca" title="ImFont::IsLoaded" alt="" coords="441,5,565,32"/>
+<area shape="rect" id="node4" href="$structImGuiWindow.html#a7a47a5e3607c057d2d65e90cf2c41e95" title="ImGuiWindow::CalcFontSize" alt="" coords="408,56,599,83"/>
+</map>

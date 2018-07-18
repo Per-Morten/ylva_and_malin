@@ -1,0 +1,5 @@
+<map id="Catch::ITransientExpression" name="Catch::ITransientExpression">
+<area shape="rect" id="node2" href="$classCatch_1_1BinaryExpr.html" title="{Catch::BinaryExpr\&lt;\l LhsT, RhsT \&gt;\n||+ BinaryExpr()\l}" alt="" coords="5,211,143,303"/>
+<area shape="rect" id="node3" href="$classCatch_1_1MatchExpr.html" title="{Catch::MatchExpr\&lt; ArgT,\l MatcherT \&gt;\n||+ MatchExpr()\l+ streamReconstructedExpression()\l}" alt="" coords="167,204,399,311"/>
+<area shape="rect" id="node4" href="$classCatch_1_1UnaryExpr.html" title="{Catch::UnaryExpr\&lt; LhsT \&gt;\n||+ UnaryExpr()\l}" alt="" coords="424,219,604,296"/>
+</map>

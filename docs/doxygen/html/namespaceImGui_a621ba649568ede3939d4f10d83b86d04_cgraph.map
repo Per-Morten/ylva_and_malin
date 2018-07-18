@@ -1,0 +1,6 @@
+<map id="ImGui::RenderFrame" name="ImGui::RenderFrame">
+<area shape="rect" id="node2" href="$structImDrawList.html#a6e8b2ae6cc8c905606e4400e4cfdeeeb" title="ImDrawList::AddRectFilled" alt="" coords="197,5,376,32"/>
+<area shape="rect" id="node3" href="$structImDrawList.html#ac4a9baaadd92d203f61c395f6158c7e6" title="ImDrawList::AddRect" alt="" coords="213,56,361,83"/>
+<area shape="rect" id="node4" href="$namespaceImGui.html#a0de2d9bd347d9866511eb8d014e62556" title="ImGui::GetColorU32" alt="" coords="216,107,357,133"/>
+<area shape="rect" id="node5" href="$namespaceImGui.html#abe2691de0b1a71c774ab24cc91564a94" title="ImGui::ColorConvertFloat4\lToU32" alt="" coords="424,99,603,141"/>
+</map>

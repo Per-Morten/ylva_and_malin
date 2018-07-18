@@ -1,0 +1,9 @@
+<map id="ImGui::SetCurrentContext" name="ImGui::SetCurrentContext">
+<area shape="rect" id="node2" href="$namespaceImGui.html#a4ff6c9ad05a0eba37ce1b5ff1607810a" title="ImGui::CreateContext" alt="" coords="231,5,382,32"/>
+<area shape="rect" id="node6" href="$structImVec4.html#aff9b4879855ba13fafb9d59091332aa8" title="ImVec4::Color" alt="" coords="463,56,570,83"/>
+<area shape="rect" id="node7" href="$namespaceImGui.html#ab9132deece575023170cd8e681d0581d" title="ImGui::DestroyContext" alt="" coords="228,107,385,133"/>
+<area shape="rect" id="node3" href="$namespaceImGui_1_1SFML.html#a52384615894fc35d07dfaccb1bcdb514" title="ImGui::SFML::Init" alt="" coords="453,5,580,32"/>
+<area shape="rect" id="node4" href="$namespaceImGui_1_1SFML.html#ab68ea5215c08d005c6db5e5995c111ad" title="ImGui::SFML::Init" alt="" coords="648,19,775,45"/>
+<area shape="rect" id="node5" href="$editor_2src_2main_8cpp.html#aa2ea97ae3b5138344f2832f44ba93d4c" title="main" alt="" coords="823,51,873,77"/>
+<area shape="rect" id="node8" href="$namespaceImGui_1_1SFML.html#a2e9801a991d524d4f26a5933cdf29e3d" title="ImGui::SFML::Shutdown" alt="" coords="433,107,600,133"/>
+</map>

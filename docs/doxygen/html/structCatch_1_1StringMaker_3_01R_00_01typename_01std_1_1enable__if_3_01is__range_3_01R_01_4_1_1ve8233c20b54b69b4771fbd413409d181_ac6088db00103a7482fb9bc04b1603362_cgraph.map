@@ -1,0 +1,6 @@
+<map id="Catch::StringMaker&lt; R, typename std::enable_if&lt; is_range&lt; R &gt;::value &amp;&amp;!::Catch::Detail::IsStreamInsertable&lt; R &gt;::value &gt;::type &gt;::convert" name="Catch::StringMaker&lt; R, typename std::enable_if&lt; is_range&lt; R &gt;::value &amp;&amp;!::Catch::Detail::IsStreamInsertable&lt; R &gt;::value &gt;::type &gt;::convert">
+<area shape="rect" id="node2" href="$namespaceCatch.html#af13494e925a793e3e7143c6ce6f442c2" title="Catch::rangeToString" alt="" coords="304,35,451,61"/>
+<area shape="rect" id="node3" href="$namespaceCatch.html#ae162dc66b7767a52e7e4283915fd3d9f" title="Catch::rangeToString" alt="" coords="499,35,645,61"/>
+<area shape="rect" id="node4" href="$namespaceCatch_1_1Detail.html#af0ad48344ffd3f92f3568465248a9880" title="Catch::Detail::stringify" alt="" coords="726,9,879,36"/>
+<area shape="rect" id="node5" href="$classCatch_1_1ReusableStringStream.html#a0e9ecf260b2a5d35f4886ef0d51f6270" title="Catch::ReusableStringStream::str" alt="" coords="693,60,912,87"/>
+</map>

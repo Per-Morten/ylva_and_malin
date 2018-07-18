@@ -1,0 +1,5 @@
+<map id="ImGui::RenderFrameBorder" name="ImGui::RenderFrameBorder">
+<area shape="rect" id="node2" href="$structImDrawList.html#ac4a9baaadd92d203f61c395f6158c7e6" title="ImDrawList::AddRect" alt="" coords="236,5,384,32"/>
+<area shape="rect" id="node3" href="$namespaceImGui.html#a0de2d9bd347d9866511eb8d014e62556" title="ImGui::GetColorU32" alt="" coords="239,56,381,83"/>
+<area shape="rect" id="node4" href="$namespaceImGui.html#abe2691de0b1a71c774ab24cc91564a94" title="ImGui::ColorConvertFloat4\lToU32" alt="" coords="432,49,611,90"/>
+</map>

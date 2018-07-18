@@ -1,0 +1,11 @@
+<map id="init_subsystems" name="init_subsystems">
+<area shape="rect" id="node2" href="$ym__gfx__gl_8c.html#a00d8a36b0124846140a0cb3d08fc1dbc" title="ym_gfx_gl_init" alt="" coords="171,31,277,57"/>
+<area shape="rect" id="node4" href="$ym__gfx__sprite_8c.html#abbbfe40b3cc78f5b27dec18149c1228e" title="ym_sprite API implementation " alt="" coords="173,132,275,159"/>
+<area shape="rect" id="node3" href="$ym__gfx__gl__procs_8c.html#adfe837a9c2b65edf80ed8f6897ff524d" title="ym_gfx_gl_load_procs" alt="" coords="339,5,491,32"/>
+<area shape="rect" id="node5" href="$ym__gfx__gl_8c.html#a57dc6d5f557651613385a935cc2cec6a" title="ym_gfx_gl_create_shader" alt="" coords="329,56,500,83"/>
+<area shape="rect" id="node7" href="$ym__gfx__gl_8c.html#a7dae5fc73f0a855fb18545deab09f0a3" title="ym_gfx_gl_create_program" alt="" coords="325,107,504,133"/>
+<area shape="rect" id="node8" href="$ym__gfx__gl_8c.html#a1ece02d8460c3600ac9870e97e94761d" title="ym_gfx_gl_get_uniform" alt="" coords="336,157,493,184"/>
+<area shape="rect" id="node9" href="$group__ym__gfx.html#gaca4a4f8fd884eb7a91ba781134d837c6" title="Gets the width and height dimension of the given window. " alt="" coords="329,208,501,235"/>
+<area shape="rect" id="node10" href="$ym__math_8h.html#ae96931e1b8bf5069bc46b13d17ac6cce" title="ym_project" alt="" coords="371,259,458,285"/>
+<area shape="rect" id="node6" href="$group__ym__core.html#ga6b390ea91e9ea4307bfd377827f00197" title="Translates an ym_errc to a human readable string. " alt="" coords="552,107,643,133"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="get_region_allocator" name="get_region_allocator">
+<area shape="rect" id="node2" href="$allocator__tests_8c.html#a971be7f566458c26fb4866e6292d9614" title="test_region_same_order\l_allocate_deallocate" alt="" coords="199,5,361,47"/>
+<area shape="rect" id="node4" href="$allocator__tests_8c.html#ae267141ba063340cea4123b4cfdf000e" title="test_region_random\l_order_allocate_deallocate" alt="" coords="192,71,368,112"/>
+<area shape="rect" id="node5" href="$allocator__tests_8c.html#a1061bc33a35875c6140cabbcdbbc1f3d" title="test_region_random\l_memory_reuse" alt="" coords="212,136,348,177"/>
+<area shape="rect" id="node6" href="$allocator__tests_8c.html#a11b0640b05a4e7973930f6ecfe16a082" title="test_region_errc_on_null" alt="" coords="199,202,361,229"/>
+<area shape="rect" id="node7" href="$allocator__tests_8c.html#ae27a3846747b3181338cbf88dbac8748" title="test_errc_on_out_of\l_memory" alt="" coords="211,253,349,295"/>
+<area shape="rect" id="node8" href="$allocator__tests_8c.html#a5f21abed917e26a9ba0cf3daf4ab4d70" title="test_errc_on_invalid\l_dealloc_request" alt="" coords="211,319,349,360"/>
+<area shape="rect" id="node9" href="$allocator__tests_8c.html#a88a69f3f7d34c89a0e894b2576691487" title="test_errc_on_invalid\l_alloc_size_request" alt="" coords="211,384,349,425"/>
+<area shape="rect" id="node10" href="$allocator__tests_8c.html#a05a25aa1e9ab8045316f6ae4204fb5a2" title="test_errc_on_invalid\l_dealloc_size_request" alt="" coords="205,449,355,491"/>
+<area shape="rect" id="node3" href="$allocator__tests_8c.html#ab4d47ebd3e19150a6c615756b9738eed" title="main" alt="" coords="416,231,467,258"/>
+</map>

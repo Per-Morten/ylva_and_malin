@@ -1,0 +1,8 @@
+<map id="ImGui::BeginDragDropTarget" name="ImGui::BeginDragDropTarget">
+<area shape="rect" id="node2" href="$structImGuiWindow.html#a44931b6e73248930490d2c89377a8233" title="ImGuiWindow::GetIDFromRectangle" alt="" coords="244,107,480,133"/>
+<area shape="rect" id="node3" href="$classImVector.html#a3e4424d3fca190894598a6575f9d2401" title="ImVector::back" alt="" coords="568,5,679,32"/>
+<area shape="rect" id="node4" href="$wglext_8h.html#a500a82aecba06f4550f6849b8099ca21" title="int" alt="" coords="604,56,643,83"/>
+<area shape="rect" id="node5" href="$imgui_8cpp.html#aa55e55e944172fc87494a342da489970" title="ImHash" alt="" coords="589,107,657,133"/>
+<area shape="rect" id="node6" href="$namespaceImGui.html#a85a245c78a9f7c351636bdad6e60c488" title="ImGui::KeepAliveID" alt="" coords="554,157,693,184"/>
+<area shape="rect" id="node7" href="$structImGuiWindow.html#a7a47a5e3607c057d2d65e90cf2c41e95" title="ImGuiWindow::CalcFontSize" alt="" coords="528,208,719,235"/>
+</map>

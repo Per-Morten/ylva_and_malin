@@ -1,0 +1,4 @@
+<map id="ym_sprite_shutdown" name="ym_sprite_shutdown">
+<area shape="rect" id="node2" href="$main_8c.html#a3ffe94cf13a349aa471614e610b09eb5" title="shutdown_subsystems" alt="" coords="196,5,352,32"/>
+<area shape="rect" id="node3" href="$main_8c.html#ab4d47ebd3e19150a6c615756b9738eed" title="main" alt="" coords="400,5,451,32"/>
+</map>

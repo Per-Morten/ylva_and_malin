@@ -1,0 +1,6 @@
+<map id="ImGui::CalcTextSize" name="ImGui::CalcTextSize">
+<area shape="rect" id="node2" href="$namespaceImGui.html#a7671e1dbc803a31b06081b52a771d83f" title="ImGui::FindRenderedTextEnd" alt="" coords="197,5,392,32"/>
+<area shape="rect" id="node3" href="$structImFont.html#a6dace03da0c82216040a54a5b09b99d4" title="ImFont::CalcTextSizeA" alt="" coords="215,56,374,83"/>
+<area shape="rect" id="node4" href="$wglext_8h.html#a500a82aecba06f4550f6849b8099ca21" title="int" alt="" coords="635,56,673,83"/>
+<area shape="rect" id="node5" href="$imgui_8cpp.html#a036b9dd7f0942fd34e385cc115f36631" title="ImTextCharFromUtf8" alt="" coords="440,81,587,108"/>
+</map>

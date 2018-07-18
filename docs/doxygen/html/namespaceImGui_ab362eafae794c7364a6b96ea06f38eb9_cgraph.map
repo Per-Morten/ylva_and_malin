@@ -1,0 +1,10 @@
+<map id="ImGui::RenderTextClipped" name="ImGui::RenderTextClipped">
+<area shape="rect" id="node2" href="$namespaceImGui.html#a7671e1dbc803a31b06081b52a771d83f" title="ImGui::FindRenderedTextEnd" alt="" coords="425,5,620,32"/>
+<area shape="rect" id="node3" href="$wglext_8h.html#a500a82aecba06f4550f6849b8099ca21" title="int" alt="" coords="863,56,901,83"/>
+<area shape="rect" id="node4" href="$namespaceImGui.html#a848b9db6cc4a186751c0ecebcaadc33b" title="ImGui::CalcTextSize" alt="" coords="232,56,376,83"/>
+<area shape="rect" id="node7" href="$structImDrawList.html#ac5221bd86b3429f6d5b6e6ffe454942d" title="ImDrawList::AddText" alt="" coords="231,157,377,184"/>
+<area shape="rect" id="node8" href="$namespaceImGui.html#a0de2d9bd347d9866511eb8d014e62556" title="ImGui::GetColorU32" alt="" coords="233,208,375,235"/>
+<area shape="rect" id="node5" href="$structImFont.html#a6dace03da0c82216040a54a5b09b99d4" title="ImFont::CalcTextSizeA" alt="" coords="443,56,602,83"/>
+<area shape="rect" id="node6" href="$imgui_8cpp.html#a036b9dd7f0942fd34e385cc115f36631" title="ImTextCharFromUtf8" alt="" coords="668,5,815,32"/>
+<area shape="rect" id="node9" href="$namespaceImGui.html#abe2691de0b1a71c774ab24cc91564a94" title="ImGui::ColorConvertFloat4\lToU32" alt="" coords="433,201,612,242"/>
+</map>

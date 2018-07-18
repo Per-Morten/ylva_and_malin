@@ -1,0 +1,5 @@
+<map id="ImFontAtlas::AddFontFromMemoryCompressedBase85TTF" name="ImFontAtlas::AddFontFromMemoryCompressedBase85TTF">
+<area shape="rect" id="node2" href="$wglext_8h.html#a500a82aecba06f4550f6849b8099ca21" title="int" alt="" coords="306,5,345,32"/>
+<area shape="rect" id="node3" href="$namespaceImGui.html#aed896913f2e140cd0ad7431060dba50b" title="ImGui::MemAlloc" alt="" coords="264,56,387,83"/>
+<area shape="rect" id="node4" href="$namespaceImGui.html#a269ec695c6e722ec3da85dae37f0675d" title="ImGui::MemFree" alt="" coords="265,107,385,133"/>
+</map>

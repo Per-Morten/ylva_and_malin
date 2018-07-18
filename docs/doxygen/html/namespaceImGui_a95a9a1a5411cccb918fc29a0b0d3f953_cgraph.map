@@ -1,0 +1,9 @@
+<map id="ImGui::NavMoveRequestTryWrapping" name="ImGui::NavMoveRequestTryWrapping">
+<area shape="rect" id="node2" href="$structImRect.html#abb777eaa8fd13ad6b7d6dab56d29fe52" title="ImRect::TranslateY" alt="" coords="283,5,419,32"/>
+<area shape="rect" id="node3" href="$structImRect.html#a7048ebb2235dd1459a8d59215929172f" title="ImRect::GetHeight" alt="" coords="285,56,417,83"/>
+<area shape="rect" id="node4" href="$namespaceImGui.html#a8a96ace94b2000ada6f21d7459d51920" title="ImGui::NavMoveRequestForward" alt="" coords="243,107,460,133"/>
+<area shape="rect" id="node7" href="$structImRect.html#a20c399583fc60a1f73715b3c6468a89d" title="ImRect::TranslateX" alt="" coords="283,157,419,184"/>
+<area shape="rect" id="node8" href="$structImRect.html#a6502982fa20dffbee7725f76a5700d27" title="ImRect::GetWidth" alt="" coords="287,208,415,235"/>
+<area shape="rect" id="node5" href="$namespaceImGui.html#a43326bb080d9fa80327ed81d864d8b8d" title="ImGui::NavMoveRequestCancel" alt="" coords="508,107,719,133"/>
+<area shape="rect" id="node6" href="$classImVector.html#a3e4424d3fca190894598a6575f9d2401" title="ImVector::back" alt="" coords="767,107,877,133"/>
+</map>

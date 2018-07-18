@@ -1,0 +1,6 @@
+<map id="Catch::Matchers::StdString::StringMatcherBase" name="Catch::Matchers::StdString::StringMatcherBase">
+<area shape="rect" id="node3" href="$structCatch_1_1Matchers_1_1StdString_1_1ContainsMatcher.html" title="{Catch::Matchers::StdString\l::ContainsMatcher\n||+ ContainsMatcher()\l+ match()\l}" alt="" coords="5,315,187,421"/>
+<area shape="rect" id="node4" href="$structCatch_1_1Matchers_1_1StdString_1_1EndsWithMatcher.html" title="{Catch::Matchers::StdString\l::EndsWithMatcher\n||+ EndsWithMatcher()\l+ match()\l}" alt="" coords="211,315,392,421"/>
+<area shape="rect" id="node5" href="$structCatch_1_1Matchers_1_1StdString_1_1EqualsMatcher.html" title="{Catch::Matchers::StdString\l::EqualsMatcher\n||+ EqualsMatcher()\l+ match()\l}" alt="" coords="416,315,597,421"/>
+<area shape="rect" id="node6" href="$structCatch_1_1Matchers_1_1StdString_1_1StartsWithMatcher.html" title="{Catch::Matchers::StdString\l::StartsWithMatcher\n||+ StartsWithMatcher()\l+ match()\l}" alt="" coords="621,315,803,421"/>
+</map>

@@ -1,0 +1,8 @@
+<map id="lodepng_crc32" name="lodepng_crc32">
+<area shape="rect" id="node2" href="$lodepng_8c.html#a02091d970921c7b94c4e63821785f97a" title="lodepng_chunk_check_crc" alt="" coords="167,5,343,32"/>
+<area shape="rect" id="node3" href="$lodepng_8c.html#a0bee70fa0a93ca4463b35a3ceb9910e3" title="lodepng_inspect" alt="" coords="417,31,533,57"/>
+<area shape="rect" id="node4" href="$lodepng_8c.html#a5ea8918bcdd67d62af9735faa5d03b1b" title="lodepng_chunk_generate_crc" alt="" coords="160,107,351,133"/>
+<area shape="rect" id="node5" href="$lodepng_8c.html#a2659e18b691b087c3b8610f44d9be8b1" title="lodepng_chunk_create" alt="" coords="399,107,551,133"/>
+<area shape="rect" id="node6" href="$lodepng_8c.html#a87514bea6f324553184e48794a0ec3fc" title="lodepng_state_copy" alt="" coords="599,107,737,133"/>
+<area shape="rect" id="node7" href="$lodepng_8c.html#ab56bbf4d0a24238ef2d6fe125705a8ce" title="lodepng_error_text" alt="" coords="785,107,915,133"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="ImGui::PopFont" name="ImGui::PopFont">
+<area shape="rect" id="node2" href="$structImDrawList.html#ade9286c5ca58753f7bd571b30e2ff76c" title="ImDrawList::PopTextureID" alt="" coords="168,5,347,32"/>
+<area shape="rect" id="node3" href="$classImVector.html#a3db7ce62d3c429effdb893fbf7148c1c" title="ImVector::pop_back" alt="" coords="188,56,327,83"/>
+<area shape="rect" id="node4" href="$namespaceImGui.html#a4f83c0a884e07247a00700d3dd3d01e3" title="ImGui::SetCurrentFont" alt="" coords="180,107,335,133"/>
+<area shape="rect" id="node7" href="$classImVector.html#a0605d0ed312e7fad24e3602f6b1b9310" title="ImVector::empty" alt="" coords="198,157,317,184"/>
+<area shape="rect" id="node8" href="$classImVector.html#a3e4424d3fca190894598a6575f9d2401" title="ImVector::back" alt="" coords="202,208,313,235"/>
+<area shape="rect" id="node5" href="$structImFont.html#aa718f736f8d8b9f04f6f9f08150d70ca" title="ImFont::IsLoaded" alt="" coords="428,81,552,108"/>
+<area shape="rect" id="node6" href="$structImGuiWindow.html#a7a47a5e3607c057d2d65e90cf2c41e95" title="ImGuiWindow::CalcFontSize" alt="" coords="395,132,585,159"/>
+</map>

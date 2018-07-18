@@ -1,0 +1,5 @@
+<map id="ym_sprite_set_camera_pos" name="ym_sprite_set_camera_pos">
+<area shape="rect" id="node2" href="$ym__math_8h.html#ac74c78411d39d5a06507d716ba8158e6" title="ym_lookat" alt="" coords="236,31,319,57"/>
+<area shape="rect" id="node3" href="$ym__math_8h.html#ae3122cbbfe45ca1f78e4ba1c0cc49bd2" title="ym_translate_vec4" alt="" coords="371,5,503,32"/>
+<area shape="rect" id="node4" href="$ym__math_8h.html#ad4b2074eed2d90da82a90202c8996a44" title="ym_mul_mat4_mat4" alt="" coords="367,56,507,83"/>
+</map>

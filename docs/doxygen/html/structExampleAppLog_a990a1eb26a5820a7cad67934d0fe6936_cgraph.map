@@ -1,0 +1,7 @@
+<map id="ExampleAppLog::AddLog" name="ExampleAppLog::AddLog">
+<area shape="rect" id="node2" href="$structImGuiTextBuffer.html#aa6c3065e4921494de9066a556e59e365" title="ImGuiTextBuffer::size" alt="" coords="237,5,387,32"/>
+<area shape="rect" id="node3" href="$structImGuiTextBuffer.html#a49c29d4bf2871fc7635e9e15af145d92" title="ImGuiTextBuffer::appendfv" alt="" coords="223,56,401,83"/>
+<area shape="rect" id="node6" href="$classImVector.html#a68387993f2a5f5c3b2a7139d9ab778b8" title="ImVector::push_back" alt="" coords="239,107,385,133"/>
+<area shape="rect" id="node4" href="$imgui_8cpp.html#a2e0022a073d369645a0daab17f823779" title="ImFormatStringV" alt="" coords="449,56,571,83"/>
+<area shape="rect" id="node5" href="$wglext_8h.html#a500a82aecba06f4550f6849b8099ca21" title="int" alt="" coords="619,56,657,83"/>
+</map>

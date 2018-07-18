@@ -1,0 +1,4 @@
+<map id="Catch::AssertionInfo" name="Catch::AssertionInfo">
+<area shape="rect" id="node2" href="$structCatch_1_1SourceLineInfo.html" title="{Catch::SourceLineInfo\n|+ file\l+ line\l|+ SourceLineInfo()\l+ SourceLineInfo()\l+ SourceLineInfo()\l+ SourceLineInfo()\l+ operator=()\l+ operator=()\l+ empty()\l+ operator==()\l+ operator\&lt;()\l}" alt="" coords="5,13,157,222"/>
+<area shape="rect" id="node3" href="$classCatch_1_1StringRef.html" title="{Catch::StringRef\n||+ StringRef()\l+ StringRef()\l+ StringRef()\l+ StringRef()\l+ StringRef()\l+ StringRef()\l+ ~StringRef()\l+ operator=()\l+ operator std::string()\l+ swap()\land 9 more...\l}" alt="" coords="182,5,333,229"/>
+</map>

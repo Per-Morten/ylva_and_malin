@@ -1,0 +1,4 @@
+<map id="ImGui::GetWindowContentRegionWidth" name="ImGui::GetWindowContentRegionWidth">
+<area shape="rect" id="node2" href="$namespaceImGui.html#a408f9ddac92f8629a7e273ced5f8c3aa" title="ImGui::GetCurrentWindowRead" alt="" coords="273,5,480,32"/>
+<area shape="rect" id="node3" href="$structImRect.html#a6502982fa20dffbee7725f76a5700d27" title="ImRect::GetWidth" alt="" coords="313,56,441,83"/>
+</map>

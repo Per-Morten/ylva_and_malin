@@ -1,0 +1,13 @@
+<map id="lodepng_has_palette_alpha" name="lodepng_has_palette_alpha">
+<area shape="rect" id="node2" href="$lodepng_8c.html#a93f12a150968449f016fe93decc1e074" title="lodepng_can_have_alpha" alt="" coords="195,132,363,159"/>
+<area shape="rect" id="node3" href="$lodepng_8c.html#a61b594f117c24c1a71eb6bc7a99d9d93" title="lodepng_get_color_profile" alt="" coords="411,132,580,159"/>
+<area shape="rect" id="node4" href="$lodepng_8c.html#a6b6c9c17717ab1a2159eab8048aa730a" title="lodepng_auto_choose\l_color" alt="" coords="628,125,776,166"/>
+<area shape="rect" id="node5" href="$lodepng_8c.html#a90e82b0ccc75cfb27ccc9756c8d96f07" title="lodepng_encode" alt="" coords="824,132,940,159"/>
+<area shape="rect" id="node6" href="$lodepng_8c.html#ada7bc92db6e9f8906a1fc85caa0b17aa" title="lodepng_encode_memory" alt="" coords="988,107,1159,133"/>
+<area shape="rect" id="node12" href="$lodepng_8c.html#ab56bbf4d0a24238ef2d6fe125705a8ce" title="lodepng_error_text" alt="" coords="1212,157,1341,184"/>
+<area shape="rect" id="node7" href="$lodepng_8c.html#a75d7f3e4e388b74b7b5214c76c66382f" title="lodepng_encode32" alt="" coords="1211,5,1342,32"/>
+<area shape="rect" id="node8" href="$lodepng_8c.html#a4100642d70071029967c16afd72193ff" title="lodepng_encode24" alt="" coords="1211,56,1342,83"/>
+<area shape="rect" id="node9" href="$lodepng_8c.html#a009ac38098765fcae32c9d91770b94df" title="lodepng_encode_file" alt="" coords="1207,107,1347,133"/>
+<area shape="rect" id="node10" href="$lodepng_8c.html#a018a3bd975fb886cdf1f6f544f2882e4" title="lodepng_encode32_file" alt="" coords="1395,81,1549,108"/>
+<area shape="rect" id="node11" href="$lodepng_8c.html#a4f8f383c22ceb7c22b1cc7e774f0bad2" title="lodepng_encode24_file" alt="" coords="1395,132,1549,159"/>
+</map>

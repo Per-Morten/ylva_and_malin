@@ -1,0 +1,9 @@
+<map id="ImGui::LoadIniSettingsFromMemory" name="ImGui::LoadIniSettingsFromMemory">
+<area shape="rect" id="node2" href="$namespaceImGui.html#a4bf22fb84ba768fc18383af50e8c217f" title="ImGui::LoadIniSettingsFromDisk" alt="" coords="239,107,451,133"/>
+<area shape="rect" id="node7" href="$structImVec4.html#aff9b4879855ba13fafb9d59091332aa8" title="ImVec4::Color" alt="" coords="724,107,831,133"/>
+<area shape="rect" id="node3" href="$namespaceImGui.html#ab3f1fc018f903b7ad79fd10663375774" title="ImGui::NewFrame" alt="" coords="499,56,628,83"/>
+<area shape="rect" id="node4" href="$namespaceImGui_1_1SFML.html#a23e3d87824f8ec92ec879aa5fda774f4" title="ImGui::SFML::Update" alt="" coords="702,5,853,32"/>
+<area shape="rect" id="node8" href="$imgui__impl__sdl__gl3_8h.html#abea6fc349979d4dcda6e028f62c6afee" title="ImGui_ImplSdlGL3_NewFrame" alt="" coords="676,56,879,83"/>
+<area shape="rect" id="node5" href="$namespaceImGui_1_1SFML.html#a6ac5b3b4d267251063f3697b9fa0ac7d" title="ImGui::SFML::Update" alt="" coords="927,5,1077,32"/>
+<area shape="rect" id="node6" href="$editor_2src_2main_8cpp.html#aa2ea97ae3b5138344f2832f44ba93d4c" title="main" alt="" coords="1125,5,1176,32"/>
+</map>

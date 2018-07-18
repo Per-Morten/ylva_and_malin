@@ -1,0 +1,5 @@
+<map id="ImGui::NavInitWindow" name="ImGui::NavInitWindow">
+<area shape="rect" id="node2" href="$structImRect.html#a6502982fa20dffbee7725f76a5700d27" title="ImRect::GetWidth" alt="" coords="247,5,375,32"/>
+<area shape="rect" id="node3" href="$structImRect.html#a7048ebb2235dd1459a8d59215929172f" title="ImRect::GetHeight" alt="" coords="245,56,377,83"/>
+<area shape="rect" id="node4" href="$namespaceImGui.html#a6dfaa7187edcbc862be2edb2bbc987bb" title="ImGui::IsWindowNavFocusable" alt="" coords="208,107,415,133"/>
+</map>

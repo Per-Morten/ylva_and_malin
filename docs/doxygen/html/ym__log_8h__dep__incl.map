@@ -1,0 +1,27 @@
+<map id="game/src/ym/core/ym_log.h" name="game/src/ym/core/ym_log.h">
+<area shape="rect" id="node2" href="$ym__assert_8h.html" title="game/src/ym/core/ym\l_assert.h" alt="" coords="452,95,601,136"/>
+<area shape="rect" id="node4" href="$ym__core_8h.html" title="game/src/ym/core/ym\l_core.h" alt="" coords="580,273,729,315"/>
+<area shape="rect" id="node20" href="$ym__memory_8c.html" title="game/src/ym/memory\l/ym_memory.c" alt="" coords="5,452,155,493"/>
+<area shape="rect" id="node26" href="$ym__log_8c.html" title="game/src/ym/core/ym\l_log.c" alt="" coords="727,95,876,136"/>
+<area shape="rect" id="node3" href="$ym__atomic_8h.html" title="game/src/ym/core/ym\l_atomic.h" alt="" coords="279,184,428,225"/>
+<area shape="rect" id="node25" href="$ym__types_8h.html" title="game/src/ym/core/ym\l_types.h" alt="" coords="452,184,601,225"/>
+<area shape="rect" id="node5" href="$main_8c.html" title="game/src/main.c" alt="" coords="395,817,514,843"/>
+<area shape="rect" id="node6" href="$ym__array_8h.html" title="game/src/ym/container\l/ym_array.h" alt="" coords="865,363,1020,404"/>
+<area shape="rect" id="node7" href="$ym__gfx_8h.html" title="game/src/ym/graphics\l/ym_gfx.h" alt="" coords="466,452,617,493"/>
+<area shape="rect" id="node8" href="$ym__gfx__gl_8h.html" title="game/src/ym/graphics\l/ym_gfx_gl.h" alt="" coords="673,541,823,583"/>
+<area shape="rect" id="node11" href="$ym__gfx__sprite_8h.html" title="game/src/ym/graphics\l/ym_gfx_sprite.h" alt="" coords="1170,631,1321,672"/>
+<area shape="rect" id="node13" href="$ym__resource_8h.html" title="game/src/ym/resource\l/ym_resource.h" alt="" coords="1433,720,1585,761"/>
+<area shape="rect" id="node17" href="$allocator__tests_8c.html" title="game/src/ym/memory\l/test/allocator_tests.c" alt="" coords="1129,452,1279,493"/>
+<area shape="rect" id="node18" href="$ym__allocator_8h.html" title="game/src/ym/memory\l/ym_allocator.h" alt="" coords="692,363,841,404"/>
+<area shape="rect" id="node21" href="$ym__memory_8h.html" title="game/src/ym/memory\l/ym_memory.h" alt="" coords="416,363,565,404"/>
+<area shape="rect" id="node22" href="$ym__telemetry_8h.html" title="game/src/ym/telemetry\l/ym_telemetry.h" alt="" coords="179,452,335,493"/>
+<area shape="rect" id="node24" href="$ym_2test_2main_8c.html" title="game/src/ym/test/main.c" alt="" coords="1045,370,1211,397"/>
+<area shape="rect" id="node15" href="$ym__gfx__unix_8c.html" title="game/src/ym/graphics\l/ym_gfx_unix.c" alt="" coords="667,631,818,672"/>
+<area shape="rect" id="node16" href="$ym__gfx__win_8c.html" title="game/src/ym/graphics\l/ym_gfx_win.c" alt="" coords="493,631,643,672"/>
+<area shape="rect" id="node9" href="$ym__gfx__gl_8c.html" title="game/src/ym/graphics\l/ym_gfx_gl.c" alt="" coords="1031,720,1182,761"/>
+<area shape="rect" id="node10" href="$ym__gfx__gl__procs_8c.html" title="game/src/ym/graphics\l/ym_gfx_gl_procs.c" alt="" coords="842,631,993,672"/>
+<area shape="rect" id="node12" href="$ym__gfx__sprite_8c.html" title="game/src/ym/graphics\l/ym_gfx_sprite.c" alt="" coords="1258,720,1409,761"/>
+<area shape="rect" id="node14" href="$ym__resource_8c.html" title="game/src/ym/resource\l/ym_resource.c" alt="" coords="1433,809,1585,851"/>
+<area shape="rect" id="node19" href="$ym__allocator_8c.html" title="game/src/ym/memory\l/ym_allocator.c" alt="" coords="956,452,1105,493"/>
+<area shape="rect" id="node23" href="$ym__telemetry_8c.html" title="game/src/ym/telemetry\l/ym_telemetry.c" alt="" coords="109,541,265,583"/>
+</map>

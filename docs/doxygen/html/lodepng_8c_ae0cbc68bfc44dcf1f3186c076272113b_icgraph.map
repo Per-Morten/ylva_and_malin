@@ -1,0 +1,13 @@
+<map id="lodepng_read32bitInt" name="lodepng_read32bitInt">
+<area shape="rect" id="node2" href="$lodepng_8c.html#ae66b9c1eeb9c44572bd381a94485e157" title="lodepng_zlib_decompress" alt="" coords="196,5,368,32"/>
+<area shape="rect" id="node3" href="$lodepng_8c.html#ad52897a6aecee7dde053c468c6bedda2" title="lodepng_chunk_length" alt="" coords="207,216,357,243"/>
+<area shape="rect" id="node4" href="$lodepng_8c.html#a02091d970921c7b94c4e63821785f97a" title="lodepng_chunk_check_crc" alt="" coords="423,107,599,133"/>
+<area shape="rect" id="node5" href="$lodepng_8c.html#a0bee70fa0a93ca4463b35a3ceb9910e3" title="lodepng_inspect" alt="" coords="673,157,789,184"/>
+<area shape="rect" id="node6" href="$lodepng_8c.html#a5ea8918bcdd67d62af9735faa5d03b1b" title="lodepng_chunk_generate_crc" alt="" coords="416,325,607,352"/>
+<area shape="rect" id="node10" href="$lodepng_8c.html#adad919b6dd09fb56cf285b3b46efb2cb" title="lodepng_chunk_next" alt="" coords="660,376,801,403"/>
+<area shape="rect" id="node11" href="$lodepng_8c.html#a20eec77cd3ca77b9c55499846ea9595a" title="lodepng_chunk_next\l_const" alt="" coords="441,209,582,250"/>
+<area shape="rect" id="node12" href="$lodepng_8c.html#a865c89cf0456b876e3bd5698bc910336" title="lodepng_chunk_append" alt="" coords="432,275,591,301"/>
+<area shape="rect" id="node7" href="$lodepng_8c.html#a2659e18b691b087c3b8610f44d9be8b1" title="lodepng_chunk_create" alt="" coords="655,325,807,352"/>
+<area shape="rect" id="node8" href="$lodepng_8c.html#a87514bea6f324553184e48794a0ec3fc" title="lodepng_state_copy" alt="" coords="855,325,993,352"/>
+<area shape="rect" id="node9" href="$lodepng_8c.html#ab56bbf4d0a24238ef2d6fe125705a8ce" title="lodepng_error_text" alt="" coords="1041,325,1171,352"/>
+</map>

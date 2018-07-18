@@ -1,0 +1,36 @@
+<map id="ImFontAtlas::Build" name="ImFontAtlas::Build">
+<area shape="rect" id="node2" href="$imgui__draw_8cpp.html#a19c9ebb9fccc7a5ff61b9367df9dc7fc" title="ImFontAtlasBuildWithStbTruetype" alt="" coords="184,698,404,725"/>
+<area shape="rect" id="node3" href="$imgui__draw_8cpp.html#a1c06e6e488c5f6034ebec7b6a84ce205" title="ImFontAtlasBuildRegister\lDefaultCustomRects" alt="" coords="467,5,638,47"/>
+<area shape="rect" id="node5" href="$structImFontAtlas.html#a3ede4bd513bec044c77ac392ad9c6e86" title="ImFontAtlas::ClearTexData" alt="" coords="461,71,644,98"/>
+<area shape="rect" id="node6" href="$namespaceImGui.html#a269ec695c6e722ec3da85dae37f0675d" title="ImGui::MemFree" alt="" coords="752,97,872,123"/>
+<area shape="rect" id="node7" href="$structImFontAtlas.html#adec0df140eb1dc01c2a22a5253d62820" title="ImFontAtlas::GetGlyphRanges\lDefault" alt="" coords="452,173,653,215"/>
+<area shape="rect" id="node8" href="$stb__truetype_8h.html#a545cade1aee5eead425f793f32402759" title="stbtt_PackBegin" alt="" coords="493,239,612,266"/>
+<area shape="rect" id="node9" href="$stb__truetype_8h.html#a45328de6d9635818f4e1b01fba2bfbdf" title="stbtt_PackSetOversampling" alt="" coords="460,290,645,317"/>
+<area shape="rect" id="node10" href="$imgui__draw_8cpp.html#a0b75d411a640f923fd9ca6e879c45b75" title="ImFontAtlasBuildPackCustom\lRects" alt="" coords="453,392,652,433"/>
+<area shape="rect" id="node12" href="$stb__rect__pack_8h.html#a80cd4a39c84dc0d3a69a4296b7ca88d0" title="stbrp_pack_rects" alt="" coords="751,345,873,371"/>
+<area shape="rect" id="node16" href="$namespaceImGui.html#aed896913f2e140cd0ad7431060dba50b" title="ImGui::MemAlloc" alt="" coords="491,458,614,485"/>
+<area shape="rect" id="node17" href="$structImFont.html#aa718f736f8d8b9f04f6f9f08150d70ca" title="ImFont::IsLoaded" alt="" coords="491,509,615,535"/>
+<area shape="rect" id="node18" href="$stb__truetype_8h.html#a50b0f7f602fec600af73af3d586a2598" title="stbtt_GetFontOffsetForIndex" alt="" coords="458,559,647,586"/>
+<area shape="rect" id="node19" href="$stb__truetype_8h.html#aef5091ff7d4452a5d616b9c528bd4c09" title="stbtt_InitFont" alt="" coords="503,610,602,637"/>
+<area shape="rect" id="node20" href="$stb__truetype_8h.html#a3bb79f039167c1a8908542f8f6b30c58" title="stbtt_PackFontRangesGather\lRects" alt="" coords="455,661,650,703"/>
+<area shape="rect" id="node21" href="$stb__truetype_8h.html#a411ea8c9cb109b877c92ec7b14bd581f" title="stbtt_FindGlyphIndex" alt="" coords="479,727,626,754"/>
+<area shape="rect" id="node22" href="$stb__truetype_8h.html#a13626e082553af4b5e10290cbc290d69" title="stbtt_PackFontRangesRender\lIntoRects" alt="" coords="453,779,652,820"/>
+<area shape="rect" id="node23" href="$imgui__draw_8cpp.html#a8d5f3a053aae34ac7b93e39cb9096d06" title="ImFontAtlasBuildMultiply\lCalcLookupTable" alt="" coords="729,1360,895,1401"/>
+<area shape="rect" id="node24" href="$imgui__draw_8cpp.html#a8dc3feae771599949b33712b520e9060" title="ImFontAtlasBuildMultiply\lRectAlpha8" alt="" coords="469,896,636,937"/>
+<area shape="rect" id="node25" href="$stb__truetype_8h.html#a9c868efd164b3d82828b0575c72af22a" title="stbtt_PackEnd" alt="" coords="499,962,607,989"/>
+<area shape="rect" id="node26" href="$structImFont.html#a04b3a1437bd0032722bbbd3613941162" title="ImFont::BuildLookupTable" alt="" coords="725,1114,899,1141"/>
+<area shape="rect" id="node27" href="$stb__truetype_8h.html#a6799a69202aead94976eefd5e6b2e951" title="stbtt_ScaleForPixelHeight" alt="" coords="465,1063,640,1090"/>
+<area shape="rect" id="node28" href="$stb__truetype_8h.html#ab2a0b7ac08ff7a93ec9cd76d4136a4cc" title="stbtt_GetFontVMetrics" alt="" coords="475,1114,630,1141"/>
+<area shape="rect" id="node29" href="$imgui__draw_8cpp.html#a4bea0932904c84de73237df3f1f76bdd" title="ImFontAtlasBuildSetupFont" alt="" coords="461,1317,644,1343"/>
+<area shape="rect" id="node31" href="$structImFont.html#ad42af2d905c675aabce87749fa96870d" title="ImFont::FindGlyphNoFallback" alt="" coords="455,1215,651,1242"/>
+<area shape="rect" id="node32" href="$stb__truetype_8h.html#a861b805be1fc18d1d5d34865318b50b7" title="stbtt_GetPackedQuad" alt="" coords="477,1266,628,1293"/>
+<area shape="rect" id="node33" href="$structImFont.html#ae63d3d343052336d7718aacac8f394b7" title="ImFont::AddGlyph" alt="" coords="748,1013,876,1039"/>
+<area shape="rect" id="node34" href="$imgui__draw_8cpp.html#adbf0ee92b3ac86e30b9e81f552d15d37" title="ImFontAtlasBuildFinish" alt="" coords="474,845,631,871"/>
+<area shape="rect" id="node4" href="$structImFontAtlas.html#ac51952803d2205f28ca9fc996c5f6243" title="ImFontAtlas::AddCustomRect\lRegular" alt="" coords="713,5,911,47"/>
+<area shape="rect" id="node11" href="$classImVector.html#ac371dd62e56ae486b1a5038cf07eee56" title="ImVector::resize" alt="" coords="753,450,871,477"/>
+<area shape="rect" id="node13" href="$structImFontAtlas_1_1CustomRect.html#aba1ec95e2c09f03093f15b84f0a23eba" title="ImFontAtlas::CustomRect\l::IsPacked" alt="" coords="971,579,1145,620"/>
+<area shape="rect" id="node15" href="$wglext_8h.html#a500a82aecba06f4550f6849b8099ca21" title="int" alt="" coords="1039,1063,1077,1090"/>
+<area shape="rect" id="node14" href="$structImVec2.html#a5dfa5ab27cc4af6df3cf8d920fc8a294" title="ImVec2::ImVec2" alt="" coords="1193,586,1313,613"/>
+<area shape="rect" id="node30" href="$structImFont.html#aecf7773b1c40b433f91ee245f463de12" title="ImFont::ClearOutputData" alt="" coords="727,1309,897,1335"/>
+<area shape="rect" id="node35" href="$structImFontAtlas.html#a70e062104b11a213eb3d177151c418e2" title="ImFontAtlas::CalcCustomRectUV" alt="" coords="701,771,923,798"/>
+</map>

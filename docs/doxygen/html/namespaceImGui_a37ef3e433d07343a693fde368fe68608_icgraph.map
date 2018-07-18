@@ -1,0 +1,7 @@
+<map id="ImGui::ImageButton" name="ImGui::ImageButton">
+<area shape="rect" id="node2" href="$namespaceImGui.html#ab30a68eecc7388f7708e87968445c414" title="ImGui::ImageButton" alt="" coords="192,31,331,57"/>
+<area shape="rect" id="node3" href="$namespaceImGui.html#a546d66f8477ae03b435b549891729701" title="ImGui::DrawRectFilled" alt="" coords="391,5,546,32"/>
+<area shape="rect" id="node4" href="$namespaceImGui.html#af95643a0ce4893b9e57c12991922fb18" title="ImGui::ShowDemoWindow" alt="" coords="379,56,559,83"/>
+<area shape="rect" id="node5" href="$structImVec4.html#aff9b4879855ba13fafb9d59091332aa8" title="ImVec4::Color" alt="" coords="631,19,738,45"/>
+<area shape="rect" id="node6" href="$structExampleAppLog.html#a5ad3a4bdb89171b84aeaff96948a1f77" title="ExampleAppLog::Draw" alt="" coords="607,93,763,120"/>
+</map>

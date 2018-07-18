@@ -1,0 +1,8 @@
+<map id="lodepng_encode" name="lodepng_encode">
+<area shape="rect" id="node2" href="$lodepng_8cpp.html#ae50c1ddde2fa8004b46da433f3e20974" title="lodepng_info_init" alt="" coords="184,5,303,32"/>
+<area shape="rect" id="node3" href="$lodepng_8cpp.html#a14a4dc4c26e03acb5ab36880aacbd85a" title="lodepng_info_copy" alt="" coords="178,56,309,83"/>
+<area shape="rect" id="node4" href="$lodepng_8cpp.html#a6b6c9c17717ab1a2159eab8048aa730a" title="lodepng_auto_choose\l_color" alt="" coords="169,107,317,149"/>
+<area shape="rect" id="node5" href="$lodepng_8cpp.html#a83344b5c8c5839ca42858dd3578220ef" title="lodepng_get_bpp" alt="" coords="183,173,303,200"/>
+<area shape="rect" id="node6" href="$lodepng_8cpp.html#abd20ba96aa7a2e3d782204c604baab09" title="lodepng_convert" alt="" coords="185,224,302,251"/>
+<area shape="rect" id="node7" href="$lodepng_8cpp.html#ad4b9dc33569e24062e077f5a69ead178" title="lodepng_info_cleanup" alt="" coords="170,275,317,301"/>
+</map>

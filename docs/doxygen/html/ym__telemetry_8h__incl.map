@@ -1,0 +1,14 @@
+<map id="game/src/ym/telemetry/ym_telemetry.h" name="game/src/ym/telemetry/ym_telemetry.h">
+<area shape="rect" id="node2" href="$ym__core_8h.html" title="ym_core.h" alt="" coords="551,169,633,196"/>
+<area shape="rect" id="node26" href="$ym__memory_8h.html" title="ym_memory.h" alt="" coords="397,95,502,121"/>
+<area shape="rect" id="node3" href="$ym__assert_8h.html" title="ym_assert.h" alt="" coords="443,319,538,345"/>
+<area shape="rect" id="node4" href="$ym__error_8h.html" title="ym_error.h" alt="" coords="593,393,677,420"/>
+<area shape="rect" id="node5" href="$ym__attributes_8h.html" title="ym_attributes.h" alt="" coords="579,468,691,495"/>
+<area shape="rect" id="node6" href="$ym__log_8h.html" title="ym_log.h" alt="" coords="861,393,936,420"/>
+<area shape="rect" id="node11" href="$ym__atomic_8h.html" title="ym_atomic.h" alt="" coords="198,244,295,271"/>
+<area shape="rect" id="node16" href="$ym__math_8h.html" title="ym_math.h" alt="" coords="717,244,803,271"/>
+<area shape="rect" id="node18" href="$ym__time_8h.html" title="ym_time.h" alt="" coords="892,244,975,271"/>
+<area shape="rect" id="node23" href="$ym__types_8h.html" title="ym_types.h" alt="" coords="537,244,628,271"/>
+<area shape="rect" id="node25" href="$ym__warnings_8h.html" title="ym_warnings.h" alt="" coords="1311,244,1422,271"/>
+<area shape="rect" id="node27" href="$ym__memory__regions_8h.html" title="ym_memory_regions.h" alt="" coords="372,169,527,196"/>
+</map>

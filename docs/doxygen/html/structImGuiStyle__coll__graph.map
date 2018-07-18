@@ -1,0 +1,4 @@
+<map id="ImGuiStyle" name="ImGuiStyle">
+<area shape="rect" id="node2" href="$structImVec2.html" title="{ImVec2\n|+ x\l+ y\l|+ ImVec2()\l+ ImVec2()\l+ operator[]()\l+ ImVec2()\l+ operator sf::Vector2\&lt; T \&gt;()\l}" alt="" coords="5,13,195,163"/>
+<area shape="rect" id="node3" href="$structImVec4.html" title="{ImVec4\n|+ x\l+ y\l+ z\l+ w\l|+ ImVec4()\l+ ImVec4()\l+ ImVec4()\l+ operator sf::Color()\l}" alt="" coords="219,5,362,171"/>
+</map>

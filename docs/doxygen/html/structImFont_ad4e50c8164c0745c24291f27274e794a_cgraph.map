@@ -1,0 +1,4 @@
+<map id="ImFont::RenderChar" name="ImFont::RenderChar">
+<area shape="rect" id="node2" href="$structImDrawList.html#a879aa38dbfb0344e3e023d65c002c7d7" title="ImDrawList::PrimReserve" alt="" coords="195,5,368,32"/>
+<area shape="rect" id="node3" href="$structImDrawList.html#a77d48ed5b33ccdd908824c0a3bebfff8" title="ImDrawList::PrimRectUV" alt="" coords="196,56,367,83"/>
+</map>
