@@ -1,5 +1,8 @@
 # Libraries
 * [LodePNG](http://lodev.org/lodepng/)
+* [ImGui](https://github.com/ocornut/imgui)
+* [SFML](https://www.sfml-dev.org/index.php)
+* [Catch2](https://github.com/catchorg/Catch2)
 
 # Assets
 ## Character sprites

@@ -145,16 +145,6 @@ const char* noc_file_dialog_open(int flags,
     return g_noc_file_dialog_ret;
 }
 
-// #include <nautilus.h>
-
-// const char* noc_file_dialog_open(int flags,
-//                                  const char *filters,
-//                                  const char *default_path,
-//                                  const char *default_name)
-// {
-//     return nullptr;
-// }
-
 #endif
 
 #ifdef NOC_FILE_DIALOG_WIN32
