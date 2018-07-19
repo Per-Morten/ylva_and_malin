@@ -1,9 +1,7 @@
-Ylva and Malin is a small side project I am working on,
-where I try to build a small 2D game with only a few helper libaries,
-and whatever API's different OS' gives me.
+Ylva and Malin is a side project created for me to toy with projects. It is a simple 2D RPG build with minimal library support, written in C.  
+A development blog for the project can be found in the [wiki](https://github.com/Per-Morten/ylva_and_malin/wiki)
 
-Written in C mainly because that forces me to do more stuff myself, i.e. better learning exercise.
-
+The motto of the project is:
 Will this be good? Probably not.  
 Will it be fast? Probably not.  
 Will I learn a lot? Hell yeah.  
