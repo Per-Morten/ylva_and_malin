@@ -57,11 +57,22 @@
 ///       as tiles are always 32 pixels high and wide.
 /// - Refactor tile placement logic.
 /// - Select only one tile when clicking on tile borders.
-///     - Should probably also shrink hit-space or something, to avoid
 /// - Create a number mapping each cell to its texture.
 ///     - Maybe just give 128 possible sprites to each sheet or something
 ///       need to tweak the number to figure out what is fitting.
 ///       Will waste numbers for the int, but shouldn't be a problem.
+///
+/// - Find out why I cannot place out blue walkable logic tiles.
+///     - Wontfix:
+///         - Walkable logic don't have anything to do on upper layers
+///           and rather acts an eraser for the time being.
+///           Will look into it if it becomes a problem.
+///
+/// - Ensure that if I place a tile in the logic layer, it should default to
+///   the command tied to that texture.
+///     - i.e. If I but down a UNWALKABLE tile, it should put UNWALKABLE as
+///            the command.
+///
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -145,13 +156,28 @@ struct Cell
 {
     int texture_id;
     int sheet_id;
+    int command_id{};
 };
 
 struct Command
 {
     int id;
     std::string command;
-    std::string arguments;
+    std::string arguments{};
+};
+
+struct Coordinate
+{
+    union
+    {
+        std::size_t x;
+        std::size_t col;
+    };
+    union
+    {
+        std::size_t y;
+        std::size_t row;
+    };
 };
 
 struct EditorCtx
@@ -162,7 +188,7 @@ struct EditorCtx
 
     // Cell related
     std::size_t current_sprite_id{};
-    sf::Vector2<std::size_t> current_cell{};
+    Coordinate current_cell{};
 
     // Mode related
     Mode current_mode{ Mode::insert };
@@ -172,9 +198,7 @@ struct EditorCtx
 
     bool grid_enabled{true};
 
-    // Grid, not 2D, first dimension is which layer we are currently on.
-    // TODO: Move to 2D representation, i.e. Three vectors inside each other,
-    //       No reason to stay in 1D, and 2D will probably make resizing logic easier.
+    // Grid, 2D represented. First dimension is the layer.
     std::vector<std::vector<std::vector<Cell>>> grid;
     int width{10};
     int height{10};
@@ -193,7 +217,7 @@ struct EditorCtx
 };
 
 bool
-is_command_w_arguments(const char* str)
+is_command_w_arguments(const std::string& str)
 {
     static const char* commands[] =
     {
@@ -203,8 +227,61 @@ is_command_w_arguments(const char* str)
     return std::any_of(std::begin(commands), std::end(commands),
                        [str](const auto& item)
                        {
-                            return std::strcmp(item, str) == 0;
+                            return item == str;
                        });
+}
+
+bool
+is_command(const std::string& str)
+{
+    static const char* commands[] =
+    {
+        "WALKABLE",
+        "UNWALKABLE",
+        "MOVE_TO",
+    };
+
+    const auto cmd = str.substr(0, str.find(' '));
+
+    return std::any_of(std::begin(commands), std::end(commands),
+                       [cmd](const auto& item)
+                       {
+                            return item == cmd;
+                       });
+}
+
+Command*
+get_command(std::vector<Command>& commands,
+            int id)
+{
+    for (auto& item : commands)
+        if (item.id == id)
+            return &item;
+
+    return nullptr;
+}
+
+Command&
+parse_or_get_command(std::vector<Command>& commands,
+                     const std::string& str)
+{
+    const auto split = str.find(' ');
+    const auto cmd = str.substr(0, split);
+    std::string arguments = (split == std::string::npos)
+                          ? ""
+                          : str.substr(split + 1);
+
+    for (auto& item : commands)
+    {
+        if (item.command == cmd &&
+            item.arguments == arguments)
+        {
+            return item;
+        }
+    }
+
+    commands.push_back({(int)commands.size(), cmd, arguments});
+    return commands.back();
 }
 
 void
@@ -255,6 +332,11 @@ setup_default_context(EditorCtx& ctx)
 {
     setup_textures(ctx);
     setup_grid(ctx);
+
+    ctx.commands.push_back({0, "WALKABLE"});
+    ctx.commands.push_back({1, "UNWALKABLE"});
+
+
 }
 
 void
@@ -270,33 +352,10 @@ save_map(EditorCtx& ctx)
 
     std::fprintf(file, "%d %d\n%d\n\n", ctx.width, ctx.height, FileFormat::interval);
 
-    // Isolate commands
-    std::vector<std::pair<int, std::string>> commands;
-    for (int i = 0; i < 2; i++)
-    {
-        // for (const auto& item : ctx.grid[i])
-        // {
-        //     commands.emplace_back(item.texture_id, item.arguments);
-        // }
-    }
-
-    commands.erase(std::unique(commands.begin(),
-                               commands.end()),
-                   commands.end());
-
-    commands.erase(std::remove_if(commands.begin(),
-                                  commands.end(),
-                                  [](const auto& item)
-                                  {
-                                    return item.second.empty() || item.first == 0 || item.first == 1;
-                                  }),
-                   commands.end());
-
-
     // Print logic definitions
-    std::fprintf(file, "%zu\n0 WALKABLE\n1 UNWALKABLE\n", commands.size() + 2);
-    for (const auto& command : commands)
-        std::fprintf(file, "%d %s\n", command.first, command.second.c_str());
+    std::fprintf(file, "%zu\n", ctx.commands.size());
+    for (const auto& command : ctx.commands)
+        std::fprintf(file, "%d %s %s\n", command.id, command.command.c_str(), command.arguments.c_str());
 
     std::fprintf(file, "\n");
 
@@ -308,10 +367,27 @@ save_map(EditorCtx& ctx)
     std::fprintf(file, "\n");
 
 
-    // Print graphics layers
-    const auto print_layer = [file](const auto& grid)
+    // Number of logic and graphics layers.
+    std::fprintf(file, "%d\n%zu\n", 2, ctx.grid.size() - 2);
+
+    // Print logic layers
+    for (std::size_t i = 0; i < 2; i++)
     {
-        for (const auto& row : grid)
+        for (const auto& row : ctx.grid[i])
+        {
+            for (const auto& col : row)
+            {
+                std::fprintf(file, "%d %d ", col.sheet_id + col.texture_id, col.command_id);
+            }
+            std::fprintf(file, "\n");
+        }
+        std::fprintf(file, "\n");
+    }
+
+    // Print graphics layers
+    for (std::size_t i = 2; i < ctx.grid.size(); i++)
+    {
+        for (const auto& row : ctx.grid[i])
         {
             for (const auto& col : row)
             {
@@ -319,21 +395,6 @@ save_map(EditorCtx& ctx)
             }
             std::fprintf(file, "\n");
         }
-    };
-
-    std::fprintf(file, "%zu\n%zu\n", 2, ctx.grid.size() - 2);
-
-    // Print logic layers
-    for (std::size_t i = 0; i < 2; i++)
-    {
-        print_layer(ctx.grid[i]);
-        std::fprintf(file, "\n");
-    }
-
-    // Print graphics layers
-    for (std::size_t i = 2; i < ctx.grid.size(); i++)
-    {
-        print_layer(ctx.grid[i]);
         std::fprintf(file, "\n");
     }
 
@@ -436,6 +497,11 @@ load_map(EditorCtx& ctx)
                                             : texture_id % sheet.first_id;
 
                     }
+
+                    if (i < logic_count)
+                    {
+                        inn >> ctx.grid[i][row][col].command_id;
+                    }
                 }
             }
         }
@@ -491,11 +557,16 @@ gui_update(EditorCtx& ctx)
             ImGui::EndMenu();
         }
 
-        if (ImGui::BeginMenu("Canvas"))
+        if (ImGui::BeginMenu("Utility"))
         {
-            if (ImGui::MenuItem("Resize"))
+            if (ImGui::MenuItem("Resize Canvas"))
             {
                 LOG_DEBUG("Resize pressed");
+            }
+            // Surround the map with UNWALKABLE logic
+            if (ImGui::MenuItem("Enclose map"))
+            {
+                LOG_DEBUG("Enclose map pressed");
             }
             ImGui::EndMenu();
         }
@@ -550,13 +621,22 @@ gui_update(EditorCtx& ctx)
     if (ImGui::SliderInt("##sprite_sheet", curr_sheet, 0, ctx.texture_sheets.size() - 1))
         ctx.current_sprite_id = 0;
 
+    if (ctx.current_layer < 2)
     {
-        char args[256] = {0};
         ImGui::Text("Arguments:");
+        char args[256] = {0};
+        const auto cmd = get_command(ctx.commands, ctx.grid[ctx.current_layer][ctx.current_cell.row][ctx.current_cell.col].command_id);
 
-        if (ImGui::InputText("##arguments", args, sizeof(args)))
+        if (cmd != nullptr)
+            std::sprintf(args, "%s %s", cmd->command.c_str(), cmd->arguments.c_str());
+
+        if (ImGui::InputText("##arguments", args, sizeof(args), ImGuiInputTextFlags_EnterReturnsTrue))
         {
-            //ctx.grid[ctx.current_layer][ctx.current_cell].arguments = args;
+            if (is_command(args))
+            {
+                ctx.grid[ctx.current_layer][ctx.current_cell.row][ctx.current_cell.col].command_id = parse_or_get_command(ctx.commands, args).id;
+            }
+
             LOG_DEBUG("Input Argument: %s", args);
         }
     }
@@ -698,7 +778,7 @@ tools_update(EditorCtx& ctx,
 template<class Predicate>
 std::vector<Cell*>
 get_cells_where(std::vector<std::vector<Cell>>& grid,
-                    Predicate pred)
+                Predicate pred)
 {
     std::vector<Cell*> res;
     for (std::size_t row = 0; row != grid.size(); row++)
@@ -733,7 +813,25 @@ grid_update(EditorCtx& ctx,
 {
     if (event.type == sf::Event::MouseButtonPressed)
     {
-        if (!ctx.mark_enabled)
+        if (ctx.current_mode == Mode::select)
+        {
+            for (std::size_t row = 0; row < ctx.grid[ctx.current_layer].size(); row++)
+            {
+                for (std::size_t col = 0; col < ctx.grid[ctx.current_layer][row].size(); col++)
+                {
+                    sf::FloatRect rect{col * Sprite::sprite_size.x,
+                                       row * Sprite::sprite_size.y,
+                                       Sprite::sprite_size.x,
+                                       Sprite::sprite_size.y};
+
+                    if (rect.contains(window.mapPixelToCoords(sf::Vector2i(event.mouseButton.x, event.mouseButton.y))))
+                    {
+                        ctx.current_cell = {{col}, {row}};
+                    }
+                }
+            }
+        }
+        else if (!ctx.mark_enabled)
         {
             const auto sheet_id = (ctx.current_mode == Mode::insert) ? ctx.texture_sheets[ctx.current_sheet].first_id : 0;
             const auto texture_id = (ctx.current_mode == Mode::insert) ? ctx.current_sprite_id : 0;
@@ -820,7 +918,6 @@ draw_layer(const std::vector<std::vector<Cell>>& layer,
 
             if (cell.sheet_id + cell.texture_id > 0)
             {
-
                 const auto& sheet = *std::find_if(textures.cbegin(),
                                                   textures.cend(),
                                                   [&cell](const auto& item)
@@ -836,15 +933,6 @@ draw_layer(const std::vector<std::vector<Cell>>& layer,
             }
         }
     }
-}
-
-void
-draw_grid(const std::vector<std::vector<std::vector<Cell>>>& grid,
-          const std::vector<TextureSheet>& textures,
-          sf::RenderWindow& window)
-{
-    for (const auto& layer : grid)
-        draw_layer(layer, textures, window);
 }
 
 void
@@ -961,9 +1049,10 @@ main([[maybe_unused]] int argc,
         gui_update(editor_ctx);
         logic_update(editor_ctx);
 
-        draw_grid(editor_ctx.grid,
-                  editor_ctx.texture_sheets,
-                  window);
+        for (std::size_t i = 0; i < editor_ctx.grid.size(); i++)
+        {
+            draw_layer(editor_ctx.grid[i], editor_ctx.texture_sheets, window);
+        }
 
         // Ensure drawing the layer I am currently on.
         // Prefer this to making everything transparent.
@@ -976,7 +1065,7 @@ main([[maybe_unused]] int argc,
 
 
 
-        //ImGui::ShowDemoWindow(nullptr);
+        ImGui::ShowDemoWindow(nullptr);
 
 
 

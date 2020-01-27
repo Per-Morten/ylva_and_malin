@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# $0: Build target
-# $1: Build type
+# $1: Build target
+# $2: Build type
 ym_internal_compile()
 {
     if [[ ${1} == "editor" ]];
@@ -106,7 +106,7 @@ ym_build_tests()
 ym_run_tests()
 {
     pushd ${YM_ROOT_DIR} >/dev/null
-    cd build/test/bin
+    cd build/game/test/bin
     for file in ./*
     do
         ./${file} "$@"
@@ -146,7 +146,7 @@ ym_continous_game()
                 fi
 
                 # Run build and set focus back to sublime
-                ./build/release/bin/main &
+                ./build/game/release/bin/main &
 
                 # Get pid, used to check if it exists in ps | grep
                 local ym_pid=$!

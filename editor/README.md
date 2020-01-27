@@ -35,48 +35,125 @@ Editor for creating maps for ym project.
     <graphics layer count>
     <logic layer count>
 
-    <id> <id> <id> <id> <id>
-    <id> <id> <id> <id> <id>
-    <id> <id> <id> <id> <id>
-    <id> <id> <id> <id> <id>
-    <id> <id> <id> <id> <id>
-    <id> <id> <id> <id> <id>
+    // Logic layer
+    // <cid> = command_id
+    // <tid> = texture_id
+    <tid> <cid> <tid> <cid> <tid> <cid> <tid> <cid> <tid> <cid>
+    <tid> <cid> <tid> <cid> <tid> <cid> <tid> <cid> <tid> <cid>
+    <tid> <cid> <tid> <cid> <tid> <cid> <tid> <cid> <tid> <cid>
+    <tid> <cid> <tid> <cid> <tid> <cid> <tid> <cid> <tid> <cid>
+    <tid> <cid> <tid> <cid> <tid> <cid> <tid> <cid> <tid> <cid>
+    <tid> <cid> <tid> <cid> <tid> <cid> <tid> <cid> <tid> <cid>
 
-    <lid> <lid> <lid> <lid> <lid>
-    <lid> <lid> <lid> <lid> <lid>
-    <lid> <lid> <lid> <lid> <lid>
-    <lid> <lid> <lid> <lid> <lid>
-    <lid> <lid> <lid> <lid> <lid>
-    <lid> <lid> <lid> <lid> <lid>
+    // Graphics layer
+    <tid> <tid> <tid> <tid> <tid>
+    <tid> <tid> <tid> <tid> <tid>
+    <tid> <tid> <tid> <tid> <tid>
+    <tid> <tid> <tid> <tid> <tid>
+    <tid> <tid> <tid> <tid> <tid>
+    <tid> <tid> <tid> <tid> <tid>
+
 
 ```
 
 ## Example:
 ```
-    5 5
-    128         // 128 between each layer
-    3
-    0 WALKABLE
-    1 UNWALKABLE
-    2 MOVE_TO 1 // Change to scene 1 upon moving onto this tile in the logic layer
-
-    2
+    10 10
+    128     // 128 Between each layer
+    
+    5
+    0 WALKABLE 
+    1 UNWALKABLE 
+    2 MOVE_TO 1 // Move to scene 1 upon touching this tile.
+    3 MOVE_TO 2
+    4 MOVE_TO 3
+    
+    7
     resources/sprites/floor_0.png 128
-    resources/sprites/furniture_0.png 256
-
-    1
-    128 129 128 156 288
-    128 129 128 156 288
-    128 129 128 156 288
-    128 129 128 156 288
-    128 129 128 156 288
-
-    1
-    1 1 1 1 1
-    1 0 0 0 1
-    1 0 0 2 1
-    1 0 0 2 1
-    1 1 1 1 1
-
+    resources/sprites/malin_regular.png 256
+    resources/sprites/ylva_regular.png 384
+    resources/sprites/walls_0.png 512
+    resources/sprites/furniture_1.png 640
+    resources/sprites/logic.png 0
+    resources/sprites/furniture_0.png 768
+    
+    2
+    5
+    2 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+    2 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+    2 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+    0 0 2 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+    
+    0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+    
+    129 129 129 129 129 129 129 129 129 129 
+    129 129 129 129 129 129 129 129 129 129 
+    129 129 129 129 129 129 129 129 129 129 
+    129 129 129 129 129 129 129 129 129 129 
+    129 129 129 129 129 129 129 129 129 129 
+    129 129 129 129 129 129 129 129 129 129 
+    129 129 129 129 129 129 129 129 129 129 
+    129 129 129 129 129 129 129 129 129 129 
+    129 129 129 129 129 129 129 129 129 129 
+    129 129 129 129 129 129 129 129 129 129 
+    
+    0 0 0 128 128 128 128 128 128 128 
+    0 0 0 128 128 128 128 128 128 128 
+    0 128 0 128 128 128 128 128 128 128 
+    0 0 0 128 0 0 0 0 0 0 
+    0 0 0 0 128 0 128 0 0 0 
+    0 0 0 0 0 0 128 0 0 0 
+    0 0 0 0 0 128 0 0 0 0 
+    0 128 128 128 128 128 0 0 0 0 
+    0 128 128 128 128 128 0 0 0 0 
+    0 128 128 128 128 128 0 0 0 0 
+    
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
+    
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
+    
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
+    0 0 0 0 0 0 0 0 0 0 
 
 ```

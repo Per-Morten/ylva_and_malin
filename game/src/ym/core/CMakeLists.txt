@@ -8,7 +8,6 @@ set(headers
     ym_math.h
     ym_time.h
     ym_types.h
-    ym_warnings.h
 )
 
 set(source
